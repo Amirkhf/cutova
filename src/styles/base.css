@@ -57,23 +57,33 @@ h3,
 h4 {
   font-family: var(--font-heading);
   font-weight: var(--weight-heading);
-  line-height: var(--leading-tight);
+  margin-bottom: 0.4em;
+}
+
+/* Deux titres consécutifs (sans texte entre eux) : espace supplémentaire au-dessus */
+:is(h1, h2, h3, h4) + :is(h1, h2, h3, h4) {
+  margin-top: var(--space-4);
 }
 
 h1 {
   font-size: var(--text-4xl);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   font-size: var(--text-3xl);
+  line-height: 1.12;
 }
 
 h3 {
   font-size: var(--text-2xl);
+  line-height: 1.15;
 }
 
 h4 {
   font-size: var(--text-xl);
+  line-height: 1.15;
 }
 
 p {
@@ -153,7 +163,7 @@ small {
 .btn-secondary {
   background-color: transparent;
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
 }
 
 .btn-secondary:hover {

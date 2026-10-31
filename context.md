@@ -101,6 +101,10 @@ test de contraste WCAG). Build et typecheck passent. Aucune page produit pour l'
   → 7.34–7.99) et erreur #B3261E → **#FF6B5E** (ratio 2.63–2.87 → 6.16–6.71). L'accent a aussi été
   éclairci en mode sombre (#5B4BFF → **#8A7DFF**) pour rester utilisable comme texte/lien (ratio
   3.19–3.48 → 5.30–5.76), pas seulement comme remplissage de bouton.
+- Revue visuelle post-implémentation : échelle de titres fluide recalée (h1 32px à h2 18px sur 360px,
+  desktop inchangé), interlignes 1.1–1.15, marges de rythme vertical ajoutées, damier sombre éclairci
+  (#1A1B1E/#2A2C31), token `--color-border` scindé en `--color-border-strong` (≥3:1, testé) et
+  `--color-border-subtle` (décoratif).
 
 ## Prochaine étape
 Étape 3 : écran d'accueil (direction C).

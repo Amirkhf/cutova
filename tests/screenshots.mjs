@@ -34,6 +34,20 @@ async function main() {
         console.log(`OK ${file}`);
       }
     }
+
+    // Focus clavier (Tab) forcé sur le bouton principal, 360px, clair/sombre.
+    for (const scheme of schemes) {
+      const page = await browser.newPage({
+        viewport: { width: 360, height: 800 },
+        colorScheme: scheme,
+      });
+      await page.goto(`http://localhost:${port}/styleguide.html`, { waitUntil: "networkidle" });
+      await page.keyboard.press("Tab");
+      const file = `${OUT_DIR}styleguide-360-${scheme}-focus-primary.png`;
+      await page.screenshot({ path: file, fullPage: true });
+      await page.close();
+      console.log(`OK ${file}`);
+    }
   } finally {
     await browser.close();
     await server.close();

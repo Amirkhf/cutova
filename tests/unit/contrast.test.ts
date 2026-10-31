@@ -23,7 +23,7 @@ const light = {
   accentInk: "#FFFFFF",
   success: "#0F6E56",
   error: "#B3261E",
-  border: "#8E8A82",
+  borderStrong: "#8E8A82",
 };
 
 const dark = {
@@ -36,7 +36,7 @@ const dark = {
   accentInk: "#111214",
   success: "#2FBE9A",
   error: "#FF6B5E",
-  border: "#6B6D73",
+  borderStrong: "#6B6D73",
 };
 
 const TEXT_MIN = 4.5;
@@ -65,8 +65,8 @@ describe.each([
     ["accent (bouton) / surface", tokens.accent, tokens.surface, UI_MIN],
     ["accent survol / fond", tokens.accentHover, tokens.bg, UI_MIN],
     ["accent survol / surface", tokens.accentHover, tokens.surface, UI_MIN],
-    ["bordure / fond", tokens.border, tokens.bg, UI_MIN],
-    ["bordure / surface", tokens.border, tokens.surface, UI_MIN],
+    ["bordure forte / fond", tokens.borderStrong, tokens.bg, UI_MIN],
+    ["bordure forte / surface", tokens.borderStrong, tokens.surface, UI_MIN],
     ["anneau de focus (accent) / fond", tokens.accent, tokens.bg, UI_MIN],
     ["anneau de focus (accent) / surface", tokens.accent, tokens.surface, UI_MIN],
   ])("élément d'interface : %s >= %s:1", (_label, fg, bg, min) => {
