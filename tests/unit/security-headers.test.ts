@@ -17,6 +17,12 @@ describe("security-headers", () => {
     expect(contentSecurityPolicy()).toContain("connect-src 'self';");
   });
 
+  it("styles inline autorisés uniquement pour le serveur de dev (CSS injecté par Vite)", () => {
+    expect(contentSecurityPolicy(null, { devServer: true })).toContain("style-src 'self' 'unsafe-inline'");
+    expect(contentSecurityPolicy()).toContain("style-src 'self';");
+    expect(cloudflareHeadersFile()).not.toContain("unsafe-inline");
+  });
+
   it("origine d'une URL de base", () => {
     expect(originOf("https://models.cutova.app/some/path/")).toBe("https://models.cutova.app");
     expect(originOf(undefined)).toBeNull();

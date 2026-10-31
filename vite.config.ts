@@ -10,6 +10,8 @@ import { MODEL_CACHE_CONTROL, originOf, securityHeaders } from "./security-heade
  */
 const MODEL_ORIGIN = originOf(process.env.VITE_MODEL_BASE_URL);
 const SECURITY_HEADERS = securityHeaders(MODEL_ORIGIN);
+// Serveur de dev : CSS injecté en <style> par Vite → `style-src 'unsafe-inline'` (dev seulement).
+const DEV_SECURITY_HEADERS = securityHeaders(MODEL_ORIGIN, { devServer: true });
 const ORT_VERSION = (JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")) as { dependencies: Record<string, string> }).dependencies["onnxruntime-web"];
 
 /**
@@ -17,9 +19,9 @@ const ORT_VERSION = (JSON.parse(readFileSync(new URL("./package.json", import.me
  * évite aussi `ERR_CACHE_WRITE_FAILURE` quand transformers.js lit le même fichier deux fois en
  * parallèle).
  */
-function securityHeadersMiddleware(): Connect.NextHandleFunction {
+function securityHeadersMiddleware(headers: Record<string, string>): Connect.NextHandleFunction {
   return (req, res, next) => {
-    for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
+    for (const [name, value] of Object.entries(headers)) {
       res.setHeader(name, value);
     }
     if (req.url?.startsWith("/models/")) {
@@ -39,10 +41,10 @@ function securityHeadersPlugin(): Plugin {
   return {
     name: "cutova-security-headers",
     configureServer(server) {
-      server.middlewares.use(securityHeadersMiddleware());
+      server.middlewares.use(securityHeadersMiddleware(DEV_SECURITY_HEADERS));
     },
     configurePreviewServer(server) {
-      server.middlewares.use(securityHeadersMiddleware());
+      server.middlewares.use(securityHeadersMiddleware(SECURITY_HEADERS));
     },
   };
 }

@@ -466,6 +466,11 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   de la région). L'aperçu montre le cadre (zone extérieure assombrie, trait pointillé) ; l'export
   compose directement la région à la taille demandée (pas d'image pleine taille intermédiaire).
 
+- **Bug corrigé (CSS absent en `npm run dev`)** : le serveur de dev Vite injecte le CSS dans des
+  `<style>`, bloqués par `style-src 'self'` → page sans aucun style. La CSP du **serveur de dev
+  uniquement** autorise `'unsafe-inline'` pour les styles (`security-headers.mjs`, option `devServer`) ;
+  preview et production restent stricts (testé). Les tests e2e utilisent le build, d'où le bug non vu.
+
 ## Prochaine étape
 P0 du tableau de parité : tous faits. Suite : P1 dans l'ordre du tableau (détourage voitures/logos à
 évaluer, fond image, fond flou, formats réseaux sociaux / marketplaces, lot + ZIP, annuler/rétablir

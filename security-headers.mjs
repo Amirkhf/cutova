@@ -8,7 +8,12 @@
  * `null` = tout est servi par le site lui-même.
  */
 
-export function contentSecurityPolicy(modelOrigin = null) {
+/**
+ * `devServer` : serveur de développement Vite uniquement. Il injecte le CSS dans des balises `<style>`
+ * (rechargement à chaud) : sans `'unsafe-inline'`, la page s'afficherait sans aucun style. Jamais
+ * utilisé pour `vite preview` ni en production, où le CSS est servi en fichiers (`style-src 'self'`).
+ */
+export function contentSecurityPolicy(modelOrigin = null, { devServer = false } = {}) {
   const extra = modelOrigin ? ` ${modelOrigin}` : "";
   return [
     "default-src 'self'",
@@ -16,7 +21,7 @@ export function contentSecurityPolicy(modelOrigin = null) {
     "worker-src 'self' blob:",
     `connect-src 'self'${extra}`,
     "img-src 'self' blob: data:",
-    "style-src 'self'",
+    devServer ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
     "font-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",
@@ -26,12 +31,12 @@ export function contentSecurityPolicy(modelOrigin = null) {
 }
 
 /** En-têtes appliqués à toutes les réponses du site. */
-export function securityHeaders(modelOrigin = null) {
+export function securityHeaders(modelOrigin = null, options = {}) {
   return {
     // Isolation cross-origin : nécessaire à `crossOriginIsolated` (WASM multithread).
     "Cross-Origin-Opener-Policy": "same-origin",
     "Cross-Origin-Embedder-Policy": "require-corp",
-    "Content-Security-Policy": contentSecurityPolicy(modelOrigin),
+    "Content-Security-Policy": contentSecurityPolicy(modelOrigin, options),
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
