@@ -13,6 +13,11 @@ sur damier + temps de traitement) branché sur `image:selected`. Limite de pixel
 (9/9) mais la case WASM "masque reçu" ne peut pas être vérifiée de bout en bout dans cet environnement
 de test précis — voir Mesures ci-dessous, c'est un constat important à lire avant de considérer l'étape
 comme pleinement acquise.
+**Mémoire WASM (en cours)** : cause confirmée — BiRefNet_lite à 1024 demande ~6,5 Go en natif, plus que
+les 4 Go du wasm32 ; pas de build wasm64 dans notre onnxruntime-web, entrée du modèle figée à 1024.
+Masques de référence produits (`scripts/reference-masks.mjs` → `tests/reference/`). Comparatif de 3
+modèles plus légers dans Décisions — **en attente de validation, aucun n'est adopté** ; le critère
+"masque réel dans Chromium headless WASM" n'est donc pas encore rempli.
 
 ## Modules
 - `src/core/model/` — `model-source.ts` (identifiant du dépôt HF + taille d'entrée du modèle),
@@ -184,6 +189,21 @@ comme pleinement acquise.
   produire un masque de bout en bout dans ce bac à sable précis (mémoire WASM insuffisante d'un côté,
   pas de GPU réel de l'autre). Priorité pour la suite : valider sur un appareil avec vrai GPU.
 
+### Mémoire WASM — mesures (bac à sable Linux, 4 cœurs, 15 Go RAM, sans GPU, 2026-10-31)
+- **Référence native** (`scripts/reference-masks.mjs`, onnxruntime-node 1.30, BiRefNet_lite fp32, 1024) :
+  création de session 3,2 s ; inférence 7–60 s par image (très variable sur ce CPU partagé) ; pic mémoire
+  résident (VmHWM) **12,2 Go** avec réglages par défaut, **6,5 Go** avec `enableCpuMemArena`/`enableMemPattern`
+  désactivés, mono- ou multi-thread. ⇒ le modèle ne peut pas tenir dans la mémoire wasm32 (plafond
+  65 536 pages = 4 Go dans `ort-wasm-simd-threaded.mjs`), quels que soient les réglages.
+- **Reproduit hors navigateur** : onnxruntime-web (backend wasm, dans Node) sur BiRefNet_lite →
+  `OrtRun() ERROR_CODE 6 std::bad_alloc`, comme dans Chromium. Ce n'est donc pas un problème du bac à
+  sable Playwright.
+- **Candidats en WASM** (`scripts/bench/compare-candidates.mjs` : onnxruntime-web wasm dans Node,
+  1 thread, arena désactivée ; qualité vs masques de référence 1024 ; IoU au seuil 0,5) : voir le tableau
+  dans Décisions. Tous les trois **tiennent** dans le wasm32.
+- Temps de chargement / première inférence / suivantes **dans Chromium** : pas encore mesurés (pas de
+  modèle adopté). Test réseau zéro-requête externe : inchangé (aucun code applicatif modifié).
+
 ## Décisions
 - Nom de marque retenu : **Cutova**.
 - Direction visuelle retenue : **direction C**. Écran d'accueil = accroche + démonstration
@@ -273,5 +293,32 @@ comme pleinement acquise.
   importe ses fichiers par chemin exact, ce n'est plus un simple détail d'implémentation de
   `@huggingface/transformers`. Version `1.31.0-dev...` : versions `-dev`, à surveiller (voir LICENSES.md).
 
+- **(Mémoire WASM) Options évaluées pour le chemin WASM (CPU)** :
+  - a. WASM 64 bits (Memory64) — **écartée** : `onnxruntime-web@1.31.0-dev.20260914` ne livre que des
+    builds wasm32 (`ort-wasm-simd-threaded{,.asyncify,.jsep,.jspi}`), aucun build wasm64.
+  - b. Résolution réduite (768/640/512) — **écartée** : l'entrée du modèle est statique
+    (`input_image` float32 `[1,3,1024,1024]`, sortie `[1,1,1024,1024]`, lu dans les métadonnées de session).
+    Rendre l'entrée dynamique demanderait de réécrire le graphe ONNX (non tenté).
+  - c. Modèle plus léger pour le WASM — **comparatif ci-dessous, EN ATTENTE DE VALIDATION, rien n'est adopté.**
+
+  | Modèle (révision HF figée) | Licence des poids (fiche du modèle) | Fichier fp32 | Entrée | IoU personne / basket / chat | Erreur moy. (MAE) | Inférence WASM 1 thread | Pic mémoire natif |
+  |---|---|---|---|---|---|---|---|
+  | [`onnx-community/ormbg-ONNX`](https://huggingface.co/onnx-community/ormbg-ONNX) (`034e2d88`, base [`schirrmacher/ormbg`](https://huggingface.co/schirrmacher/ormbg)) | Apache-2.0 (en-tête de la fiche, et fiche d'origine) | 168 Mo (aussi fp16 84 Mo, uint8 42 Mo) | 1024 | 0,996 / 0,994 / 0,992 | 0,0006–0,0014 | 13–16 s | 735 Mo |
+  | [`BritishWerewolf/IS-Net`](https://huggingface.co/BritishWerewolf/IS-Net) (`9783722d`, IS-Net/DIS) | Apache-2.0 ("licensed under the Apache License 2.0 to match the original IS-Net model") | 170 Mo | 1024 | 0,996 / 0,997 / **0,693** | 0,0006–0,041 | 14–15 s | 823 Mo |
+  | [`Xenova/modnet`](https://huggingface.co/Xenova/modnet) (`fa2fa546`) | Apache-2.0 (en-tête de la fiche) | 25 Mo (aussi uint8 6 Mo) | 512 | 0,996 / 0,996 / **0,058** | 0,0007–0,086 | 1,3–1,7 s | 215 Mo |
+
+  Lecture : **ormbg** est le seul à dépasser IoU 0,97 sur les 3 images → candidat recommandé pour le
+  repli WASM ordinateur. Limites : ormbg a été entraîné sur des humains synthétiques (la fiche dit qu'il a
+  du mal sur de vraies photos), et nos 3 images de test sont des silhouettes unies sur fond uni (trop
+  faciles) → il faut valider sur de vraies photos avant de conclure. MODNet est réservé aux portraits
+  (rate le chat). IS-Net est un portage tiers (pas un dépôt officiel). Écarté : `liuyulvv/InSPyReNet_*`
+  (licence seulement en tag, fiche vide).
+  **Mobile sans WebGPU (iOS Safari : pas de Memory64, peu de mémoire)** : seule l'option c s'applique.
+  MODNet (25 Mo, ~215 Mo de pic) est le plus réaliste pour la mémoire, mais seulement pour les portraits ;
+  ormbg (~735 Mo de pic natif, plus en WASM) est à tester sur un vrai iPhone.
+
 ## Prochaine étape
-Étape 5 : pipeline pleine résolution (agrandissement du masque, lissage des bords) + écran résultat + exports.
+1. **Valider (ou refuser) un modèle de repli WASM** dans le comparatif ci-dessus (Décisions). Ensuite :
+   l'intégrer (choix de modèle selon le moteur), test Playwright "masque réel en WASM", captures
+   `tests/screenshots/wasm-result-*.png`, mesures dans Chromium.
+2. Valider WebGPU sur vraie machine, puis étape 5 : pipeline pleine résolution + exports.

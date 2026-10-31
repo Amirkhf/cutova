@@ -1,0 +1,20 @@
+{
+  "runtime": "onnxruntime-node 1.30.0",
+  "size": 1024,
+  "loadMs": 3241,
+  "runs": [
+    {
+      "name": "person",
+      "inferenceMs": 59729
+    },
+    {
+      "name": "sneaker",
+      "inferenceMs": 21538
+    },
+    {
+      "name": "cat",
+      "inferenceMs": 6834
+    }
+  ],
+  "peakRssMb": 12243
+}
