@@ -180,7 +180,7 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
       status.textContent = dict.upload.imageDownscaled(result.resizeTo.width, result.resizeTo.height);
     }
     showSelected(file);
-    emitImageSelected({ file, source });
+    emitImageSelected({ file, source, resizeTo: result.resizeTo });
     onFileAccepted(file);
   }
 

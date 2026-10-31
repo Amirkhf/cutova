@@ -37,12 +37,26 @@ export interface Dictionary {
     generic: string;
   };
   result: {
-    provisionalBadge: string;
+    title: string;
     preparingModel: string;
     loadingModel: (percent: number) => string;
     running: string;
     processingTime: (ms: number) => string;
     error: string;
+    compareLabel: string;
+    beforeLabel: string;
+    afterLabel: string;
+    backgroundLegend: string;
+    backgroundTransparent: string;
+    backgroundWhite: string;
+    backgroundColor: string;
+    backgroundColorPicker: string;
+    formatLegend: string;
+    formatJpgNote: string;
+    download: string;
+    downloadSize: (width: number, height: number) => string;
+    newImage: string;
+    finishing: string;
   };
   common: {
     skipToContent: string;

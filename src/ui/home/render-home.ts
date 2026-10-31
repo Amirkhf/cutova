@@ -48,7 +48,16 @@ export function renderHome(root: HTMLElement, initialLocale: Locale): void {
     copy.className = "home-copy";
     copy.append(renderHero(dict), renderBeforeAfterDemo(dict));
 
-    resultPanel = renderResultPanel(dict);
+    resultPanel = renderResultPanel({
+      dict,
+      onNewImage: () => {
+        // Retour à l'accueil : carte d'envoi vide, focus sur le bouton principal.
+        selectedFile = null;
+        build();
+        root.querySelector<HTMLElement>(".upload-card button")?.focus();
+        root.querySelector(".upload-card")?.scrollIntoView({ block: "center" });
+      },
+    });
 
     main.append(uploadCard.element, resultPanel.element, copy);
     root.append(skipLink, header, main);

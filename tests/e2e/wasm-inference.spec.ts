@@ -42,14 +42,16 @@ async function canvasPng(page: Page): Promise<Buffer> {
   return Buffer.from(dataUrl.split(",")[1]!, "base64");
 }
 
-async function alphaStats(png: Buffer): Promise<{ alpha: Buffer; fg: number }> {
+async function alphaStats(png: Buffer): Promise<{ fg: number }> {
   const alpha = await sharp(png).extractChannel(3).raw().toBuffer();
   let fg = 0;
   for (const a of alpha) if (a >= 128) fg++;
-  return { alpha, fg: fg / alpha.length };
+  return { fg: fg / alpha.length };
 }
 
-async function iouVsReference(alpha: Buffer, photo: string): Promise<number> {
+/** IoU du masque affiché vs référence 1024×1024 (l'aperçu garde le rapport d'origine : on le ramène à 1024²). */
+async function iouVsReference(png: Buffer, photo: string): Promise<number> {
+  const alpha = await sharp(png).extractChannel(3).resize(1024, 1024, { fit: "fill", kernel: "linear" }).raw().toBuffer();
   const ref = await sharp(path.join(ROOT, "tests/reference", `${photo}.png`)).extractChannel(0).raw().toBuffer();
   let inter = 0;
   let union = 0;
@@ -85,10 +87,10 @@ test("WASM : 3 vraies photos → masques proches de la référence, PNG transpar
     const totalMs = Date.now() - started;
     expect(engine).toBe("wasm");
     const png = await canvasPng(page);
-    const { alpha, fg } = await alphaStats(png);
+    const { fg } = await alphaStats(png);
     expect(fg).toBeGreaterThan(0.01);
     expect(fg).toBeLessThan(0.99);
-    const iou = await iouVsReference(alpha, photo);
+    const iou = await iouVsReference(png, photo);
     await writeFile(path.join(SHOTS, `wasm-result-${photo}.png`), png);
     // Le 1er passage inclut le chargement du modèle (téléchargement/cache + création de session).
     measures.push({ photo, run: i + 1, inferenceMs: elapsedMs, clickToResultMs: totalMs, iou: +iou.toFixed(4), foreground: +fg.toFixed(3) });

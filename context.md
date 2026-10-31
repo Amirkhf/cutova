@@ -11,9 +11,11 @@ mémoire wasm32). Chargés via transformers.js (`AutoModel`/`AutoProcessor`), ca
 (crossOriginIsolated), en-têtes COOP/COEP/CSP en dev et preview, zéro requête externe (test réseau).
 **Phase 1 faite** : un vrai masque est produit en Chromium headless (WASM) et vérifié par e2e
 (`tests/e2e/wasm-inference.spec.ts` : masque ni vide ni plein, IoU vs référence ≥ 0,90 sur 3 vraies photos,
-PNG transparents dans `tests/screenshots/`, copies compressées dans `docs/review/`). Écran de résultat
-encore **provisoire** (aperçu 1024×1024) — remplacé à la phase 2. tsc, vitest, build et Playwright (12/12,
-y compris `webgpu.spec.ts`) passent.
+PNG transparents dans `tests/screenshots/`, copies compressées dans `docs/review/`).
+**Phase 2 faite** : écran de résultat définitif — détourage pleine résolution (masque agrandi + bords
+affinés par filtre guidé), curseur avant/après, fond transparent/blanc/couleur, export PNG/WebP/JPG à la
+résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playwright (16/16, y compris
+`webgpu.spec.ts`) passent.
 
 ## Modules
 - `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
@@ -29,9 +31,10 @@ y compris `webgpu.spec.ts`) passent.
   file d'attente, événements de progression), `protocol.ts` (messages typés worker ↔ page).
 - `src/core/limits/device-limits.ts` — limite de pixels décodés adaptée à l'appareil (remplace
   l'ancienne limite fixe de 8000 px/côté) + réduction proportionnelle (`fitWithinPixelBudget`).
-- `src/ui/result/render-result.ts` — panneau de résultat **provisoire** (aperçu 1024×1024 sur damier,
-  temps de traitement, badge "provisoire") ; s'abonne lui-même à `image:selected`, l'accueil ne le
-  connaît pas.
+- `src/ui/result/` — `render-result.ts` (écran de résultat : décode l'image complète, lance l'inférence,
+  construit le détourage pleine résolution, aperçu ≤ 1600 px, fonds, exports, "Nouvelle image" ; s'abonne
+  lui-même à `image:selected`, attributs `data-*` pour les tests), `compare-slider.ts` (curseur avant/après
+  générique, clavier + pointeur), `result.css`.
 - `scripts/model-manifest.mjs` / `scripts/fetch-model.mjs` — téléchargement des poids + config de tous
   les modèles utilisés par un moteur dans `public/models/<repoId>/` (gitignoré), vérification SHA-256,
   révision HF figée (`--model=`, `--only=`, `MODEL_BASE_URL`).
@@ -41,10 +44,12 @@ y compris `webgpu.spec.ts`) passent.
   pic mémoire, `--threads`, `--only`.
 - `tests/images/` — 20 vraies photos Pexels ≤ 2000 px (sources/licences : `tests/images/SOURCES.md`).
 - `docs/review/` — captures et mesures importantes, compressées et versionnées.
-- `src/core/postprocess/` — agrandissement du masque à la résolution d'origine, lissage des bords
-  (étape 5, pas encore implémenté).
-- `src/core/export/` — export PNG/WebP, fond blanc ou couleur, export ZIP par lot (étape 5, pas
-  encore implémenté).
+- `src/core/postprocess/` — `guided-filter.ts` (filtre guidé O(N), pur, testé), `cutout.ts` (masque du
+  modèle → résolution de travail ≤ 2048 px → affinage guidé par la luminance → agrandi par le canvas à la
+  pleine résolution, composité en `destination-in` ; jamais de tableau Float32 pleine résolution).
+- `src/core/export/export.ts` — formats PNG/WebP/JPG, nom de fichier sûr (`<nom>-cutova.<ext>`), fond
+  (transparent / blanc / couleur validée `#rrggbb`), JPG transparent → blanc, encodage OffscreenCanvas.
+  Export ZIP par lot : pas encore (P1).
 - `src/ui/home/` — écran d'accueil (direction C) : `render-home.ts` (composition + rebuild au
   changement de langue), `header.ts`, `hero.ts`, `before-after-demo.ts` (curseur avant/après
   accessible), `upload-card.ts` (bouton, glisser-déposer page entière, collage, 4 exemples,
@@ -106,9 +111,8 @@ y compris `webgpu.spec.ts`) passent.
 
 ## Pages
 - Accueil (`/`) : UI faite (direction C), moteur IA branché (étape 4). La carte d'envoi émet `window`
-  `CustomEvent("image:selected", { detail: { file: File, source } })` ; `src/ui/result/render-result.ts`
-  s'y abonne et affiche un aperçu **provisoire** (1024×1024, masque composité sur damier, temps de
-  traitement). Pipeline pleine résolution + exports : étape 5.
+  `CustomEvent("image:selected", { detail: { file: File, source, resizeTo? } })` ; `src/ui/result/render-result.ts`
+  s'y abonne et affiche l'écran de résultat (phase 2). Captures : `docs/review/phase2-result-*.webp`.
 
 ## Pages SEO
 - Structure : EN à la racine, puis `/pt-br/`, `/es/`, `/id/`, `/fr/` avec balises hreflang croisées.
@@ -129,12 +133,12 @@ y compris `webgpu.spec.ts`) passent.
 
 | Fonction | remove.bg | Cutova | Statut | Priorité |
 |---|---|---|---|---|
-| Détourage auto (personnes) | ✅ | — | à faire | P0 |
-| Détourage auto (produits) | ✅ | — | à faire | P0 |
-| Détourage auto (animaux) | ✅ | — | à faire | P0 |
+| Détourage auto (personnes) | ✅ | WebGPU BiRefNet_lite ; WASM ormbg (IoU 0,98–1,00) | fait | P0 |
+| Détourage auto (produits) | ✅ | WebGPU BiRefNet_lite ; WASM ormbg faible (IoU 0,52–0,95) | partiel (WASM) | P0 |
+| Détourage auto (animaux) | ✅ | WebGPU BiRefNet_lite ; WASM ormbg variable | partiel (WASM) | P0 |
 | Détourage auto (voitures) | ✅ | — | à faire | P1 |
 | Détourage auto (logos) | ✅ | — | à faire | P1 |
-| Fond couleur | ✅ | — | à faire | P0 |
+| Fond couleur | ✅ | blanc ou couleur au choix (aperçu + export) | fait (phase 2) | P0 |
 | Fond image | ✅ | — | à faire | P1 |
 | Fond flou | ✅ | — | à faire | P1 |
 | Pinceau magique (effacer/restaurer) = notre gomme / restauration | ✅ | — | à faire | P0 |
@@ -142,7 +146,7 @@ y compris `webgpu.spec.ts`) passent.
 | Formats réseaux sociaux | ✅ | — | à faire | P1 |
 | Formats marketplaces (Amazon, eBay, Etsy, Vinted, Shopify) | ✅ | — | à faire | P1 |
 | Lot + export ZIP | ✅ | — | à faire | P1 |
-| Téléchargement HD | ✅ | — | à faire | P0 |
+| Téléchargement HD | ✅ | PNG/WebP/JPG à la résolution d'origine, gratuit | fait (phase 2) | P0 |
 | Limites fichier/résolution | 22 Mo/fichier, 50 MP max en sortie, aperçu gratuit 0,25 MP | 50 Mo/fichier, pleine résolution gratuite, objectif ≥ 50 MP sur ordinateur (limite iOS : 16,7 MP) | à faire | P0 |
 | Coller une image par URL | ✅ | — | à faire | P1 (ouvre `connect-src`/`img-src` — à décider) |
 | Applis ordinateur + Android | ✅ | couvertes par la PWA | à faire | P1 |
@@ -151,15 +155,15 @@ y compris `webgpu.spec.ts`) passent.
 | Vidéo | ✅ | — | plus tard | P2 |
 | Noter le résultat / donner l'image à l'IA | ✅ | — | **NON** (contraire à "zéro upload") | — |
 | API (phase 2) | ✅ | — | à faire | P2 |
-| Pleine résolution gratuite sans compte | ❌ | — | à faire | P0 |
-| Zéro upload (100 % navigateur) | ❌ | — | à faire | P0 |
+| Pleine résolution gratuite sans compte | ❌ | oui (budget de pixels selon l'appareil) | fait (phase 2) | P0 |
+| Zéro upload (100 % navigateur) | ❌ | oui, vérifié par test réseau | fait | P0 |
 | Ombre portée | ❌ | — | à faire | P2 |
 | Contour / sticker | ❌ | — | à faire | P2 |
 | Recadrage auto avec marge | ❌ | — | à faire | P1 |
 | Annuler / rétablir | ❌ | — | à faire | P1 |
-| Curseur avant/après | ❌ | — | à faire | P1 |
-| Collage presse-papiers | ❌ | — | à faire | P1 |
-| Glisser-déposer | ❌ | — | à faire | P1 |
+| Curseur avant/après | ❌ | sur l'écran de résultat (clavier + pointeur) | fait (phase 2) | P1 |
+| Collage presse-papiers | ❌ | Ctrl+V sur l'accueil | fait (étape 3) | P1 |
+| Glisser-déposer | ❌ | page entière | fait (étape 3) | P1 |
 | PWA hors ligne | ❌ | — | à faire | P2 |
 | Extension Chrome | ❌ | — | à faire | P2 |
 
@@ -356,6 +360,21 @@ y compris `webgpu.spec.ts`) passent.
   (sans effet visuel) pour que les tests lisent le bon résultat (un test lisait l'état "done" du passage
   précédent).
 
+- **(Phase 2) Affinage des bords = filtre guidé** (He et al.) plutôt qu'un simple flou/seuil : garde les
+  mèches de cheveux et les poils, recolle le masque basse résolution aux vrais contours. Calculé à une
+  résolution de travail ≤ 2048 px (rayon 2–8 px, ε = 1e-3), puis agrandi par le canvas : coût mémoire
+  borné (~4 MP × quelques Float32) même pour une photo de 50 MP. Mesuré : +0,6 s sur une photo 2000×1332
+  (Chromium headless, CPU).
+- **(Phase 2) Aperçu ≤ 1600 px, export à la résolution d'origine** (ou réduite au budget de pixels de
+  l'appareil, transmise via `image:selected` > `resizeTo`). JPG + fond transparent → fond blanc (avec une
+  note visible). Qualité WebP/JPG 0,92. Nom de fichier `<nom d'origine>-cutova.<ext>`.
+- **(Phase 2) Bug corrigé** : `.result-panel { display: flex }` annulait l'attribut `hidden` → un panneau
+  de résultat vide était visible sur l'accueil. Règle `.result-panel[hidden] { display: none }`.
+- **(Phase 2) Libellé du curseur de résultat** différent de celui de la démo ("Compare original and
+  result" / "Comparer l'original et le résultat") : deux curseurs de même nom accessible sur la page.
+
 ## Prochaine étape
-Phase 2 : pipeline pleine résolution + écran de résultat (remplace l'aperçu provisoire) + exports.
-Puis : valider WebGPU sur vraie machine (BiRefNet_lite) et le chemin WASM sur un vrai iPhone.
+Phase 3 : SEO V1 (EN + /fr/) — générateur statique, pages, hreflang, sitemap, robots.txt, llms.txt,
+données structurées, FAQ, Lighthouse ≥ 95. Puis phase 4 (déploiement), puis P0 restants (gomme /
+restauration, recadrage / redimensionnement). À valider sur matériel réel : WebGPU (BiRefNet_lite) et
+WASM sur iPhone.
