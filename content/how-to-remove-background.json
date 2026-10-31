@@ -1,0 +1,70 @@
+{
+  "id": "how-to-remove-background",
+  "type": "howto",
+  "locales": {
+    "en": {
+      "path": "/how-to/remove-background-from-photo/",
+      "title": "How to Remove the Background from a Photo (Free, No Upload) | Cutova",
+      "description": "Remove the background from a photo in three steps, for free and without uploading it. A simple guide with tips for hair, pets and products.",
+      "h1": "How to remove the background from a photo",
+      "intro": [
+        "You do not need Photoshop or an account to cut out a subject. With Cutova, the whole process takes three steps and happens in your browser, so the photo never leaves your device."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        { "name": "Open Cutova", "text": "Go to the Cutova home page. There is nothing to install." },
+        { "name": "Add your photo", "text": "Click \"Choose an image\", drag the file onto the page, or paste it with Ctrl+V (Cmd+V on a Mac)." },
+        { "name": "Wait a few seconds", "text": "The AI finds the main subject and removes everything else. The first time, the model is downloaded once to your browser." },
+        { "name": "Check the result", "text": "Drag the before/after slider over the image to compare the cutout with the original." },
+        { "name": "Download", "text": "Pick PNG to keep the transparent background, then click Download. The file has the same resolution as your original." }
+      ],
+      "sections": [
+        {
+          "h2": "Tips for a clean cutout",
+          "list": [
+            "Use a photo where the subject is sharp and clearly separated from the background.",
+            "Hair and fur work well; avoid heavy motion blur around the edges.",
+            "For products, a plain background is not required, but good lighting helps.",
+            "If something is missing, try a tighter crop of the subject before adding it."
+          ]
+        }
+      ],
+      "faq": [
+        { "q": "Does removing the background reduce the quality?", "a": "No. The cutout is built at the resolution of your original photo, and PNG export is lossless." },
+        { "q": "Can I remove the background of several photos?", "a": "Yes, one after the other: click \"New image\" after each download. Batch processing is planned." }
+      ]
+    },
+    "fr": {
+      "path": "/fr/tutoriels/supprimer-arriere-plan-photo/",
+      "title": "Comment supprimer l'arrière-plan d'une photo (gratuit, sans envoi) | Cutova",
+      "description": "Supprimez l'arrière-plan d'une photo en trois étapes, gratuitement et sans l'envoyer. Un guide simple avec des conseils pour les cheveux, les animaux et les produits.",
+      "h1": "Comment supprimer l'arrière-plan d'une photo",
+      "intro": [
+        "Pas besoin de Photoshop ni de compte pour détourer un sujet. Avec Cutova, tout se fait en trois étapes dans votre navigateur : la photo ne quitte jamais votre appareil."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        { "name": "Ouvrez Cutova", "text": "Allez sur la page d'accueil de Cutova. Rien à installer." },
+        { "name": "Ajoutez votre photo", "text": "Cliquez sur « Choisir une image », glissez le fichier sur la page ou collez-le avec Ctrl+V (Cmd+V sur Mac)." },
+        { "name": "Patientez quelques secondes", "text": "L'IA trouve le sujet principal et retire tout le reste. La première fois, le modèle est téléchargé une seule fois dans votre navigateur." },
+        { "name": "Vérifiez le résultat", "text": "Faites glisser le curseur avant/après sur l'image pour comparer le détourage à l'original." },
+        { "name": "Téléchargez", "text": "Choisissez PNG pour garder le fond transparent, puis cliquez sur Télécharger. Le fichier a la même résolution que l'original." }
+      ],
+      "sections": [
+        {
+          "h2": "Conseils pour un détourage propre",
+          "list": [
+            "Utilisez une photo où le sujet est net et bien séparé du fond.",
+            "Les cheveux et les poils passent bien ; évitez le flou de bougé sur les bords.",
+            "Pour les produits, un fond uni n'est pas obligatoire, mais un bon éclairage aide.",
+            "S'il manque une partie, recadrez davantage le sujet avant de l'ajouter."
+          ]
+        }
+      ],
+      "faq": [
+        { "q": "Supprimer l'arrière-plan réduit-il la qualité ?", "a": "Non. Le détourage est construit à la résolution de votre photo d'origine, et l'export PNG est sans perte." },
+        { "q": "Puis-je détourer plusieurs photos ?", "a": "Oui, l'une après l'autre : cliquez sur « Nouvelle image » après chaque téléchargement. Le traitement par lot est prévu." }
+      ]
+    }
+  }
+}

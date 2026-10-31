@@ -59,7 +59,7 @@ test("résultat pleine résolution : exports PNG/WebP transparents, JPG opaque, 
 
   // JPG + fond transparent → note affichée et fond blanc dans le fichier.
   await page.getByRole("radio", { name: "JPG" }).check();
-  await expect(page.getByText("JPG has no transparency")).toBeVisible();
+  await expect(page.locator(".result-note")).toContainText("JPG has no transparency");
   const jpg = await download(page, "jpg");
   const jpgMeta = await sharp(jpg.data).metadata();
   expect([jpgMeta.format, jpgMeta.width, jpgMeta.height]).toEqual(["jpeg", 2000, 1332]);

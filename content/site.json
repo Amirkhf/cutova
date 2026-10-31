@@ -1,0 +1,42 @@
+{
+  "$comment": "Textes communs aux pages statiques (en-tête, pied de page, appel à l'action). Une entrée par locale publiée. Chemin d'accueil de chaque locale : `home`.",
+  "brand": "Cutova",
+  "locales": {
+    "en": {
+      "home": "/",
+      "hreflang": "en",
+      "ogLocale": "en_US",
+      "languageName": "English",
+      "skipToContent": "Skip to content",
+      "cta": "Remove a background now",
+      "ctaNote": "Free, no account, your image stays on your device.",
+      "nav": "Main",
+      "breadcrumbHome": "Home",
+      "footerPrivacy": "Cutova removes backgrounds directly in your browser. Your images are never uploaded to a server.",
+      "footerGuides": "Guides",
+      "footerLanguage": "Version française",
+      "faqTitle": "Frequently asked questions",
+      "stepsTitle": "Step by step",
+      "trademarkNote": "remove.bg is a trademark of its owner. Cutova is an independent product and is not affiliated with it.",
+      "breadcrumbLabel": "Breadcrumb"
+    },
+    "fr": {
+      "home": "/fr/",
+      "hreflang": "fr",
+      "ogLocale": "fr_FR",
+      "languageName": "Français",
+      "skipToContent": "Aller au contenu",
+      "cta": "Détourer une image maintenant",
+      "ctaNote": "Gratuit, sans compte, votre image reste sur votre appareil.",
+      "nav": "Principale",
+      "breadcrumbHome": "Accueil",
+      "footerPrivacy": "Cutova supprime l'arrière-plan directement dans votre navigateur. Vos images ne sont jamais envoyées sur un serveur.",
+      "footerGuides": "Guides",
+      "footerLanguage": "English version",
+      "faqTitle": "Questions fréquentes",
+      "stepsTitle": "Étape par étape",
+      "trademarkNote": "remove.bg est une marque de son propriétaire. Cutova est un produit indépendant, sans lien avec elle.",
+      "breadcrumbLabel": "Fil d'Ariane"
+    }
+  }
+}

@@ -5,6 +5,9 @@ import { renderBeforeAfterDemo } from "./before-after-demo.ts";
 import { renderUploadCard, type UploadCardHandle } from "./upload-card.ts";
 import { renderResultPanel, type ResultPanelHandle } from "../result/render-result.ts";
 
+/** Pages d'accueil publiées par langue (seo/build.mjs, content/site.json). */
+const LOCALE_HOME_PATHS: Partial<Record<Locale, string>> = { en: "/", fr: "/fr/" };
+
 export function renderHome(root: HTMLElement, initialLocale: Locale): void {
   let locale = initialLocale;
   let selectedFile: File | null = null;
@@ -27,6 +30,13 @@ export function renderHome(root: HTMLElement, initialLocale: Locale): void {
       dict,
       locale,
       onLocaleChange: (next) => {
+        // Sur une page publiée (`/`, `/fr/`), changer de langue = aller sur la page de cette langue
+        // (URL indexable, hreflang). Sinon (dev, langue sans page), simple re-rendu sur place.
+        const path = LOCALE_HOME_PATHS[next];
+        if (document.documentElement.dataset.locale && path && path !== window.location.pathname) {
+          window.location.assign(path);
+          return;
+        }
         locale = next;
         build();
       },

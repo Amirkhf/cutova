@@ -1,0 +1,55 @@
+{
+  "id": "home",
+  "locales": {
+    "en": {
+      "path": "/",
+      "title": "Remove Background from Image Free — No Upload | Cutova",
+      "description": "Remove the background from any photo in seconds, for free and at full resolution. Cutova runs entirely in your browser: no account, no upload, transparent PNG, WebP or JPG.",
+      "howTitle": "How it works",
+      "how": [
+        { "title": "Add a photo", "text": "Choose a file, drag and drop it, or paste it with Ctrl+V. PNG, JPEG, WebP, AVIF and GIF up to 50 MB." },
+        { "title": "The AI finds the subject", "text": "An open-source segmentation model runs on your device, using your graphics card when available. Nothing is sent to a server." },
+        { "title": "Download the cutout", "text": "Keep a transparent background or pick white or any color, then download a full-resolution PNG, WebP or JPG." }
+      ],
+      "whyTitle": "Why Cutova",
+      "why": [
+        { "title": "Private by design", "text": "Your image is processed locally in the browser. It is never uploaded, stored or used to train anything." },
+        { "title": "Full resolution, free", "text": "No low-resolution preview and no paid download: you get the same size as your original (up to about 50 megapixels on a computer)." },
+        { "title": "No account", "text": "Open the page and start. No sign-up, no credits, no watermark." }
+      ],
+      "faq": [
+        { "q": "Is Cutova really free?", "a": "Yes. Background removal and full-resolution downloads are free and do not require an account. The processing happens on your own device, so there is no server cost per image to pass on to you." },
+        { "q": "Are my photos uploaded anywhere?", "a": "No. The AI model is downloaded once to your browser and runs there. Your images never leave your device. The page is built so that it cannot send image data to another site." },
+        { "q": "Which file formats can I use?", "a": "You can add PNG, JPEG, WebP, AVIF and GIF files up to 50 MB. You can download the result as a transparent PNG, a WebP, or a JPG (JPG has no transparency, so a white or colored background is used)." },
+        { "q": "Why is the first image slower?", "a": "The first time, your browser downloads the AI model (about 110 to 220 MB depending on your device) and prepares it. It is then kept in your browser's storage, so the next images start much faster." },
+        { "q": "Does it work on a phone?", "a": "Yes, in a recent mobile browser. Very large photos may be reduced automatically to fit the memory of the device, and processing is slower than on a computer with a graphics card." },
+        { "q": "What kind of images work best?", "a": "Photos with a clear main subject: people, animals, products, cars. Hair and fur are handled well. Transparent objects, signatures and very busy scenes are harder and may need a second try with a cleaner photo." }
+      ]
+    },
+    "fr": {
+      "path": "/fr/",
+      "title": "Supprimer l'arrière-plan d'une image gratuitement, sans envoi | Cutova",
+      "description": "Détourez n'importe quelle photo en quelques secondes, gratuitement et en pleine résolution. Cutova fonctionne entièrement dans votre navigateur : sans compte, sans envoi, PNG transparent, WebP ou JPG.",
+      "howTitle": "Comment ça marche",
+      "how": [
+        { "title": "Ajoutez une photo", "text": "Choisissez un fichier, glissez-déposez-le ou collez-le avec Ctrl+V. PNG, JPEG, WebP, AVIF et GIF jusqu'à 50 Mo." },
+        { "title": "L'IA trouve le sujet", "text": "Un modèle de segmentation open source tourne sur votre appareil, avec votre carte graphique quand elle est disponible. Rien n'est envoyé à un serveur." },
+        { "title": "Téléchargez le détourage", "text": "Gardez un fond transparent ou choisissez du blanc ou une couleur, puis téléchargez un PNG, WebP ou JPG en pleine résolution." }
+      ],
+      "whyTitle": "Pourquoi Cutova",
+      "why": [
+        { "title": "Confidentiel par conception", "text": "Votre image est traitée localement dans le navigateur. Elle n'est jamais envoyée, stockée ni utilisée pour entraîner quoi que ce soit." },
+        { "title": "Pleine résolution, gratuite", "text": "Pas d'aperçu en basse résolution ni de téléchargement payant : vous obtenez la taille de l'original (jusqu'à environ 50 mégapixels sur ordinateur)." },
+        { "title": "Sans compte", "text": "Ouvrez la page et commencez. Pas d'inscription, pas de crédits, pas de filigrane." }
+      ],
+      "faq": [
+        { "q": "Cutova est-il vraiment gratuit ?", "a": "Oui. Le détourage et le téléchargement en pleine résolution sont gratuits et ne demandent pas de compte. Le traitement se fait sur votre propre appareil : il n'y a pas de coût de serveur par image à vous faire payer." },
+        { "q": "Mes photos sont-elles envoyées quelque part ?", "a": "Non. Le modèle d'IA est téléchargé une fois dans votre navigateur et s'exécute là. Vos images ne quittent jamais votre appareil. La page est construite pour ne pas pouvoir envoyer de données d'image vers un autre site." },
+        { "q": "Quels formats de fichiers puis-je utiliser ?", "a": "Vous pouvez ajouter des fichiers PNG, JPEG, WebP, AVIF et GIF jusqu'à 50 Mo. Le résultat se télécharge en PNG transparent, en WebP ou en JPG (le JPG ne gère pas la transparence : un fond blanc ou coloré est alors utilisé)." },
+        { "q": "Pourquoi la première image est-elle plus lente ?", "a": "La première fois, votre navigateur télécharge le modèle d'IA (environ 110 à 220 Mo selon l'appareil) et le prépare. Il est ensuite gardé dans le stockage du navigateur : les images suivantes démarrent beaucoup plus vite." },
+        { "q": "Est-ce que ça marche sur téléphone ?", "a": "Oui, dans un navigateur mobile récent. Les très grandes photos peuvent être réduites automatiquement pour tenir dans la mémoire de l'appareil, et le traitement est plus lent que sur un ordinateur avec carte graphique." },
+        { "q": "Quelles images donnent les meilleurs résultats ?", "a": "Les photos avec un sujet principal net : personnes, animaux, produits, voitures. Les cheveux et les poils sont bien gérés. Les objets transparents, les signatures et les scènes très chargées sont plus difficiles et peuvent demander un nouvel essai avec une photo plus nette." }
+      ]
+    }
+  }
+}

@@ -16,6 +16,10 @@ PNG transparents dans `tests/screenshots/`, copies compressées dans `docs/revie
 affinés par filtre guidé), curseur avant/après, fond transparent/blanc/couleur, export PNG/WebP/JPG à la
 résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playwright (16/16, y compris
 `webgpu.spec.ts`) passent.
+**Phase 3 faite** : SEO V1 EN + /fr/ — générateur statique (`seo/`), 10 pages (2 accueils + alternative
+remove.bg + 3 tutoriels, en EN et FR), hreflang réciproques, sitemap.xml, robots.txt (robots d'IA
+autorisés), llms.txt, JSON-LD (WebSite, WebApplication, FAQPage, BreadcrumbList, HowTo), FAQ visibles.
+Lighthouse : 99–100 partout (voir Mesures). Playwright 29/29.
 
 ## Modules
 - `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
@@ -62,9 +66,14 @@ résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playw
 - `src/styles/` — design system : `fonts.css` (polices auto-hébergées, sous-ensembles latin/latin-ext),
   `tokens.css` (variables CSS clair/sombre), `base.css` (reset, typographie, focus, `.sr-only`,
   `.checkerboard`, boutons `.btn-primary`/`.btn-secondary`).
-- `seo/` — générateur de pages statiques SEO à partir d'un gabarit unique.
-- `content/` — données structurées des pages SEO (une page = une intention de recherche).
-- `public/` — fichiers statiques racine (robots.txt, llms.txt à venir).
+- `seo/` — `render.mjs` (gabarit unique + JSON-LD + sitemap/robots/llms, fonctions pures testées dans
+  `tests/unit/seo-render.test.ts`), `build.mjs` (tourne après `vite build` : pages article/tutoriel,
+  accueils `/` et `/fr/` enrichis, `sitemap.xml`, `robots.txt`, `llms.txt` dans `dist/` ; URL absolue =
+  variable `SITE_URL`). `src/seo/seo-page.ts` + `seo.css` = entrée Vite des styles des pages statiques.
+- `content/` — `site.json` (textes communs par langue), `home.json`, et un JSON par page (une page = une
+  intention de recherche) avec ses versions `en` et `fr` (chemin, title, description, h1, sections,
+  étapes, FAQ). Ajouter une page = ajouter un JSON ici.
+- `public/` — favicon (robots.txt/llms.txt/sitemap sont désormais générés dans `dist/`).
 - `server/` — back-end phase 2 (FastAPI + onnxruntime + SQLite), non démarré.
 - `tests/unit/`, `tests/e2e/`, `tests/images/` — tests unitaires, end-to-end, images de référence.
 - `scripts/bench/` — scripts de benchmark de performance d'inférence.
@@ -116,10 +125,13 @@ résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playw
 
 ## Pages SEO
 - Structure : EN à la racine, puis `/pt-br/`, `/es/`, `/id/`, `/fr/` avec balises hreflang croisées.
-- V1 prioritaire (statut : à faire) :
-  - Page d'accueil
-  - `/remove-bg-alternative`
-  - 3 pages `/how-to/`
+- V1 (statut : **faite**, EN + FR) :
+  - Accueil : `/` et `/fr/`
+  - `/remove-bg-alternative/` ↔ `/fr/alternative-remove-bg/`
+  - `/how-to/remove-background-from-photo/` ↔ `/fr/tutoriels/supprimer-arriere-plan-photo/`
+  - `/how-to/make-transparent-png/` ↔ `/fr/tutoriels/creer-png-transparent/`
+  - `/how-to/change-photo-background-color/` ↔ `/fr/tutoriels/changer-couleur-fond-photo/`
+- À faire : pt-br / es / id ; pages `/for/{segment}`.
 - Pages SEO `/for/{segment}` prévues (textes 100 % originaux) : individuals, photographers,
   marketing, developers, ecommerce, media, car-dealerships, enterprise.
 
@@ -168,7 +180,11 @@ résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playw
 | Extension Chrome | ❌ | — | à faire | P2 |
 
 ## Mesures
-- Lighthouse (Performance / SEO / Accessibilité) : vide.
+- **Lighthouse 12.8.2** (mobile, Chromium headless, `vite preview` local, 2026-10-31 ;
+  `docs/review/lighthouse-phase3.json`) — Performance / Accessibilité / Bonnes pratiques / SEO :
+  `/` 99/100/100/100 (LCP 1,7 s, CLS 0, TBT 0 ; 83 en performance au tout premier passage à froid) ;
+  `/fr/` 99/100/100/100 ; `/remove-bg-alternative/` 100/100/100/100 ;
+  `/how-to/make-transparent-png/` 100/100/100/100. À refaire sur le vrai domaine après déploiement.
 - Search Console / Bing sur "remove bg", "background remover", "bg remove", "remove background" : vide.
 - **Benchmark d'inférence p50/p95 WebGPU vs WASM : toujours vide — à refaire avec les 20 images de
   test sur un appareil réel.** Ce qui suit est une mesure rapide (étape 4, une seule machine, un seul
@@ -373,8 +389,31 @@ résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playw
 - **(Phase 2) Libellé du curseur de résultat** différent de celui de la démo ("Compare original and
   result" / "Comparer l'original et le résultat") : deux curseurs de même nom accessible sur la page.
 
+- **(Phase 3) Générateur après `vite build`** (et non pages Vite multiples) : un seul gabarit, contenu
+  en JSON, CSS haché lu dans le manifeste Vite. Les accueils réutilisent `dist/index.html` de
+  l'application (même bundle pour `/` et `/fr/`, langue fixée par `<html data-locale>`).
+- **(Phase 3) Slugs FR traduits** (`/fr/alternative-remove-bg/`, `/fr/tutoriels/...`) plutôt que de
+  copier les slugs anglais : meilleurs pour la recherche en français ; les paires sont reliées par
+  hreflang (même `id` de contenu).
+- **(Phase 3) Sélecteur de langue** de l'application : sur une page publiée, il navigue vers l'URL de la
+  langue (`/` ↔ `/fr/`) ; pour pt-br/es/id (pas encore de page), re-rendu sur place.
+- **(Phase 3) Repli statique dans `#app`** (h1 + accroche de l'application, remplacés par le rendu JS) et
+  sections statiques sous l'application (Comment ça marche, Pourquoi, FAQ, liens vers les guides) :
+  lisibles par les robots qui n'exécutent pas JavaScript. CLS mesuré : 0.
+- **(Phase 3) Pas de date de fermeture de remove.bg sur les pages publiques** : l'info est dans
+  Décisions mais sans source publique à citer ; comparatif limité aux limites listées dans Parité, avec
+  mention de marque ("non affilié"). À ajouter avec un lien source si on veut l'utiliser.
+- **(Phase 3) robots.txt** : tout autorisé (`/models/` exclu : ce ne sont pas des pages) + autorisation
+  explicite des robots d'IA (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User,
+  Claude-SearchBot, anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended,
+  CCBot, Meta-ExternalAgent, Amazonbot, DuckAssistBot, MistralAI-User).
+- **(Phase 3) `SITE_URL`** : domaine pas encore choisi → les URL absolues (canonical, hreflang, sitemap)
+  valent `http://localhost:4173` par défaut, avec un avertissement au build. **À définir au déploiement**
+  (DEPLOY.md).
+- **(Phase 3) Bug corrigé** : les boutons de l'écran de résultat n'avaient pas la classe `.btn` (forme
+  pilule, padding) ; `.skip-link` déplacé dans `base.css` (partagé par toutes les pages).
+
 ## Prochaine étape
-Phase 3 : SEO V1 (EN + /fr/) — générateur statique, pages, hreflang, sitemap, robots.txt, llms.txt,
-données structurées, FAQ, Lighthouse ≥ 95. Puis phase 4 (déploiement), puis P0 restants (gomme /
-restauration, recadrage / redimensionnement). À valider sur matériel réel : WebGPU (BiRefNet_lite) et
-WASM sur iPhone.
+Phase 4 : prêt à déployer (Cloudflare Pages `_headers` COOP/COEP/CSP, modèles sur R2 avec URL
+configurable, `DEPLOY.md`). Puis P0 restants du tableau de parité (gomme/restauration, recadrage/
+redimensionnement). À valider sur matériel réel : WebGPU (BiRefNet_lite) et WASM sur iPhone.

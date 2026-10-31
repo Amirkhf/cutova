@@ -156,13 +156,13 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
 
   const downloadButton = document.createElement("button");
   downloadButton.type = "button";
-  downloadButton.className = "btn-primary result-download";
+  downloadButton.className = "btn btn-primary result-download";
   downloadButton.textContent = dict.result.download;
   downloadButton.disabled = true;
 
   const newImageButton = document.createElement("button");
   newImageButton.type = "button";
-  newImageButton.className = "btn-secondary result-new";
+  newImageButton.className = "btn btn-secondary result-new";
   newImageButton.textContent = dict.result.newImage;
   newImageButton.addEventListener("click", () => onNewImage());
 

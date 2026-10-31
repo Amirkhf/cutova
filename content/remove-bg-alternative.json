@@ -1,0 +1,103 @@
+{
+  "id": "remove-bg-alternative",
+  "type": "article",
+  "$comment": "Comparatif : uniquement des faits listés dans context.md > Parité (limites remove.bg). Pas de date de fermeture de remove.bg tant qu'on n'a pas de source publique à citer (voir context.md > Décisions).",
+  "locales": {
+    "en": {
+      "path": "/remove-bg-alternative/",
+      "title": "Free remove.bg Alternative — Full Resolution, No Upload | Cutova",
+      "description": "Looking for a remove.bg alternative? Cutova removes backgrounds for free at full resolution, with no account and no upload: everything runs in your browser.",
+      "h1": "A free remove.bg alternative that keeps your photos on your device",
+      "intro": [
+        "remove.bg made automatic background removal popular. Cutova does the same job with a different approach: the AI runs inside your browser instead of on a server.",
+        "That one change has practical consequences: you download at full resolution for free, you do not need an account, and your photos are never uploaded."
+      ],
+      "table": {
+        "caption": "remove.bg and Cutova compared",
+        "head": ["", "remove.bg", "Cutova"],
+        "rows": [
+          ["Where the image is processed", "On remote servers", "In your browser, on your device"],
+          ["Free download", "Preview up to 0.25 megapixels", "Full resolution"],
+          ["Maximum file size", "22 MB", "50 MB"],
+          ["Account required", "For credits and full resolution", "No"],
+          ["Output formats", "PNG, JPG and more", "PNG, WebP, JPG"],
+          ["Works for people, animals, products", "Yes", "Yes"]
+        ]
+      },
+      "sections": [
+        {
+          "h2": "When Cutova is the better choice",
+          "paragraphs": [
+            "Choose Cutova when privacy matters (ID photos, client work, unreleased products), when you need many full-size images without paying per image, or when you simply do not want to create an account."
+          ]
+        },
+        {
+          "h2": "What to expect",
+          "paragraphs": [
+            "Because the model runs on your device, speed depends on your hardware. A computer with a recent graphics card handles a photo in a few seconds; an older laptop or a phone takes longer. The first image also downloads the model once.",
+            "Quality is very good on people, hair and pets. Transparent glass, handwriting and crowded scenes are harder for any automatic tool, Cutova included."
+          ]
+        },
+        {
+          "h2": "Switching takes ten seconds",
+          "paragraphs": [
+            "There is nothing to install and nothing to migrate. Open Cutova, drop the same photo you would have sent to remove.bg, and download the result."
+          ]
+        }
+      ],
+      "faq": [
+        { "q": "Is Cutova a copy of remove.bg?", "a": "No. Cutova is an independent product built on open-source AI models (MIT and Apache-2.0 licenses). It is not affiliated with remove.bg." },
+        { "q": "Can I use the results commercially?", "a": "Yes. The images you create are yours, and the models Cutova uses are published under licenses that allow commercial use." },
+        { "q": "Is there an API like remove.bg?", "a": "Not yet. An API is planned. For now, Cutova is a web app that works one image at a time." }
+      ]
+    },
+    "fr": {
+      "path": "/fr/alternative-remove-bg/",
+      "title": "Alternative gratuite à remove.bg — pleine résolution, sans envoi | Cutova",
+      "description": "Vous cherchez une alternative à remove.bg ? Cutova supprime l'arrière-plan gratuitement en pleine résolution, sans compte et sans envoi : tout se passe dans votre navigateur.",
+      "h1": "Une alternative gratuite à remove.bg qui garde vos photos sur votre appareil",
+      "intro": [
+        "remove.bg a popularisé le détourage automatique. Cutova fait le même travail autrement : l'IA tourne dans votre navigateur au lieu d'un serveur.",
+        "Ce seul changement a des conséquences concrètes : téléchargement en pleine résolution gratuit, pas de compte, et vos photos ne sont jamais envoyées."
+      ],
+      "table": {
+        "caption": "remove.bg et Cutova comparés",
+        "head": ["", "remove.bg", "Cutova"],
+        "rows": [
+          ["Où l'image est traitée", "Sur des serveurs distants", "Dans votre navigateur, sur votre appareil"],
+          ["Téléchargement gratuit", "Aperçu jusqu'à 0,25 mégapixel", "Pleine résolution"],
+          ["Taille maximale du fichier", "22 Mo", "50 Mo"],
+          ["Compte nécessaire", "Pour les crédits et la pleine résolution", "Non"],
+          ["Formats de sortie", "PNG, JPG et autres", "PNG, WebP, JPG"],
+          ["Personnes, animaux, produits", "Oui", "Oui"]
+        ]
+      },
+      "sections": [
+        {
+          "h2": "Quand Cutova est le meilleur choix",
+          "paragraphs": [
+            "Choisissez Cutova quand la confidentialité compte (photos d'identité, travail pour des clients, produits pas encore sortis), quand il vous faut beaucoup d'images en pleine taille sans payer à l'image, ou simplement quand vous ne voulez pas créer de compte."
+          ]
+        },
+        {
+          "h2": "À quoi s'attendre",
+          "paragraphs": [
+            "Comme le modèle tourne sur votre appareil, la vitesse dépend de votre matériel. Un ordinateur avec une carte graphique récente traite une photo en quelques secondes ; un ancien portable ou un téléphone prend plus de temps. La première image télécharge aussi le modèle, une seule fois.",
+            "La qualité est très bonne sur les personnes, les cheveux et les animaux. Le verre transparent, l'écriture manuscrite et les scènes chargées sont plus difficiles pour tout outil automatique, Cutova compris."
+          ]
+        },
+        {
+          "h2": "Changer prend dix secondes",
+          "paragraphs": [
+            "Rien à installer, rien à migrer. Ouvrez Cutova, déposez la photo que vous auriez envoyée à remove.bg et téléchargez le résultat."
+          ]
+        }
+      ],
+      "faq": [
+        { "q": "Cutova est-il une copie de remove.bg ?", "a": "Non. Cutova est un produit indépendant construit sur des modèles d'IA open source (licences MIT et Apache-2.0). Il n'a aucun lien avec remove.bg." },
+        { "q": "Puis-je utiliser les résultats commercialement ?", "a": "Oui. Les images que vous créez vous appartiennent, et les modèles utilisés par Cutova sont publiés sous des licences qui autorisent l'usage commercial." },
+        { "q": "Y a-t-il une API comme chez remove.bg ?", "a": "Pas encore. Une API est prévue. Pour l'instant, Cutova est une application web qui traite une image à la fois." }
+      ]
+    }
+  }
+}

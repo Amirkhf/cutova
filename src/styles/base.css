@@ -130,6 +130,24 @@ small {
   background-size: 20px 20px;
 }
 
+/* Lien d'évitement (accueil et pages statiques) */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 /* Boutons */
 .btn {
   display: inline-flex;

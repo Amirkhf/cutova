@@ -1,0 +1,302 @@
+/* Pages statiques SEO (seo/render.mjs) + sections statiques de l'accueil. Jetons : src/styles/tokens.css */
+
+.seo-page {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.seo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-4);
+}
+
+.seo-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  text-decoration: none;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: 1.25rem;
+  min-height: 44px;
+}
+
+.seo-brand svg {
+  color: var(--color-accent);
+}
+
+.seo-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.seo-nav a:not(.btn-primary) {
+  color: var(--color-text);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.seo-nav-cta,
+.seo-cta .btn-primary {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+@media (max-width: 560px) {
+  .seo-nav-cta {
+    display: none;
+  }
+}
+
+.seo-main {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-12);
+}
+
+.seo-main h1 {
+  margin-bottom: var(--space-4);
+}
+
+.seo-main a:not(.btn-primary),
+.seo-footer a,
+.seo-home a {
+  color: var(--color-accent);
+}
+
+.seo-lead {
+  font-size: 1.125rem;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.seo-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin: var(--space-6) 0;
+}
+
+.seo-cta span {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.seo-section {
+  margin-top: var(--space-10);
+}
+
+.seo-section h2 {
+  margin-bottom: var(--space-3);
+}
+
+.seo-section p + p {
+  margin-top: var(--space-3);
+}
+
+.seo-section ul {
+  padding-left: var(--space-6);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.seo-steps {
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.seo-steps li {
+  counter-increment: step;
+  position: relative;
+  padding: var(--space-4) var(--space-4) var(--space-4) calc(var(--space-4) + 44px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.seo-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--weight-body-medium);
+}
+
+.seo-steps h3 {
+  font-size: 1.0625rem;
+  margin-bottom: var(--space-1);
+}
+
+.seo-table-wrap {
+  overflow-x: auto;
+  margin-top: var(--space-6);
+}
+
+.seo-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-size: var(--text-sm);
+}
+
+.seo-table caption {
+  text-align: left;
+  font-weight: var(--weight-body-medium);
+  padding-bottom: var(--space-2);
+}
+
+.seo-table th,
+.seo-table td {
+  text-align: left;
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border-subtle);
+  vertical-align: top;
+}
+
+.seo-table thead th {
+  font-weight: var(--weight-body-medium);
+}
+
+.seo-faq-item {
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--space-3) 0;
+}
+
+.seo-faq-item summary {
+  cursor: pointer;
+  font-weight: var(--weight-body-medium);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.seo-faq-item p {
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.seo-note {
+  margin-top: var(--space-8);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.seo-breadcrumb ol {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.seo-breadcrumb li + li::before {
+  content: "/";
+  margin-right: var(--space-2);
+}
+
+.seo-breadcrumb a {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+}
+
+.seo-footer {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4) var(--space-12);
+  border-top: 1px solid var(--color-border-subtle);
+  display: grid;
+  gap: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.seo-footer-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-body-medium);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.seo-footer-links {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.seo-footer-links a {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+}
+
+/* Accueil : sections statiques sous l'application */
+.seo-home {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4) var(--space-16);
+}
+
+.seo-cards {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.seo-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.seo-card h3 {
+  font-size: 1.0625rem;
+  margin-bottom: var(--space-2);
+}
+
+.seo-card p {
+  color: var(--color-text-secondary);
+}
+
+/* Repli statique de l'application (remplacé par le rendu JavaScript au démarrage) */
+.app-fallback {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-4);
+  min-height: 60vh;
+}
+
+.app-fallback p {
+  margin-top: var(--space-3);
+  color: var(--color-text-secondary);
+}

@@ -63,6 +63,16 @@ function securityHeadersPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [securityHeadersPlugin()],
+  build: {
+    // Manifeste lu par seo/build.mjs pour retrouver le CSS haché des pages statiques.
+    manifest: true,
+    rollupOptions: {
+      input: {
+        main: "index.html",
+        seo: "src/seo/seo-page.ts",
+      },
+    },
+  },
   worker: {
     format: "es",
   },
