@@ -1,6 +1,6 @@
 import type { Dictionary, Locale } from "../../i18n/index.ts";
 import { availableLocales } from "../../i18n/index.ts";
-import { scissorsIconMarkup } from "./visuals.ts";
+import { chevronDownIconMarkup, globeIconMarkup, scissorsIconMarkup } from "./visuals.ts";
 
 const LOCALE_NAMES: Record<Locale, string> = {
   en: "English",
@@ -8,6 +8,14 @@ const LOCALE_NAMES: Record<Locale, string> = {
   "pt-br": "Português (BR)",
   es: "Español",
   id: "Bahasa Indonesia",
+};
+
+const LOCALE_CODES: Record<Locale, string> = {
+  en: "EN",
+  fr: "FR",
+  "pt-br": "PT",
+  es: "ES",
+  id: "ID",
 };
 
 export interface HeaderOptions {
@@ -34,7 +42,7 @@ export function renderHeader({ dict, locale, onLocaleChange }: HeaderOptions): H
   const toolsButton = document.createElement("button");
   toolsButton.type = "button";
   toolsButton.className = "home-tools-btn";
-  toolsButton.textContent = dict.header.toolsMenu;
+  toolsButton.innerHTML = `<span>${dict.header.toolsMenu}</span><span aria-hidden="true" class="home-tools-chevron">${chevronDownIconMarkup()}</span>`;
   toolsButton.setAttribute("aria-haspopup", "true");
   toolsButton.setAttribute("aria-expanded", "false");
 
@@ -51,6 +59,14 @@ export function renderHeader({ dict, locale, onLocaleChange }: HeaderOptions): H
 
   toolsWrapper.append(toolsButton, toolsPanel);
 
+  const langWrap = document.createElement("div");
+  langWrap.className = "home-lang";
+
+  const langIcon = document.createElement("span");
+  langIcon.className = "home-lang-icon";
+  langIcon.setAttribute("aria-hidden", "true");
+  langIcon.innerHTML = globeIconMarkup();
+
   const langLabel = document.createElement("label");
   langLabel.className = "home-lang-label sr-only";
   langLabel.htmlFor = "home-lang-select";
@@ -62,7 +78,9 @@ export function renderHeader({ dict, locale, onLocaleChange }: HeaderOptions): H
   for (const code of availableLocales) {
     const option = document.createElement("option");
     option.value = code;
-    option.textContent = LOCALE_NAMES[code];
+    option.lang = code;
+    option.textContent = LOCALE_CODES[code];
+    option.title = LOCALE_NAMES[code];
     option.selected = code === locale;
     langSelect.append(option);
   }
@@ -70,7 +88,8 @@ export function renderHeader({ dict, locale, onLocaleChange }: HeaderOptions): H
     onLocaleChange(langSelect.value as Locale);
   });
 
-  nav.append(toolsWrapper, langLabel, langSelect);
+  langWrap.append(langIcon, langLabel, langSelect);
+  nav.append(toolsWrapper, langWrap);
   header.append(brand, nav);
   return header;
 }

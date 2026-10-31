@@ -128,9 +128,18 @@ suivante consommera. Build, typecheck, vitest et Playwright passent.
   reconnu et signalé "non pris en charge" plutôt que rejeté comme format inconnu. Si le navigateur
   ne parvient pas à décoder un fichier dont la signature est pourtant valide (fichier corrompu),
   l'erreur est remontée comme message générique plutôt que de planter silencieusement.
-- Images d'exemple et illustration avant/après : formes géométriques simples en SVG/canvas maison
-  (cercle, carré, triangle, hexagone) — **à remplacer par de vraies photos libres de droits** dès
-  qu'une source est validée.
+- Images d'exemple et illustration avant/après : silhouettes simples en SVG/canvas maison
+  (personne, basket, chat, voiture pour les 4 exemples ; silhouette avec mèches de cheveux pour la
+  démo avant/après) — **à remplacer par de vraies photos libres de droits** dès qu'une source est
+  validée.
+- Revue visuelle de l'accueil (2e passe) : colonnes desktop alignées en haut (`align-items: start`),
+  colonne gauche élargie (1.15fr/0.85fr) et clamp du h1 plafonné à 2.75rem pour tenir sur 2 lignes à
+  1280px ; en-tête avec sélecteur de langue compact (icône globe + code à 2 lettres, `<select>`
+  natif conservé) et bouton "Tools" avec chevron ; carte d'envoi = une seule bordure pointillée
+  (toute la carte est la zone de dépôt) avec icône d'envoi au-dessus du bouton ; démo avant/après
+  avec poignée ronde glissable au pointeur (souris/tactile) directement sur l'image, `<input
+  type="range">` conservé en superposition invisible pour le clavier, badges Avant/Après dans les
+  coins, `accent-color` + couleurs d'accent partout (plus de bleu navigateur).
 - i18n : dictionnaire typé, aucune phrase codée en dur dans l'UI. `en` et `fr` complets ; `pt-br`,
   `es`, `id` scaffoldés dans le type `Locale` mais retombent sur `en` (traductions à faire).
 

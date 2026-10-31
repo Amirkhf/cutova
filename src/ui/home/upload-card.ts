@@ -6,22 +6,22 @@ import {
   type ValidationError,
 } from "../../core/validate-image/validate-image.ts";
 import { emitImageSelected, type ImageSource } from "./events.ts";
-import { subjectOnBackgroundMarkup, type SubjectShape } from "./visuals.ts";
+import { subjectOnBackgroundMarkup, subjectPathData, uploadArrowIconMarkup, type ExampleSubject } from "./visuals.ts";
 
 const ACCEPTED_MIME =
   "image/png,image/jpeg,image/webp,image/avif,image/gif,image/heic,image/heif";
 
 interface ExampleSpec {
-  shape: SubjectShape;
+  shape: ExampleSubject;
   bg: string;
   fg: string;
 }
 
 const EXAMPLES: ExampleSpec[] = [
-  { shape: "circle", bg: "#ffb27a", fg: "#5c3a1e" },
-  { shape: "square", bg: "#9ad1c8", fg: "#17433c" },
-  { shape: "triangle", bg: "#f2c744", fg: "#4a3a06" },
-  { shape: "hexagon", bg: "#c6b7f2", fg: "#372a5c" },
+  { shape: "person", bg: "#ffb27a", fg: "#5c3a1e" },
+  { shape: "sneaker", bg: "#9ad1c8", fg: "#17433c" },
+  { shape: "cat", bg: "#f2c744", fg: "#4a3a06" },
+  { shape: "car", bg: "#c6b7f2", fg: "#372a5c" },
 ];
 
 function messageForError(error: ValidationError, dict: Dictionary): string {
@@ -48,36 +48,14 @@ async function exampleToFile(spec: ExampleSpec, index: number): Promise<File> {
   ctx.fillStyle = spec.bg;
   ctx.fillRect(0, 0, 512, 512);
   ctx.fillStyle = spec.fg;
-  ctx.strokeStyle = spec.fg;
-  ctx.lineWidth = 4;
 
-  const cx = 256;
-  const cy = 256;
-  ctx.beginPath();
-  switch (spec.shape) {
-    case "circle":
-      ctx.arc(cx, cy, 150, 0, Math.PI * 2);
-      break;
-    case "square":
-      ctx.roundRect(cx - 148, cy - 148, 296, 296, 46);
-      break;
-    case "triangle":
-      ctx.moveTo(cx, cy - 164);
-      ctx.lineTo(cx + 164, cy + 122);
-      ctx.lineTo(cx - 164, cy + 122);
-      ctx.closePath();
-      break;
-    case "hexagon":
-      ctx.moveTo(cx, cy - 166);
-      ctx.lineTo(cx + 154, cy - 83);
-      ctx.lineTo(cx + 154, cy + 83);
-      ctx.lineTo(cx, cy + 166);
-      ctx.lineTo(cx - 154, cy + 83);
-      ctx.lineTo(cx - 154, cy - 83);
-      ctx.closePath();
-      break;
-  }
-  ctx.fill();
+  // Les chemins sont définis en viewBox 200x200 (voir visuals.ts) ; on les mappose
+  // au centre du canvas 512x512 via une mise à l'échelle.
+  ctx.save();
+  ctx.translate(56, 56);
+  ctx.scale(2, 2);
+  ctx.fill(new Path2D(subjectPathData(spec.shape)));
+  ctx.restore();
 
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
   if (!blob) throw new Error("canvas.toBlob returned null");
@@ -118,6 +96,11 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
   const idleState = document.createElement("div");
   idleState.className = "upload-idle";
 
+  const uploadIcon = document.createElement("span");
+  uploadIcon.className = "upload-icon";
+  uploadIcon.setAttribute("aria-hidden", "true");
+  uploadIcon.innerHTML = uploadArrowIconMarkup();
+
   const chooseButton = document.createElement("button");
   chooseButton.type = "button";
   chooseButton.className = "btn btn-primary upload-choose-btn";
@@ -138,7 +121,7 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
   pasteHint.className = "upload-hint";
   pasteHint.textContent = dict.upload.pasteHint;
 
-  idleState.append(chooseButton, fileInput, dropHint, pasteHint);
+  idleState.append(uploadIcon, chooseButton, fileInput, dropHint, pasteHint);
 
   const examplesBlock = document.createElement("div");
   examplesBlock.className = "upload-examples";
