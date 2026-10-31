@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node seo/build.mjs",
+    "build": "tsc && vite build && node seo/build.mjs && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "test": "vitest run --reporter=dot",
     "test:e2e": "playwright test",
+    "test:e2e:remote": "playwright test -c playwright.remote.config.ts",
     "screenshots": "node tests/screenshots.mjs"
   },
   "devDependencies": {

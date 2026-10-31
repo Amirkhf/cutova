@@ -15,15 +15,16 @@ export type EngineFamily = "webgpu" | "wasm";
 export interface ModelInfo {
   id: string;
   repoId: string;
+  revision: string;
   license: string;
   inputSize: number;
 }
 
 export function getModelForEngine(engine: EngineFamily): ModelInfo {
   const id = catalog.engines[engine];
-  const model = (catalog.models as Record<string, { repoId: string; license: string; inputSize: number }>)[id];
+  const model = (catalog.models as Record<string, { repoId: string; revision: string; license: string; inputSize: number }>)[id];
   if (!model) throw new Error(`models.json : modèle "${id}" introuvable pour le moteur ${engine}`);
-  return { id, repoId: model.repoId, license: model.license, inputSize: model.inputSize };
+  return { id, repoId: model.repoId, revision: model.revision, license: model.license, inputSize: model.inputSize };
 }
 
 /** Taille de l'aperçu provisoire (tous les modèles retenus travaillent en 1024×1024). */

@@ -6,17 +6,11 @@
  */
 import { AutoModel, AutoProcessor, env, RawImage } from "@huggingface/transformers";
 import { getModelForEngine } from "../model/model-source.ts";
+import { MODEL_BASE_URL, REMOTE_PATH_TEMPLATE, remoteOrtDir } from "../model/remote.ts";
 import { createOpfsCache } from "../model/opfs-cache.ts";
 import { getWebGpuSupport } from "./webgpu-support.ts";
 import { getEngineLoadPlan, loadWithFallback, type EngineAttempt } from "./engine-selection.ts";
 import type { EngineKind, MainToWorkerMessage, WorkerToMainMessage } from "./protocol.ts";
-
-// Importés via le pipeline d'assets natif de Vite (`?url`) : fichiers servis même-origine,
-// avec hash de contenu en prod, sans middleware ni copie manuelle. Zéro requête externe.
-import asyncifyWasmUrl from "onnxruntime-web/ort-wasm-simd-threaded.asyncify.wasm?url";
-import asyncifyMjsUrl from "onnxruntime-web/ort-wasm-simd-threaded.asyncify.mjs?url";
-import plainWasmUrl from "onnxruntime-web/ort-wasm-simd-threaded.wasm?url";
-import plainMjsUrl from "onnxruntime-web/ort-wasm-simd-threaded.mjs?url";
 
 type LoadedModel = Awaited<ReturnType<typeof AutoModel.from_pretrained>>;
 type LoadedProcessor = Awaited<ReturnType<typeof AutoProcessor.from_pretrained>>;
@@ -27,34 +21,54 @@ function post(message: WorkerToMainMessage, transfer?: Transferable[]): void {
   workerSelf.postMessage(message, transfer ? { transfer } : undefined);
 }
 
-env.allowRemoteModels = false;
-env.allowLocalModels = true;
+if (MODEL_BASE_URL) {
+  // Production : modèles sur le stockage externe (R2), même disposition que Hugging Face.
+  env.allowRemoteModels = true;
+  env.allowLocalModels = false;
+  env.remoteHost = `${MODEL_BASE_URL}/`;
+  env.remotePathTemplate = REMOTE_PATH_TEMPLATE;
+} else {
+  // Local : `/models/` servi par le site, jamais de repli vers le Hugging Face Hub.
+  env.allowRemoteModels = false;
+  env.allowLocalModels = true;
+}
 // transformers.js propose un chargement "en cache" du binaire WASM lui-même (distinct du
 // cache OPFS du modèle ci-dessous) : il refait transiter le .mjs par un Blob avant de
 // l'importer. Ce chemin suppose `window.chrome` présent (`apis.IS_CHROME_AVAILABLE`), absent
 // du Chromium "pur" de Playwright (et possiblement d'autres Chromium sans la marque Chrome) —
 // l'import du Blob y échoue silencieusement avec "no available backend found". On désactive
-// cette optimisation et on laisse onnxruntime-web charger le WASM lui-même, nativement,
-// directement depuis nos URLs bundlées (déjà same-origin, déjà mises en cache HTTP).
+// cette optimisation et on laisse onnxruntime-web charger le WASM lui-même, nativement.
 env.useWasmCache = false;
 // `.asyncify` instrumente tout le module pour pouvoir suspendre/reprendre l'exécution WASM
-// (nécessaire pour l'EP webgpu, qui doit pouvoir "attendre" le GPU) — mais ce surcoût
-// alourdit sensiblement l'empreinte mémoire (confirmé ici : un `std::bad_alloc` dans
-// OrtRun() sur ce modèle en EP wasm pur avec `.asyncify`, résolu en passant à la variante
-// sans suffixe — voir context.md > Mesures). On ne charge donc `.asyncify` que si CE
-// navigateur expose effectivement `navigator.gpu` (donc peut réellement en avoir besoin) ;
-// sinon la variante sans suffixe, plus légère, suffit pour l'EP wasm seul.
+// (nécessaire pour l'EP webgpu) mais alourdit la mémoire : on ne le charge que si CE navigateur
+// expose `navigator.gpu` ; sinon la variante sans suffixe, plus légère, suffit pour l'EP wasm.
 const needsAsyncStackSwitching = typeof navigator !== "undefined" && !!navigator.gpu;
 const wasmEnv = env.backends.onnx.wasm;
 if (!wasmEnv) {
   throw new Error("onnxruntime-web wasm backend introuvable dans env.backends.onnx");
 }
-wasmEnv.wasmPaths = needsAsyncStackSwitching
-  ? { mjs: asyncifyMjsUrl, wasm: asyncifyWasmUrl }
-  : { mjs: plainMjsUrl, wasm: plainWasmUrl };
 wasmEnv.numThreads = self.crossOriginIsolated ? Math.min(navigator.hardwareConcurrency || 4, 4) : 1;
 if (!self.crossOriginIsolated) {
   console.warn("[cutova] crossOriginIsolated=false : repli sur le WASM mono-thread (plus lent).");
+}
+
+/**
+ * Binaires onnxruntime-web. Le module `.mjs` (petit, du JavaScript) est toujours servi par le site
+ * (asset Vite `?url`, même origine) : un `.mjs` d'une autre origine serait importé par onnxruntime-web
+ * via une URL `blob:`, que notre CSP refuse. Le `.wasm` (jusqu'à 25,6 Mio, au-dessus de la limite de
+ * Cloudflare Pages) vient du stockage externe en production, sinon du site. Il n'est que téléchargé
+ * (fetch → `connect-src`), jamais exécuté comme script.
+ */
+async function wasmPaths(): Promise<{ mjs: string; wasm: string }> {
+  const remoteDir = remoteOrtDir();
+  if (needsAsyncStackSwitching) {
+    const mjs = (await import("onnxruntime-web/ort-wasm-simd-threaded.asyncify.mjs?url")).default;
+    const wasm = remoteDir ? `${remoteDir}ort-wasm-simd-threaded.asyncify.wasm` : (await import("onnxruntime-web/ort-wasm-simd-threaded.asyncify.wasm?url")).default;
+    return { mjs, wasm };
+  }
+  const mjs = (await import("onnxruntime-web/ort-wasm-simd-threaded.mjs?url")).default;
+  const wasm = remoteDir ? `${remoteDir}ort-wasm-simd-threaded.wasm` : (await import("onnxruntime-web/ort-wasm-simd-threaded.wasm?url")).default;
+  return { mjs, wasm };
 }
 
 interface LoadedEngine {
@@ -75,11 +89,12 @@ function reportProgress(info: unknown): void {
 async function loadEngine(attempt: EngineAttempt): Promise<LoadedEngine> {
   // Modèle choisi par moteur dans models.json (WebGPU : BiRefNet_lite ; WASM : modèle plus léger
   // qui tient sous le plafond mémoire wasm32 de 4 Go — voir context.md > Décisions).
-  const { repoId } = getModelForEngine(attempt.device);
+  const { repoId, revision } = getModelForEngine(attempt.device);
   const model = await AutoModel.from_pretrained(repoId, {
+    revision,
     device: attempt.device,
     dtype: attempt.dtype,
-    local_files_only: true,
+    local_files_only: !MODEL_BASE_URL,
     progress_callback: reportProgress,
     // Réduit la pression mémoire au prix de la vitesse — bon défaut général sur WASM, mais
     // ne suffit pas seul à faire tenir ce modèle sous la limite mémoire wasm32 à 1024×1024
@@ -87,11 +102,12 @@ async function loadEngine(attempt: EngineAttempt): Promise<LoadedEngine> {
     // mono-thread, et la variante wasm sans asyncify).
     session_options: attempt.device === "wasm" ? { enableCpuMemArena: false, enableMemPattern: false } : {},
   });
-  const processor = await AutoProcessor.from_pretrained(repoId, { local_files_only: true });
+  const processor = await AutoProcessor.from_pretrained(repoId, { revision, local_files_only: !MODEL_BASE_URL });
   return { kind: attempt.kind, model, processor };
 }
 
 async function loadEngineWithFallback(): Promise<LoadedEngine> {
+  wasmEnv!.wasmPaths = await wasmPaths();
   const opfsCache = await createOpfsCache();
   if (opfsCache) {
     env.useCustomCache = true;

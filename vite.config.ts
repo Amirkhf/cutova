@@ -1,36 +1,22 @@
 import { defineConfig, type Connect, type Plugin } from "vite";
 
-/**
- * Isolation COOP/COEP + CSP stricte, nécessaires pour `crossOriginIsolated === true`
- * (WASM multithread) et pour garantir qu'aucun script tiers ne peut être chargé.
- * Voir context.md > Sécurité.
- */
-const SECURITY_HEADERS: Record<string, string> = {
-  "Cross-Origin-Opener-Policy": "same-origin",
-  "Cross-Origin-Embedder-Policy": "require-corp",
-  "Content-Security-Policy": [
-    "default-src 'self'",
-    "script-src 'self' 'wasm-unsafe-eval'",
-    "worker-src 'self' blob:",
-    "connect-src 'self'",
-    "img-src 'self' blob: data:",
-    "style-src 'self'",
-    "object-src 'none'",
-    "base-uri 'self'",
-    "frame-ancestors 'none'",
-  ].join("; "),
-};
+import { readFileSync } from "node:fs";
+import { MODEL_CACHE_CONTROL, originOf, securityHeaders } from "./security-headers.mjs";
 
 /**
- * Poids des modèles (`/models/`) : déjà mis en cache de façon persistante dans OPFS par le worker
- * (src/core/model/opfs-cache.ts). `no-store` évite une 2e copie de ~170 Mo dans le cache HTTP du
- * navigateur (et l'erreur Chromium `ERR_CACHE_WRITE_FAILURE` observée quand transformers.js lit le
- * même fichier deux fois en parallèle) ; `no-transform` empêche la compression gzip à la volée,
- * qui supprime le `Content-Length` (plus de barre de progression) et coûte du CPU pour un binaire
- * quasi incompressible. Mêmes règles en production : voir public/_headers.
+ * Isolation COOP/COEP + CSP stricte (source unique : security-headers.mjs, aussi utilisée pour le
+ * `_headers` de Cloudflare Pages). `VITE_MODEL_BASE_URL` (optionnel) = stockage externe des modèles
+ * et des binaires onnxruntime-web (R2 en production) : son origine est ajoutée à la CSP.
  */
-export const MODEL_CACHE_CONTROL = "no-store, no-transform";
+const MODEL_ORIGIN = originOf(process.env.VITE_MODEL_BASE_URL);
+const SECURITY_HEADERS = securityHeaders(MODEL_ORIGIN);
+const ORT_VERSION = (JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")) as { dependencies: Record<string, string> }).dependencies["onnxruntime-web"];
 
+/**
+ * Poids des modèles (`/models/`) : voir security-headers.mjs > MODEL_CACHE_CONTROL (déjà en OPFS ;
+ * évite aussi `ERR_CACHE_WRITE_FAILURE` quand transformers.js lit le même fichier deux fois en
+ * parallèle).
+ */
 function securityHeadersMiddleware(): Connect.NextHandleFunction {
   return (req, res, next) => {
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
@@ -63,6 +49,9 @@ function securityHeadersPlugin(): Plugin {
 
 export default defineConfig({
   plugins: [securityHeadersPlugin()],
+  define: {
+    __ORT_VERSION__: JSON.stringify(ORT_VERSION),
+  },
   build: {
     // Manifeste lu par seo/build.mjs pour retrouver le CSS haché des pages statiques.
     manifest: true,

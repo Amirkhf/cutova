@@ -20,6 +20,10 @@ résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playw
 remove.bg + 3 tutoriels, en EN et FR), hreflang réciproques, sitemap.xml, robots.txt (robots d'IA
 autorisés), llms.txt, JSON-LD (WebSite, WebApplication, FAQPage, BreadcrumbList, HowTo), FAQ visibles.
 Lighthouse : 99–100 partout (voir Mesures). Playwright 29/29.
+**Phase 4 faite** : prêt à déployer sur Cloudflare Pages + R2 — `_headers` généré (COOP/COEP/CSP,
+cache), modèles et binaires `.wasm` sur un stockage externe configurable (`VITE_MODEL_BASE_URL`),
+vérifié de bout en bout par `npm run test:e2e:remote` (faux R2 sur une autre origine). `DEPLOY.md` =
+liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérifications, Search Console).
 
 ## Modules
 - `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
@@ -48,6 +52,15 @@ Lighthouse : 99–100 partout (voir Mesures). Playwright 29/29.
   pic mémoire, `--threads`, `--only`.
 - `tests/images/` — 20 vraies photos Pexels ≤ 2000 px (sources/licences : `tests/images/SOURCES.md`).
 - `docs/review/` — captures et mesures importantes, compressées et versionnées.
+- `security-headers.mjs` — en-têtes de sécurité (source unique, voir Sécurité).
+- `src/core/model/remote.ts` — mode stockage externe (`VITE_MODEL_BASE_URL`) : disposition
+  `<base>/<repoId>/resolve/<révision>/<fichier>` (comme Hugging Face) et
+  `<base>/onnxruntime-web/<version>/*.wasm`.
+- `scripts/postbuild.mjs` — `_headers`, retrait de `dist/models/` et des `.wasm` bundlés en mode externe,
+  contrôle de la limite 25 Mio/fichier de Cloudflare Pages (échec si `CF_PAGES=1` ou `STRICT_DEPLOY=1`).
+- `scripts/model-mirror.mjs` — `r2-commands` (affiche les commandes `wrangler r2 object put`) et
+  `serve` (faux R2 local avec CORS, pour `playwright.remote.config.ts` / `tests/e2e-remote/`).
+- `deploy/r2-cors.json` — modèle de règle CORS du bucket R2. `DEPLOY.md` — étapes de déploiement.
 - `src/core/postprocess/` — `guided-filter.ts` (filtre guidé O(N), pur, testé), `cutout.ts` (masque du
   modèle → résolution de travail ≤ 2048 px → affinage guidé par la luminance → agrandi par le canvas à la
   pleine résolution, composité en `destination-in` ; jamais de tableau Float32 pleine résolution).
@@ -99,7 +112,13 @@ Lighthouse : 99–100 partout (voir Mesures). Playwright 29/29.
 - Détail complet des vérifications : voir `LICENSES.md`.
 
 ## Sécurité
-- En dev (`vite`) et preview (`vite preview`) : plugin `vite.config.ts` > `securityHeadersPlugin`
+- **Source unique des en-têtes : `security-headers.mjs`** (racine), utilisée par `vite.config.ts`
+  (dev/preview) ET par `scripts/postbuild.mjs`, qui écrit `dist/_headers` (Cloudflare Pages : en-têtes
+  sur `/*`, `Cache-Control` long sur `/assets/*`, `no-store, no-transform` sur `/models/*`). En plus de
+  COOP/COEP/CSP : `X-Content-Type-Options: nosniff`, `Referrer-Policy`, `Permissions-Policy` (caméra,
+  micro, géolocalisation… refusés). CSP ajoutée : `font-src 'self'`, `form-action 'none'`. Avec un
+  stockage externe des modèles, son origine est ajoutée **uniquement à `connect-src`**.
+- (Historique) En dev (`vite`) et preview (`vite preview`) : plugin `vite.config.ts` > `securityHeadersPlugin`
   ajoute sur **toutes** les réponses `Cross-Origin-Opener-Policy: same-origin`,
   `Cross-Origin-Embedder-Policy: require-corp`, et une CSP stricte :
   `default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; connect-src 'self';
@@ -413,7 +432,24 @@ Lighthouse : 99–100 partout (voir Mesures). Playwright 29/29.
 - **(Phase 3) Bug corrigé** : les boutons de l'écran de résultat n'avaient pas la classe `.btn` (forme
   pilule, padding) ; `.skip-link` déplacé dans `base.css` (partagé par toutes les pages).
 
+- **(Phase 4) Hébergement : Cloudflare Pages (site) + R2 (modèles)** : gratuit pour le site, R2 sans
+  frais de sortie. Le binaire `ort-wasm-simd-threaded.asyncify.wasm` (25,6 Mio) dépasse la limite de
+  25 Mio/fichier de Pages : il part sur R2 avec le `.wasm` simple et les modèles.
+- **(Phase 4) Les `.mjs` d'onnxruntime-web restent sur le site** : servis depuis R2, onnxruntime-web les
+  importe via une URL `blob:` que la CSP refuse (constaté en test). Plutôt que d'ajouter `blob:` à
+  `script-src`, seuls les `.wasm` (téléchargés par fetch, jamais exécutés comme script) viennent de R2 :
+  la CSP n'autorise R2 qu'en `connect-src`.
+- **(Phase 4) Disposition R2 = disposition Hugging Face** (`<repoId>/resolve/<révision>/…`) :
+  transformers.js la lit nativement (`env.remoteHost` + `remotePathTemplate`), `fetch-model.mjs` peut
+  l'utiliser comme miroir (`MODEL_BASE_URL`), et la révision dans le chemin rend chaque fichier
+  immuable (cache CDN d'un an sans risque).
+- **(Phase 4) Les copies `.wasm` émises par Vite** (URL par défaut codée dans onnxruntime-web, impossible
+  à éviter au bundle) sont supprimées de `dist/` en mode externe : jamais chargées, car le worker fixe
+  toujours `wasmPaths` avant de créer une session.
+- **(Phase 4) Bug de test évité** : `VITE_MODEL_BASE_URL=x cmd1 && cmd2` ne passe la variable qu'à
+  `cmd1` ; le serveur de preview n'avait pas la bonne CSP. Corrigé avec l'option `env` de Playwright.
+
 ## Prochaine étape
-Phase 4 : prêt à déployer (Cloudflare Pages `_headers` COOP/COEP/CSP, modèles sur R2 avec URL
-configurable, `DEPLOY.md`). Puis P0 restants du tableau de parité (gomme/restauration, recadrage/
-redimensionnement). À valider sur matériel réel : WebGPU (BiRefNet_lite) et WASM sur iPhone.
+Fonctionnalités P0 restantes du tableau de parité, une par commit : (1) gomme / restauration (pinceau
+sur le masque), (2) recadrage / redimensionnement. Puis P1. Toujours à valider sur matériel réel :
+WebGPU (BiRefNet_lite) et WASM sur iPhone ; déploiement réel (`DEPLOY.md`).

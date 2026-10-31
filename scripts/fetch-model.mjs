@@ -9,9 +9,9 @@
  *   node scripts/fetch-model.mjs                 # tous les modèles utilisés, toutes variantes
  *   node scripts/fetch-model.mjs --only=fp32     # une seule variante de poids
  *   node scripts/fetch-model.mjs --model=ormbg   # un seul modèle (clé de models.json)
- *   MODEL_BASE_URL=https://cdn.example.com/models node scripts/fetch-model.mjs
- *     (MODEL_BASE_URL remplace https://huggingface.co ; les fichiers y sont cherchés sous
- *      <MODEL_BASE_URL>/<repoId>/<chemin>, même arborescence que public/models/)
+ *   MODEL_BASE_URL=https://models.example.com node scripts/fetch-model.mjs
+ *     (MODEL_BASE_URL remplace https://huggingface.co ; même disposition :
+ *      <MODEL_BASE_URL>/<repoId>/resolve/<révision>/<chemin> — voir src/core/model/remote.ts)
  */
 import { createHash } from "node:crypto";
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
@@ -26,10 +26,10 @@ const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slic
 const only = arg("only");
 const onlyModel = arg("model");
 
+/** Même disposition que Hugging Face (`<hôte>/<repoId>/resolve/<révision>/`) : un miroir R2 convient. */
 function baseUrlFor(model) {
-  return process.env.MODEL_BASE_URL
-    ? `${process.env.MODEL_BASE_URL.replace(/\/$/, "")}/${model.repoId}`
-    : `https://huggingface.co/${model.repoId}/resolve/${model.revision}`;
+  const host = (process.env.MODEL_BASE_URL ?? "https://huggingface.co").replace(/\/+$/, "");
+  return `${host}/${model.repoId}/resolve/${model.revision}`;
 }
 
 function sha256(buffer) {
