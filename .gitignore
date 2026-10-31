@@ -13,6 +13,8 @@ dist-ssr
 *.local
 *.onnx
 tests/screenshots/
+test-results/
+playwright-report/
 .env
 server/.venv
 server/*.db

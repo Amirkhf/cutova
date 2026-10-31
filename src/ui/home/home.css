@@ -1,0 +1,303 @@
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* En-tête */
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.home-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-target-min);
+}
+
+.home-brand-icon {
+  display: inline-flex;
+  color: var(--color-accent);
+}
+
+.home-brand-name {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-lg);
+}
+
+.home-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.home-tools {
+  position: relative;
+}
+
+.home-tools-btn {
+  min-height: var(--tap-target-min);
+  min-width: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-weight: var(--weight-body-medium);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.home-tools-btn:hover {
+  background: var(--color-border-subtle);
+}
+
+.home-tools-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  min-width: 220px;
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.home-lang-select {
+  min-height: var(--tap-target-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}
+
+/* Mise en page principale — carte d'envoi en premier (mobile), puis accroche + démo */
+.home-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-10);
+  padding: var(--space-6) var(--space-4) var(--space-20);
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.home-upload-section {
+  order: -1;
+}
+
+.home-copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+@media (min-width: 960px) {
+  .home-main {
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: var(--space-12);
+    padding-block: var(--space-20);
+  }
+  .home-upload-section {
+    order: 2;
+  }
+  .home-copy {
+    order: 1;
+  }
+}
+
+/* Accroche */
+.home-hero-reassurance {
+  display: inline-block;
+  margin-top: var(--space-2);
+  color: var(--color-success);
+  font-weight: var(--weight-body-medium);
+}
+
+.home-hero-subtitle {
+  margin-top: var(--space-4);
+  color: var(--color-text-secondary);
+  max-width: 48ch;
+}
+
+/* Démo avant/après */
+.home-demo-frame {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-width: 320px;
+  margin-top: var(--space-4);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-border-subtle);
+  --split: 50%;
+}
+
+.home-demo-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.home-demo-layer svg {
+  width: 100%;
+  height: 100%;
+}
+
+.home-demo-after {
+  clip-path: inset(0 0 0 var(--split));
+  transition: clip-path var(--duration-fast) var(--ease-standard);
+}
+
+.home-demo-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--split);
+  width: 2px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: left var(--duration-fast) var(--ease-standard);
+}
+
+.home-demo-labels {
+  display: flex;
+  justify-content: space-between;
+  max-width: 320px;
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.home-demo-slider {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin-top: var(--space-3);
+  min-height: var(--tap-target-min);
+}
+
+/* Carte d'envoi */
+.upload-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-md);
+}
+
+.upload-status {
+  min-height: 1.5em;
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-body-medium);
+}
+
+.upload-status:empty {
+  display: none;
+}
+
+.upload-dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+}
+
+.is-drag-active .upload-dropzone {
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+
+.upload-idle,
+.upload-selected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.upload-idle[hidden],
+.upload-selected[hidden] {
+  display: none;
+}
+
+.upload-choose-btn {
+  width: 100%;
+  max-width: 280px;
+}
+
+.upload-hint {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.upload-selected-name {
+  font-weight: var(--weight-body-medium);
+  word-break: break-all;
+}
+
+.upload-examples {
+  margin-top: var(--space-6);
+}
+
+.upload-examples-title {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+}
+
+.upload-examples-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+}
+
+.upload-example {
+  aspect-ratio: 1 / 1;
+  min-height: var(--tap-target-min);
+  padding: 0;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+}
+
+.upload-example svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.upload-example:hover {
+  border-color: var(--color-accent);
+}

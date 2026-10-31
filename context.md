@@ -1,16 +1,27 @@
 # Cutova — context.md
 
 ## État actuel
-Projet initialisé : squelette Vite + TypeScript strict, arborescence de dossiers créée, aucun code
-de fonctionnalité ni d'interface. Design system posé (tokens, polices, base CSS, styleguide de contrôle,
-test de contraste WCAG). Build et typecheck passent. Aucune page produit pour l'instant.
+Design system posé (tokens, polices, base CSS, styleguide de contrôle, test de contraste WCAG).
+Écran d'accueil (direction C) implémenté en TypeScript vanilla, sans framework : UI complète
+(en-tête, accroche, démo avant/après, carte d'envoi avec bouton/glisser-déposer/collage/exemples),
+i18n EN/FR, validation de fichiers par signature binaire, accessibilité clavier + axe (0 violation).
+Le moteur IA n'est pas branché : l'accueil émet un événement `image:selected` (File) que l'étape
+suivante consommera. Build, typecheck, vitest et Playwright passent.
 
 ## Modules
 - `src/core/model/` — chargement du modèle ONNX, cache OPFS, progression de téléchargement.
 - `src/core/inference/` — Web Worker d'inférence (WebGPU en priorité, repli WASM multithread).
 - `src/core/postprocess/` — agrandissement du masque à la résolution d'origine, lissage des bords.
 - `src/core/export/` — export PNG/WebP, fond blanc ou couleur, export ZIP par lot.
-- `src/ui/` — interface utilisateur de l'outil de détourage.
+- `src/ui/home/` — écran d'accueil (direction C) : `render-home.ts` (composition + rebuild au
+  changement de langue), `header.ts`, `hero.ts`, `before-after-demo.ts` (curseur avant/après
+  accessible), `upload-card.ts` (bouton, glisser-déposer page entière, collage, 4 exemples,
+  zone d'erreur `role="alert"`), `visuals.ts` (icônes/illustrations SVG maison), `events.ts`
+  (événement `image:selected`), `home.css`.
+- `src/core/validate-image/` — validation de fichier par signature binaire (PNG/JPEG/WebP/AVIF/GIF,
+  HEIC signalé non pris en charge), taille max, dimensions max. Module testé (`tests/unit/validate-image.test.ts`).
+- `src/i18n/` — dictionnaire typé (`types.ts`), locales `en` (par défaut, complet) et `fr` (complet) ;
+  `pt-br`/`es`/`id` retombent sur `en` tant qu'ils n'ont pas de traduction (`index.ts` > `getDictionary`).
 - `src/styles/` — design system : `fonts.css` (polices auto-hébergées, sous-ensembles latin/latin-ext),
   `tokens.css` (variables CSS clair/sombre), `base.css` (reset, typographie, focus, `.sr-only`,
   `.checkerboard`, boutons `.btn-primary`/`.btn-secondary`).
@@ -33,6 +44,11 @@ test de contraste WCAG). Build et typecheck passent. Aucune page produit pour l'
   `Cross-Origin-Embedder-Policy: require-corp`, CSP stricte, zéro script tiers chargé sur ces pages.
 - Test automatisé à écrire : vérifier qu'aucune requête réseau ne contient l'image de l'utilisateur
   (le traitement doit rester 100 % local au navigateur).
+
+## Pages
+- Accueil (`/`) : UI faite (direction C), moteur IA à brancher à l'étape 4. La carte d'envoi émet
+  `window` `CustomEvent("image:selected", { detail: { file: File, source } })` ; aucun traitement
+  d'image n'a lieu pour l'instant.
 
 ## Pages SEO
 - Structure : EN à la racine, puis `/pt-br/`, `/es/`, `/id/`, `/fr/` avec balises hreflang croisées.
@@ -105,6 +121,18 @@ test de contraste WCAG). Build et typecheck passent. Aucune page produit pour l'
   desktop inchangé), interlignes 1.1–1.15, marges de rythme vertical ajoutées, damier sombre éclairci
   (#1A1B1E/#2A2C31), token `--color-border` scindé en `--color-border-strong` (≥3:1, testé) et
   `--color-border-subtle` (décoratif).
+- Validation de fichiers (`src/core/validate-image/`) : taille max **50 Mo** (imposée). Dimensions
+  max fixées à **8000 px par côté** — au-delà, un buffer RGBA dépasse ~250 Mo et approche la limite
+  de taille de texture de nombreux GPU (souvent 8192 px), pertinent pour l'inférence WebGPU à venir.
+  Le type est détecté uniquement par signature binaire (jamais par le nom/extension) ; HEIC est
+  reconnu et signalé "non pris en charge" plutôt que rejeté comme format inconnu. Si le navigateur
+  ne parvient pas à décoder un fichier dont la signature est pourtant valide (fichier corrompu),
+  l'erreur est remontée comme message générique plutôt que de planter silencieusement.
+- Images d'exemple et illustration avant/après : formes géométriques simples en SVG/canvas maison
+  (cercle, carré, triangle, hexagone) — **à remplacer par de vraies photos libres de droits** dès
+  qu'une source est validée.
+- i18n : dictionnaire typé, aucune phrase codée en dur dans l'UI. `en` et `fr` complets ; `pt-br`,
+  `es`, `id` scaffoldés dans le type `Locale` mais retombent sur `en` (traductions à faire).
 
 ## Prochaine étape
-Étape 3 : écran d'accueil (direction C).
+Étape 4 : moteur IA (Web Worker, BiRefNet_lite, WebGPU/WASM, cache OPFS).

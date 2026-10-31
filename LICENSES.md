@@ -15,6 +15,7 @@ ou métadonnées de la fiche modèle sur Hugging Face.
 | typescript | 7.0.2 | Apache-2.0 | npm registry (`npm view`) | 2026-10-31 |
 | vitest | 5.0.5 | MIT | npm registry (`npm view`) | 2026-10-31 |
 | @playwright/test | 1.64.1 | Apache-2.0 | npm registry (`npm view`) | 2026-10-31 |
+| @axe-core/playwright (tests d'accessibilité, dev uniquement) | 4.14.0 | MPL-2.0 | npm registry (`npm view`) | 2026-10-31 |
 
 ## Interdits
 - **BRIA RMBG-1.4 / RMBG-2.0** — licence non commerciale (usage commercial soumis à accord payant avec BRIA AI). Interdit sans accord écrit.

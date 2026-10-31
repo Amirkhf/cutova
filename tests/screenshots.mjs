@@ -48,6 +48,21 @@ async function main() {
       await page.close();
       console.log(`OK ${file}`);
     }
+
+    // Écran d'accueil — 360px/1280px x clair/sombre.
+    for (const viewport of viewports) {
+      for (const scheme of schemes) {
+        const page = await browser.newPage({
+          viewport: { width: viewport.width, height: viewport.height },
+          colorScheme: scheme,
+        });
+        await page.goto(`http://localhost:${port}/`, { waitUntil: "networkidle" });
+        const file = `${OUT_DIR}accueil-${viewport.label}-${scheme}.png`;
+        await page.screenshot({ path: file, fullPage: true });
+        await page.close();
+        console.log(`OK ${file}`);
+      }
+    }
   } finally {
     await browser.close();
     await server.close();
