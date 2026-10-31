@@ -8,6 +8,8 @@ ou métadonnées de la fiche modèle sur Hugging Face.
 | onnx-community/BiRefNet_lite-ONNX (`model_fp16.onnx`) | — (poids, pas de version semver) | MIT | https://huggingface.co/onnx-community/BiRefNet_lite-ONNX (metadata `license: mit`) | 2026-10-31 |
 | MODNet — poids ONNX (ex. `Xenova/modnet`) | — (poids, pas de version semver) | Apache-2.0 | https://huggingface.co/Xenova/modnet (metadata `license: apache-2.0`) ; dépôt original https://github.com/ZHKKKe/MODNet | 2026-10-31 |
 | @huggingface/transformers | 4.3.2 | Apache-2.0 | npm registry (`npm view`) ; https://www.npmjs.com/package/@huggingface/transformers | 2026-10-31 |
+| @fontsource-variable/bricolage-grotesque (police Bricolage Grotesque) | 5.3.0 | OFL-1.1 | npm registry (`npm view`) ; metadata du paquet (`license.type: OFL-1.1`) | 2026-10-31 |
+| @fontsource-variable/inter (police Inter) | 5.3.0 | OFL-1.1 | npm registry (`npm view`) ; metadata du paquet (`license.type: OFL-1.1`) | 2026-10-31 |
 | onnxruntime-web (dépendance transitive) | 1.31.0-dev.20260914-8d85527a0 | MIT | npm registry (`npm view`) | 2026-10-31 |
 | vite | 8.3.5 | MIT | npm registry (`npm view`) | 2026-10-31 |
 | typescript | 7.0.2 | Apache-2.0 | npm registry (`npm view`) | 2026-10-31 |

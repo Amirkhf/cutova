@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cutova — Styleguide</title>
+    <script type="module">
+      import "/src/styles/base.css";
+    </script>
+    <style>
+      .sg-section {
+        padding: var(--space-8) var(--space-6);
+        border-bottom: 1px solid var(--color-border-subtle);
+      }
+      .sg-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-4);
+        align-items: center;
+        margin-top: var(--space-4);
+      }
+      .sg-swatch {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+      }
+      .sg-chip {
+        width: 96px;
+        height: 64px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-subtle);
+      }
+      .sg-checker-demo {
+        width: 160px;
+        height: 100px;
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border-subtle);
+      }
+      .sg-focus-demo {
+        padding: var(--space-2) var(--space-3);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="sg-section">
+        <h1>Cutova — Design system</h1>
+        <p>Page de contrôle visuel, usage interne uniquement (non indexée, hors build de production).</p>
+      </section>
+
+      <section class="sg-section">
+        <h2>Couleurs</h2>
+        <div class="sg-row">
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-bg)"></div>
+            <small>bg</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-surface)"></div>
+            <small>surface</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-text)"></div>
+            <small>text</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-text-secondary)"></div>
+            <small>text-secondary</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-accent)"></div>
+            <small>accent</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-accent-hover)"></div>
+            <small>accent-hover</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-success)"></div>
+            <small>success</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-error)"></div>
+            <small>error</small>
+          </div>
+          <div class="sg-swatch">
+            <div class="sg-chip" style="background: var(--color-border)"></div>
+            <small>border</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="sg-section">
+        <h2>Titres</h2>
+        <h1>Titre h1 — Bricolage Grotesque</h1>
+        <h2>Titre h2 — Bricolage Grotesque</h2>
+        <h3>Titre h3 — Bricolage Grotesque</h3>
+        <h4>Titre h4 — Bricolage Grotesque</h4>
+      </section>
+
+      <section class="sg-section">
+        <h2>Texte</h2>
+        <p>Paragraphe de texte courant en Inter 400. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p style="font-weight: var(--weight-body-medium)">Paragraphe en Inter 500 (medium).</p>
+        <p><small>Texte secondaire (small), couleur text-secondary.</small></p>
+      </section>
+
+      <section class="sg-section">
+        <h2>Boutons</h2>
+        <div class="sg-row">
+          <button class="btn btn-primary">Bouton principal</button>
+          <button class="btn btn-secondary">Bouton secondaire</button>
+        </div>
+      </section>
+
+      <section class="sg-section">
+        <h2>Damier (transparence)</h2>
+        <div class="sg-checker-demo checkerboard"></div>
+      </section>
+
+      <section class="sg-section">
+        <h2>Focus</h2>
+        <div class="sg-row">
+          <button class="btn btn-primary sg-focus-demo">Tabuler pour voir le focus</button>
+          <a href="#" class="sg-focus-demo">Lien avec focus</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

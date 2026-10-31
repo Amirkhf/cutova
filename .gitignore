@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 *.onnx
+tests/screenshots/
 .env
 server/.venv
 server/*.db

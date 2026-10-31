@@ -2,7 +2,8 @@
 
 ## État actuel
 Projet initialisé : squelette Vite + TypeScript strict, arborescence de dossiers créée, aucun code
-de fonctionnalité ni d'interface. Build et typecheck passent. Prêt pour l'étape 2 (directions visuelles).
+de fonctionnalité ni d'interface. Design system posé (tokens, polices, base CSS, styleguide de contrôle,
+test de contraste WCAG). Build et typecheck passent. Aucune page produit pour l'instant.
 
 ## Modules
 - `src/core/model/` — chargement du modèle ONNX, cache OPFS, progression de téléchargement.
@@ -10,7 +11,9 @@ de fonctionnalité ni d'interface. Build et typecheck passent. Prêt pour l'éta
 - `src/core/postprocess/` — agrandissement du masque à la résolution d'origine, lissage des bords.
 - `src/core/export/` — export PNG/WebP, fond blanc ou couleur, export ZIP par lot.
 - `src/ui/` — interface utilisateur de l'outil de détourage.
-- `src/styles/` — tokens CSS du design system (couleurs, typographie, espacements).
+- `src/styles/` — design system : `fonts.css` (polices auto-hébergées, sous-ensembles latin/latin-ext),
+  `tokens.css` (variables CSS clair/sombre), `base.css` (reset, typographie, focus, `.sr-only`,
+  `.checkerboard`, boutons `.btn-primary`/`.btn-secondary`).
 - `seo/` — générateur de pages statiques SEO à partir d'un gabarit unique.
 - `content/` — données structurées des pages SEO (une page = une intention de recherche).
 - `public/` — fichiers statiques racine (robots.txt, llms.txt à venir).
@@ -82,6 +85,22 @@ de fonctionnalité ni d'interface. Build et typecheck passent. Prêt pour l'éta
 
 ## Décisions
 - Nom de marque retenu : **Cutova**.
+- Direction visuelle retenue : **direction C**. Écran d'accueil = accroche + démonstration
+  avant/après à gauche, grande carte d'envoi de fichier à droite ; sur mobile, la carte d'envoi
+  passe en premier (au-dessus de l'accroche).
+- Palette : fond #FAFAF7 / surface #FFFFFF / texte #14161A / texte secondaire #5C6068 /
+  accent #5B4BFF (survol #4A3DE0, texte sur accent #FFFFFF) / succès #0F6E56 / erreur #B3261E /
+  bordure #8E8A82 en mode clair. En mode sombre, fond #111214 / surface #1A1B1E / texte #F2F2F0 /
+  texte secondaire #9A9C9F / bordure #6B6D73.
+- Polices : Bricolage Grotesque (titres, 500) + Inter (texte, 400/500), auto-hébergées via
+  `@fontsource-variable`, sous-ensembles latin + latin-ext copiés à la main dans
+  `src/styles/fonts.css` (plutôt que d'importer les CSS complets des paquets, qui incluent
+  cyrillique/grec/vietnamien/math et gonfleraient le build) — zéro requête vers Google.
+- Contraste WCAG 2.2 AA (`tests/unit/contrast.test.ts`) : deux couleurs ont dû être ajustées en
+  mode sombre pour atteindre 4.5:1 en tant que texte — succès #0F6E56 → **#2FBE9A** (ratio 2.78–3.02
+  → 7.34–7.99) et erreur #B3261E → **#FF6B5E** (ratio 2.63–2.87 → 6.16–6.71). L'accent a aussi été
+  éclairci en mode sombre (#5B4BFF → **#8A7DFF**) pour rester utilisable comme texte/lien (ratio
+  3.19–3.48 → 5.30–5.76), pas seulement comme remplissage de bouton.
 
 ## Prochaine étape
-Étape 2 : directions visuelles, en attente de validation.
+Étape 3 : écran d'accueil (direction C).

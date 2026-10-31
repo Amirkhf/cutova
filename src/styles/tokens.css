@@ -1,0 +1,125 @@
+/*
+ * Design tokens — Cutova.
+ * Mode clair par défaut, mode sombre via prefers-color-scheme ou [data-theme="dark"].
+ * [data-theme="light"] force toujours le mode clair, même si le système est en sombre.
+ */
+
+:root {
+  /* Couleurs — mode clair */
+  --color-bg: #fafaf7;
+  --color-surface: #ffffff;
+  --color-text: #14161a;
+  --color-text-secondary: #5c6068;
+  --color-accent: #5b4bff;
+  --color-accent-hover: #4a3de0;
+  --color-accent-ink: #ffffff;
+  --color-success: #0f6e56;
+  --color-error: #b3261e;
+  --color-border: #8e8a82;
+  --color-border-subtle: #e3e0d8;
+  --color-checker-a: #edebe4;
+  --color-checker-b: #ffffff;
+  --color-focus-ring: var(--color-accent);
+
+  /* Espacements — base 4px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* Rayons */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Ombres (légères) */
+  --shadow-sm: 0 1px 2px rgba(20, 22, 26, 0.06);
+  --shadow-md: 0 4px 12px rgba(20, 22, 26, 0.08);
+  --shadow-lg: 0 12px 32px rgba(20, 22, 26, 0.1);
+
+  /* Typographie */
+  --font-heading: "Bricolage Grotesque Variable", "Bricolage Grotesque", system-ui, sans-serif;
+  --font-body: "Inter Variable", "Inter", system-ui, sans-serif;
+  --weight-heading: 500;
+  --weight-body-regular: 400;
+  --weight-body-medium: 500;
+
+  --text-xs: clamp(0.75rem, 0.72rem + 0.1vw, 0.8125rem);
+  --text-sm: clamp(0.875rem, 0.84rem + 0.15vw, 0.9375rem);
+  --text-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1.07rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.375rem, 1.28rem + 0.5vw, 1.625rem);
+  --text-2xl: clamp(1.75rem, 1.55rem + 1vw, 2.25rem);
+  --text-3xl: clamp(2.25rem, 1.9rem + 1.8vw, 3.25rem);
+  --text-4xl: clamp(2.75rem, 2.2rem + 2.8vw, 4.5rem);
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* Animation */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0.1, 1);
+
+  /* Interaction */
+  --tap-target-min: 44px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+}
+
+/* Mode sombre — préférence système */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-bg: #111214;
+    --color-surface: #1a1b1e;
+    --color-text: #f2f2f0;
+    --color-text-secondary: #9a9c9f;
+    --color-accent: #8a7dff;
+    --color-accent-hover: #7567ff;
+    --color-accent-ink: #111214;
+    --color-success: #2fbe9a;
+    --color-error: #ff6b5e;
+    --color-border: #6b6d73;
+    --color-border-subtle: #26282c;
+    --color-checker-a: #202124;
+    --color-checker-b: #1a1b1e;
+  }
+}
+
+/* Mode sombre — forcé explicitement */
+:root[data-theme="dark"] {
+  --color-bg: #111214;
+  --color-surface: #1a1b1e;
+  --color-text: #f2f2f0;
+  --color-text-secondary: #9a9c9f;
+  --color-accent: #8a7dff;
+  --color-accent-hover: #7567ff;
+  --color-accent-ink: #111214;
+  --color-success: #2fbe9a;
+  --color-error: #ff6b5e;
+  --color-border: #6b6d73;
+  --color-border-subtle: #26282c;
+  --color-checker-a: #202124;
+  --color-checker-b: #1a1b1e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}

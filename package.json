@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run --reporter=dot",
+    "screenshots": "node tests/screenshots.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.1",
@@ -15,6 +17,8 @@
     "vitest": "^5.0.5"
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/inter": "^5.3.0",
     "@huggingface/transformers": "^4.3.2"
   }
 }
