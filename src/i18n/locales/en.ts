@@ -28,6 +28,8 @@ export const en: Dictionary = {
     exampleAlt: (index) => `Example image ${index}`,
     selectedFile: (name) => `Selected: ${name}`,
     chooseAnother: "Choose another image",
+    imageDownscaled: (width, height) =>
+      `This image was reduced to ${width}×${height} to fit this device's memory.`,
   },
   errors: {
     unsupportedFormat: (format) =>
@@ -35,9 +37,17 @@ export const en: Dictionary = {
         ? "HEIC photos aren't supported yet. Please convert it to JPEG or PNG first."
         : "This file type isn't supported. Try a PNG, JPEG, WebP, AVIF or GIF image.",
     fileTooLarge: (maxMb) => `This image is too large. Please use a file under ${maxMb} MB.`,
-    dimensionsTooLarge: (maxPx) =>
-      `This image is too large. Please use one under ${maxPx}×${maxPx} pixels.`,
+    dimensionsTooLarge: (maxMegapixels) =>
+      `This image is too large to process safely. Please use one under ${maxMegapixels} megapixels.`,
     generic: "Something went wrong reading this file. Please try another one.",
+  },
+  result: {
+    provisionalBadge: "Preview — provisional",
+    preparingModel: "Preparing the AI model…",
+    loadingModel: (percent) => `Downloading the AI model… ${percent}%`,
+    running: "Removing the background…",
+    processingTime: (ms) => `Processed in ${(ms / 1000).toFixed(1)}s`,
+    error: "Background removal failed. Please try another image.",
   },
   common: {
     skipToContent: "Skip to content",

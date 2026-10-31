@@ -29,6 +29,8 @@ export const fr: Dictionary = {
     exampleAlt: (index) => `Image d'exemple ${index}`,
     selectedFile: (name) => `Sélectionnée : ${name}`,
     chooseAnother: "Choisir une autre image",
+    imageDownscaled: (width, height) =>
+      `Cette image a été réduite à ${width}×${height} pour tenir dans la mémoire de cet appareil.`,
   },
   errors: {
     unsupportedFormat: (format) =>
@@ -36,9 +38,17 @@ export const fr: Dictionary = {
         ? "Les photos HEIC ne sont pas encore prises en charge. Convertissez-la d'abord en JPEG ou PNG."
         : "Ce type de fichier n'est pas pris en charge. Essayez une image PNG, JPEG, WebP, AVIF ou GIF.",
     fileTooLarge: (maxMb) => `Cette image est trop lourde. Utilisez un fichier de moins de ${maxMb} Mo.`,
-    dimensionsTooLarge: (maxPx) =>
-      `Cette image est trop grande. Utilisez-en une de moins de ${maxPx}×${maxPx} pixels.`,
+    dimensionsTooLarge: (maxMegapixels) =>
+      `Cette image est trop grande pour être traitée en toute sécurité. Utilisez-en une de moins de ${maxMegapixels} mégapixels.`,
     generic: "Une erreur est survenue à la lecture de ce fichier. Essayez-en un autre.",
+  },
+  result: {
+    provisionalBadge: "Aperçu — provisoire",
+    preparingModel: "Préparation du modèle IA…",
+    loadingModel: (percent) => `Téléchargement du modèle IA… ${percent}%`,
+    running: "Détourage en cours…",
+    processingTime: (ms) => `Traité en ${(ms / 1000).toFixed(1)} s`,
+    error: "Le détourage a échoué. Essayez une autre image.",
   },
   common: {
     skipToContent: "Aller au contenu",

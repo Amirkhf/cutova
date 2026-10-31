@@ -1,11 +1,8 @@
 import type { Dictionary } from "../../i18n/index.ts";
-import {
-  MAX_FILE_SIZE_BYTES,
-  MAX_IMAGE_DIMENSION,
-  validateImage,
-  type ValidationError,
-} from "../../core/validate-image/validate-image.ts";
+import { MAX_FILE_SIZE_BYTES, validateImage, type ValidationError } from "../../core/validate-image/validate-image.ts";
+import { ABSOLUTE_MAX_DECODE_PIXELS } from "../../core/limits/device-limits.ts";
 import { emitImageSelected, type ImageSource } from "./events.ts";
+import { inferenceEngine } from "../../core/inference/engine-client.ts";
 import { subjectOnBackgroundMarkup, subjectPathData, uploadArrowIconMarkup, type ExampleSubject } from "./visuals.ts";
 
 const ACCEPTED_MIME =
@@ -31,7 +28,7 @@ function messageForError(error: ValidationError, dict: Dictionary): string {
     case "file-too-large":
       return dict.errors.fileTooLarge(Math.round(MAX_FILE_SIZE_BYTES / (1024 * 1024)));
     case "dimensions-too-large":
-      return dict.errors.dimensionsTooLarge(MAX_IMAGE_DIMENSION);
+      return dict.errors.dimensionsTooLarge(Math.round(ABSOLUTE_MAX_DECODE_PIXELS / 1_000_000));
     case "unreadable":
       return dict.errors.generic;
   }
@@ -171,10 +168,16 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
 
   async function handleCandidate(file: File, source: ImageSource): Promise<void> {
     status.textContent = "";
+    status.classList.remove("upload-status-info");
     const result = await validateImage(file);
     if (!result.ok) {
       status.textContent = messageForError(result.error, dict);
       return;
+    }
+    if (result.resizeTo) {
+      // Non bloquant : l'image est acceptée, seule la décodage pour le traitement sera réduit.
+      status.classList.add("upload-status-info");
+      status.textContent = dict.upload.imageDownscaled(result.resizeTo.width, result.resizeTo.height);
     }
     showSelected(file);
     emitImageSelected({ file, source });
@@ -182,6 +185,9 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
   }
 
   chooseButton.addEventListener("click", () => fileInput.click());
+  // Préchargement du modèle IA au premier survol/focus du bouton principal (idempotent).
+  chooseButton.addEventListener("mouseenter", () => inferenceEngine.preload(), { once: true });
+  chooseButton.addEventListener("focus", () => inferenceEngine.preload(), { once: true });
   chooseAnotherButton.addEventListener("click", () => {
     status.textContent = "";
     fileInput.value = "";

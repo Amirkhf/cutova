@@ -3,18 +3,18 @@
  * binaire (magic bytes), jamais par le nom de fichier ou l'extension.
  */
 
+import {
+  ABSOLUTE_MAX_DECODE_PIXELS,
+  fitWithinPixelBudget,
+  getMaxDecodedPixels,
+  type Dimensions,
+} from "../limits/device-limits.ts";
+
 export type ImageFormat = "png" | "jpeg" | "webp" | "avif" | "gif";
 export type DetectedFormat = ImageFormat | "heic" | "unknown";
 
 /** 50 Mo — limite raisonnable pour un traitement 100 % navigateur. */
 export const MAX_FILE_SIZE_BYTES = 50 * 1024 * 1024;
-
-/**
- * 8000 px par côté. Au-delà, un buffer RGBA dépasse ~250 Mo et approche la limite de
- * taille de texture de nombreux GPU (souvent 8192 px) pour l'inférence WebGPU — voir
- * context.md > Décisions.
- */
-export const MAX_IMAGE_DIMENSION = 8000;
 
 export type ValidationError =
   | { code: "unsupported-format"; format: DetectedFormat }
@@ -23,7 +23,7 @@ export type ValidationError =
   | { code: "unreadable" };
 
 export type ValidationResult =
-  | { ok: true; format: ImageFormat }
+  | { ok: true; format: ImageFormat; resizeTo?: Dimensions }
   | { ok: false; error: ValidationError };
 
 const HEAD_BYTES = 64;
@@ -107,11 +107,21 @@ export async function validateImage(file: File | Blob): Promise<ValidationResult
   } catch {
     return { ok: false, error: { code: "unreadable" } };
   }
-  if (dimensions && (dimensions.width > MAX_IMAGE_DIMENSION || dimensions.height > MAX_IMAGE_DIMENSION)) {
-    return {
-      ok: false,
-      error: { code: "dimensions-too-large", width: dimensions.width, height: dimensions.height },
-    };
+  if (dimensions) {
+    const pixelCount = dimensions.width * dimensions.height;
+    if (pixelCount > ABSOLUTE_MAX_DECODE_PIXELS) {
+      // Au-delà de toute limite raisonnable d'appareil : probable fichier corrompu ou
+      // hostile (bombe de décompression) plutôt qu'une vraie photo à réduire.
+      return {
+        ok: false,
+        error: { code: "dimensions-too-large", width: dimensions.width, height: dimensions.height },
+      };
+    }
+    const maxPixels = getMaxDecodedPixels();
+    if (pixelCount > maxPixels) {
+      // Jamais de rejet silencieux : on signale une réduction automatique plutôt que d'échouer.
+      return { ok: true, format, resizeTo: fitWithinPixelBudget(dimensions, maxPixels) };
+    }
   }
 
   return { ok: true, format };

@@ -1,5 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { MAX_FILE_SIZE_BYTES, validateImage } from "../../src/core/validate-image/validate-image.ts";
+import { ABSOLUTE_MAX_DECODE_PIXELS, DEFAULT_MAX_DECODED_PIXELS } from "../../src/core/limits/device-limits.ts";
 
 function bytes(...groups: (number[] | string)[]): Uint8Array {
   const parts = groups.map((g) =>
@@ -87,5 +88,48 @@ describe("validateImage — détection par signature", () => {
     atLimit.set(PNG_HEADER, 0);
     const result = await validateImage(makeFile(atLimit, "large.png"));
     expect(result).toEqual({ ok: true, format: "png" });
+  });
+});
+
+describe("validateImage — limite de pixels adaptée à l'appareil", () => {
+  const originalCreateImageBitmap = globalThis.createImageBitmap;
+
+  function mockDimensions(width: number, height: number): void {
+    (globalThis as { createImageBitmap?: typeof createImageBitmap }).createImageBitmap = (async () => ({
+      width,
+      height,
+      close() {},
+    })) as unknown as typeof createImageBitmap;
+  }
+
+  afterEach(() => {
+    (globalThis as { createImageBitmap?: typeof createImageBitmap }).createImageBitmap = originalCreateImageBitmap;
+  });
+
+  it("accepte sans réduction une image qui tient dans le budget de pixels", async () => {
+    mockDimensions(4000, 3000); // 12 MP < DEFAULT_MAX_DECODED_PIXELS
+    const result = await validateImage(makeFile(PNG_HEADER, "ok.png"));
+    expect(result).toEqual({ ok: true, format: "png" });
+  });
+
+  it("au-delà du budget mais sous la limite absolue : accepte avec une réduction, jamais un rejet", async () => {
+    const side = Math.ceil(Math.sqrt(DEFAULT_MAX_DECODED_PIXELS * 2));
+    mockDimensions(side, side);
+    const result = await validateImage(makeFile(PNG_HEADER, "big.png"));
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.resizeTo).toBeDefined();
+      expect(result.resizeTo!.width * result.resizeTo!.height).toBeLessThanOrEqual(DEFAULT_MAX_DECODED_PIXELS);
+    }
+  });
+
+  it("au-delà de la limite absolue (bombe de décompression probable) : rejette", async () => {
+    const side = Math.ceil(Math.sqrt(ABSOLUTE_MAX_DECODE_PIXELS * 2));
+    mockDimensions(side, side);
+    const result = await validateImage(makeFile(PNG_HEADER, "huge.png"));
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error.code).toBe("dimensions-too-large");
+    }
   });
 });
