@@ -1,20 +1,89 @@
 {
   "runtime": "onnxruntime-node 1.30.0",
+  "sessionOptions": "enableCpuMemArena=false, enableMemPattern=false",
   "size": 1024,
-  "loadMs": 3241,
+  "loadMs": 4257,
+  "peakRssMb": 6974,
   "runs": [
     {
-      "name": "person",
-      "inferenceMs": 59729
+      "photo": "busy-9816.jpg",
+      "inferenceMs": 36149
     },
     {
-      "name": "sneaker",
-      "inferenceMs": 21538
+      "photo": "car-4314.jpg",
+      "inferenceMs": 35695
     },
     {
-      "name": "cat",
-      "inferenceMs": 6834
+      "photo": "car-7406.jpg",
+      "inferenceMs": 32309
+    },
+    {
+      "photo": "fur-12162.jpg",
+      "inferenceMs": 34403
+    },
+    {
+      "photo": "fur-17767.jpg",
+      "inferenceMs": 34771
+    },
+    {
+      "photo": "fur-17773.jpg",
+      "inferenceMs": 28227
+    },
+    {
+      "photo": "fur-6235.jpg",
+      "inferenceMs": 27229
+    },
+    {
+      "photo": "glass-1484.jpg",
+      "inferenceMs": 40137
+    },
+    {
+      "photo": "glass-3584.jpg",
+      "inferenceMs": 40427
+    },
+    {
+      "photo": "glass-5568.jpg",
+      "inferenceMs": 39703
+    },
+    {
+      "photo": "hair-157915.jpg",
+      "inferenceMs": 31328
+    },
+    {
+      "photo": "hair-157920.jpg",
+      "inferenceMs": 32788
+    },
+    {
+      "photo": "hair-35537.jpg",
+      "inferenceMs": 34757
+    },
+    {
+      "photo": "hair-53000.jpg",
+      "inferenceMs": 26795
+    },
+    {
+      "photo": "logo-109998.jpg",
+      "inferenceMs": 43294
+    },
+    {
+      "photo": "product-1591.jpg",
+      "inferenceMs": 26650
+    },
+    {
+      "photo": "product-5670.jpg",
+      "inferenceMs": 23843
+    },
+    {
+      "photo": "product-6346.jpg",
+      "inferenceMs": 26028
+    },
+    {
+      "photo": "signature-175045.jpg",
+      "inferenceMs": 23761
+    },
+    {
+      "photo": "signature-51159.jpg",
+      "inferenceMs": 33709
     }
-  ],
-  "peakRssMb": 12243
+  ]
 }

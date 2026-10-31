@@ -1,0 +1,40 @@
+{
+  "$comment": "SOURCE UNIQUE des modèles (lue par le navigateur via src/core/model/model-source.ts et par Node via scripts/model-manifest.mjs). Pour changer le modèle d'un moteur : modifier `engines` uniquement. Licences : voir LICENSES.md.",
+  "engines": {
+    "webgpu": "birefnet-lite",
+    "wasm": "ormbg"
+  },
+  "models": {
+    "birefnet-lite": {
+      "repoId": "onnx-community/BiRefNet_lite-ONNX",
+      "revision": "de15b22ba131738a16dff04aab8bdf8dc32e3ac1",
+      "license": "MIT",
+      "inputSize": 1024,
+      "weights": {
+        "fp32": { "path": "onnx/model.onnx", "sha256": "5600024376f572a557870a5eb0afb1e5961636bef4e1e22132025467d0f03333", "size": 224005088 },
+        "fp16": { "path": "onnx/model_fp16.onnx", "sha256": "d39b897ceb16ae654c1731f3dba0cf9b368d9cae74b5a57459b455cc8bfec402", "size": 114538221 }
+      },
+      "aux": ["config.json", "preprocessor_config.json"]
+    },
+    "ormbg": {
+      "repoId": "onnx-community/ormbg-ONNX",
+      "revision": "034e2d884afbab897e10e78fc5bb566b29533fd6",
+      "license": "Apache-2.0",
+      "inputSize": 1024,
+      "weights": {
+        "fp32": { "path": "onnx/model.onnx", "sha256": "2830b6f461809cdc7e2f15d19fc1a898b14ad53504640d4147b525d53ebb09c9", "size": 176116019 }
+      },
+      "aux": ["config.json", "preprocessor_config.json"]
+    },
+    "isnet": {
+      "repoId": "BritishWerewolf/IS-Net",
+      "revision": "9783722d9f964c0286a411e7e8e6fede947d5a53",
+      "license": "Apache-2.0",
+      "inputSize": 1024,
+      "weights": {
+        "fp32": { "path": "onnx/model.onnx", "sha256": "60920e99c45464f2ba57bee2ad08c919a52bbf852739e96947fbb4358c0d964a", "size": 178648008 }
+      },
+      "aux": ["config.json", "preprocessor_config.json"]
+    }
+  }
+}

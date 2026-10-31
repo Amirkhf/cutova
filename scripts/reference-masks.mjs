@@ -1,46 +1,36 @@
 /**
  * Masques de référence BiRefNet_lite à 1024×1024, calculés avec onnxruntime-node (natif,
- * pas de limite mémoire wasm32 de 4 Go). Sert d'étalon de qualité pour le chemin WASM
- * navigateur (IoU / erreur moyenne, voir tests/e2e/wasm-inference.spec.ts).
+ * pas de limite mémoire wasm32 de 4 Go). Étalon de qualité pour le chemin WASM navigateur
+ * (IoU / erreur moyenne : scripts/bench/compare-candidates.mjs).
  *
- * Entrées : 3 des 4 images d'exemple de l'accueil (mêmes chemins SVG, mêmes couleurs, même
- * cadrage 512×512 que `upload-card.ts` > `exampleToFile`), écrites dans tests/reference/.
- * Sorties : tests/reference/mask-<nom>.png (niveaux de gris 1024×1024) + reference.json
- * (temps, pic mémoire RSS).
+ * Entrées : toutes les photos `tests/images/*.jpg` (sources : tests/images/SOURCES.md).
+ * Sorties : tests/reference/<photo>.png (masque niveaux de gris 1024×1024) + reference.json
+ * (temps, pic mémoire résident VmHWM).
  *
  * Usage : node scripts/reference-masks.mjs
  */
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import * as ort from "onnxruntime-node";
 import sharp from "sharp";
-import { MODEL_REPO_ID } from "./model-manifest.mjs";
-import { REFERENCE_EXAMPLES } from "./reference-examples.mjs";
+import { REFERENCE_MODEL } from "./model-manifest.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const MODEL_PATH = path.join(ROOT, "public/models", MODEL_REPO_ID, "onnx/model.onnx");
-const OUT_DIR = path.join(ROOT, "tests/reference");
+const MODEL_PATH = path.join(ROOT, "public/models", REFERENCE_MODEL.repoId, REFERENCE_MODEL.weights.fp32.path);
+export const PHOTOS_DIR = path.join(ROOT, "tests/images");
+export const REF_DIR = path.join(ROOT, "tests/reference");
 const SIZE = 1024;
 const MEAN = [0.485, 0.456, 0.406];
 const STD = [0.229, 0.224, 0.225];
 
-
-function exampleSvg({ bg, fg, d }) {
-  return Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512">` +
-      `<rect width="512" height="512" fill="${bg}"/>` +
-      `<path transform="translate(56 56) scale(2)" fill="${fg}" d="${d}"/></svg>`,
-  );
+export async function listPhotos() {
+  return (await readdir(PHOTOS_DIR)).filter((f) => f.endsWith(".jpg")).sort();
 }
 
-/** RGB uint8 → tenseur NCHW float32 normalisé ImageNet (comme preprocessor_config.json). */
-async function preprocess(png) {
-  const { data } = await sharp(png)
-    .removeAlpha()
-    .resize(SIZE, SIZE, { fit: "fill", kernel: "linear" })
-    .raw()
-    .toBuffer({ resolveWithObject: true });
+/** RGB → tenseur NCHW float32 normalisé ImageNet (comme preprocessor_config.json). */
+async function preprocess(file) {
+  const data = await sharp(file).removeAlpha().resize(SIZE, SIZE, { fit: "fill", kernel: "linear" }).raw().toBuffer();
   const plane = SIZE * SIZE;
   const out = new Float32Array(3 * plane);
   for (let i = 0; i < plane; i++) {
@@ -55,28 +45,33 @@ function toMask(logits) {
   return mask;
 }
 
-
-await mkdir(OUT_DIR, { recursive: true });
-const t0 = performance.now();
-const session = await ort.InferenceSession.create(MODEL_PATH);
-const loadMs = performance.now() - t0;
-const runs = [];
-for (const ex of REFERENCE_EXAMPLES) {
-  const png = await sharp(exampleSvg(ex)).png().toBuffer();
-  await writeFile(path.join(OUT_DIR, `input-${ex.name}.png`), png);
-  const input = await preprocess(png);
-  const t = performance.now();
-  const { output_image } = await session.run({ input_image: input });
-  const ms = performance.now() - t;
-  const mask = toMask(output_image.data);
-  await sharp(Buffer.from(mask), { raw: { width: SIZE, height: SIZE, channels: 1 } })
-    .png()
-    .toFile(path.join(OUT_DIR, `mask-${ex.name}.png`));
-  runs.push({ name: ex.name, inferenceMs: Math.round(ms) });
-  console.log(`[ok] ${ex.name} : ${Math.round(ms)} ms`);
+if (import.meta.url === `file://${process.argv[1]}`) {
+  await mkdir(REF_DIR, { recursive: true });
+  const t0 = performance.now();
+  const session = await ort.InferenceSession.create(MODEL_PATH, { enableCpuMemArena: false, enableMemPattern: false });
+  const loadMs = performance.now() - t0;
+  const runs = [];
+  for (const photo of await listPhotos()) {
+    const input = await preprocess(path.join(PHOTOS_DIR, photo));
+    const t = performance.now();
+    const { output_image } = await session.run({ input_image: input });
+    const ms = Math.round(performance.now() - t);
+    await sharp(Buffer.from(toMask(output_image.data)), { raw: { width: SIZE, height: SIZE, channels: 1 } })
+      .png({ compressionLevel: 9 })
+      .toFile(path.join(REF_DIR, photo.replace(/\.jpg$/, ".png")));
+    runs.push({ photo, inferenceMs: ms });
+    console.log(`[ok] ${photo} : ${ms} ms`);
+  }
+  // Pic mémoire résident réel du processus (Linux) ; un échantillonnage JS rate les pics natifs.
+  const hwm = (await readFile("/proc/self/status", "utf8").catch(() => "")).match(/VmHWM:\s+(\d+)/);
+  const summary = {
+    runtime: `onnxruntime-node ${ort.env.versions?.common ?? ""}`.trim(),
+    sessionOptions: "enableCpuMemArena=false, enableMemPattern=false",
+    size: SIZE,
+    loadMs: Math.round(loadMs),
+    peakRssMb: hwm ? Math.round(Number(hwm[1]) / 1024) : null,
+    runs,
+  };
+  await writeFile(path.join(REF_DIR, "reference.json"), JSON.stringify(summary, null, 2) + "\n");
+  console.log(JSON.stringify({ loadMs: summary.loadMs, peakRssMb: summary.peakRssMb }));
 }
-// Pic mémoire résident réel du processus (Linux) ; un échantillonnage JS rate les pics natifs.
-const hwm = (await readFile("/proc/self/status", "utf8").catch(() => "")).match(/VmHWM:\s+(\d+)/);
-const summary = { runtime: `onnxruntime-node ${ort.env.versions?.common ?? ""}`.trim(), size: SIZE, loadMs: Math.round(loadMs), runs, peakRssMb: hwm ? Math.round(Number(hwm[1]) / 1024) : null };
-await writeFile(path.join(OUT_DIR, "reference.json"), JSON.stringify(summary, null, 2) + "\n");
-console.log(JSON.stringify(summary));

@@ -65,6 +65,11 @@ export function renderResultPanel(dict: Dictionary): ResultPanelHandle {
 
   async function showFile(file: File): Promise<void> {
     section.hidden = false;
+    // État lisible par les tests e2e et outils de mesure (aucun effet visuel).
+    section.dataset.state = "running";
+    section.dataset.run = String(Number(section.dataset.run ?? 0) + 1);
+    delete section.dataset.engine;
+    delete section.dataset.elapsedMs;
     status.textContent = dict.result.preparingModel;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -85,6 +90,7 @@ export function renderResultPanel(dict: Dictionary): ResultPanelHandle {
         createImageBitmap(file, resizeOptions),
       ]);
     } catch {
+      section.dataset.state = "error";
       status.textContent = dict.result.error;
       return;
     }
@@ -98,7 +104,11 @@ export function renderResultPanel(dict: Dictionary): ResultPanelHandle {
       const result = await inferenceEngine.run(inferenceBitmap);
       applyMask(ctx, result.mask, result.width, result.height);
       status.textContent = dict.result.processingTime(result.elapsedMs);
+      section.dataset.engine = result.engine;
+      section.dataset.elapsedMs = String(Math.round(result.elapsedMs));
+      section.dataset.state = "done";
     } catch {
+      section.dataset.state = "error";
       status.textContent = dict.result.error;
     }
   }

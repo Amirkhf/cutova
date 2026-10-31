@@ -5,22 +5,20 @@ Design system posé (tokens, polices, base CSS, styleguide de contrôle, test de
 Écran d'accueil (direction C) implémenté en TypeScript vanilla, sans framework : UI complète
 (en-tête, accroche, démo avant/après, carte d'envoi avec bouton/glisser-déposer/collage/exemples),
 i18n EN/FR, validation de fichiers par signature binaire, accessibilité clavier + axe (0 violation).
-Moteur IA branché (étape 4) : Web Worker d'inférence (WebGPU → WASM), modèle BiRefNet_lite chargé
-via transformers.js (`AutoModel`/`AutoProcessor`), cache OPFS, en-têtes COOP/COEP/CSP en dev et preview,
-zéro requête externe (vérifié par test réseau). Écran de résultat **provisoire** (aperçu 1024×1024
-sur damier + temps de traitement) branché sur `image:selected`. Limite de pixels adaptée à l'appareil
-(remplace l'ancienne limite fixe de 8000 px). Build, typecheck et vitest passent ; Playwright passe
-(9/9) mais la case WASM "masque reçu" ne peut pas être vérifiée de bout en bout dans cet environnement
-de test précis — voir Mesures ci-dessous, c'est un constat important à lire avant de considérer l'étape
-comme pleinement acquise.
-**Mémoire WASM (en cours)** : cause confirmée — BiRefNet_lite à 1024 demande ~6,5 Go en natif, plus que
-les 4 Go du wasm32 ; pas de build wasm64 dans notre onnxruntime-web, entrée du modèle figée à 1024.
-Masques de référence produits (`scripts/reference-masks.mjs` → `tests/reference/`). Comparatif de 3
-modèles plus légers dans Décisions — **en attente de validation, aucun n'est adopté** ; le critère
-"masque réel dans Chromium headless WASM" n'est donc pas encore rempli.
+Moteur IA branché (étape 4) : Web Worker d'inférence, un modèle par moteur (`src/core/model/models.json`) :
+**WebGPU → BiRefNet_lite** (fp16/fp32), **WASM (CPU) → ormbg** (fp32, Apache-2.0, tient sous la limite
+mémoire wasm32). Chargés via transformers.js (`AutoModel`/`AutoProcessor`), cache OPFS, WASM multithread
+(crossOriginIsolated), en-têtes COOP/COEP/CSP en dev et preview, zéro requête externe (test réseau).
+**Phase 1 faite** : un vrai masque est produit en Chromium headless (WASM) et vérifié par e2e
+(`tests/e2e/wasm-inference.spec.ts` : masque ni vide ni plein, IoU vs référence ≥ 0,90 sur 3 vraies photos,
+PNG transparents dans `tests/screenshots/`, copies compressées dans `docs/review/`). Écran de résultat
+encore **provisoire** (aperçu 1024×1024) — remplacé à la phase 2. tsc, vitest, build et Playwright (12/12,
+y compris `webgpu.spec.ts`) passent.
 
 ## Modules
-- `src/core/model/` — `model-source.ts` (identifiant du dépôt HF + taille d'entrée du modèle),
+- `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
+  licence, et `engines` = quel modèle pour quel moteur ; lu par le navigateur ET par Node),
+  `model-source.ts` (vue navigateur : `getModelForEngine`),
   `opfs-cache.ts` (cache personnalisé transformers.js backé par OPFS ; `null`/no-op si OPFS
   indisponible, jamais de plantage).
 - `src/core/inference/` — `worker.ts` (Web Worker : config `env` transformers.js, choix WebGPU/WASM,
@@ -34,8 +32,15 @@ modèles plus légers dans Décisions — **en attente de validation, aucun n'es
 - `src/ui/result/render-result.ts` — panneau de résultat **provisoire** (aperçu 1024×1024 sur damier,
   temps de traitement, badge "provisoire") ; s'abonne lui-même à `image:selected`, l'accueil ne le
   connaît pas.
-- `scripts/model-manifest.mjs` / `scripts/fetch-model.mjs` — téléchargement des poids + config dans
-  `public/models/` (gitignoré) avec vérification SHA-256, revision HF figée.
+- `scripts/model-manifest.mjs` / `scripts/fetch-model.mjs` — téléchargement des poids + config de tous
+  les modèles utilisés par un moteur dans `public/models/<repoId>/` (gitignoré), vérification SHA-256,
+  révision HF figée (`--model=`, `--only=`, `MODEL_BASE_URL`).
+- `scripts/reference-masks.mjs` — masques de référence BiRefNet_lite 1024 (onnxruntime-node) sur
+  `tests/images/*.jpg` → `tests/reference/`. `scripts/bench/compare-candidates.mjs` — banc d'un modèle en
+  onnxruntime-web **wasm dans Node** (même plafond 4 Go que le navigateur) : IoU/MAE vs référence, temps,
+  pic mémoire, `--threads`, `--only`.
+- `tests/images/` — 20 vraies photos Pexels ≤ 2000 px (sources/licences : `tests/images/SOURCES.md`).
+- `docs/review/` — captures et mesures importantes, compressées et versionnées.
 - `src/core/postprocess/` — agrandissement du masque à la résolution d'origine, lissage des bords
   (étape 5, pas encore implémenté).
 - `src/core/export/` — export PNG/WebP, fond blanc ou couleur, export ZIP par lot (étape 5, pas
@@ -70,7 +75,11 @@ modèles plus légers dans Décisions — **en attente de validation, aucun n'es
   limite souple ~100 Mo/fichier) : nos deux fichiers (114,5 Mo et 224 Mo) dépassent ces plafonds
   courants et devront être servis depuis un stockage dédié (S3/R2 + CDN, ou un hébergeur dont le
   plafond par fichier est assez haut) plutôt que depuis le même hébergeur statique que le reste du site.
-- Option portraits : MODNet (poids ONNX, ex. `Xenova/modnet`) — licence Apache-2.0.
+- **Modèle WASM (CPU) : ormbg** (`onnx-community/ormbg-ONNX`, révision `034e2d88`, `onnx/model.onnx`
+  fp32, 176 116 019 octets) — licence **Apache-2.0** (fiche + fiche d'origine `schirrmacher/ormbg`).
+  Entrée 1024×1024, pas de normalisation (rescale seul), sortie déjà en probabilité [0,1]. Alternative
+  prête dans `models.json` : IS-Net (`BritishWerewolf/IS-Net`, Apache-2.0), non utilisée.
+- Option portraits : MODNet (poids ONNX, ex. `Xenova/modnet`) — licence Apache-2.0 (non intégré).
 - INTERDITS : BRIA RMBG-1.4 / RMBG-2.0 (licence non commerciale), `@imgly/background-removal`
   (dépendance à écarter), et tout poids de modèle sans licence écrite noir sur blanc.
 - Détail complet des vérifications : voir `LICENSES.md`.
@@ -184,25 +193,44 @@ modèles plus légers dans Décisions — **en attente de validation, aucun n'es
   un `ShaderHelper` error : *"Too many storage buffers in shader. Current: 11, Max is 10"* —
   limite `maxStorageBuffersPerShaderStage` du backend logiciel SwiftShader, probablement plus haute
   sur un vrai GPU. **À retester sur du matériel GPU réel avant de tirer une conclusion sur WebGPU.**
+- **[Dépassé, voir "Mémoire WASM" ci-dessous]** Le chemin WASM produit désormais un vrai masque (modèle ormbg).
 - Conclusion provisoire : l'infrastructure (sélection de moteur, repli, cache OPFS, téléchargement,
   isolation réseau, affichage d'erreur) fonctionne et est testée ; mais ni WASM ni WebGPU n'ont pu
   produire un masque de bout en bout dans ce bac à sable précis (mémoire WASM insuffisante d'un côté,
   pas de GPU réel de l'autre). Priorité pour la suite : valider sur un appareil avec vrai GPU.
 
 ### Mémoire WASM — mesures (bac à sable Linux, 4 cœurs, 15 Go RAM, sans GPU, 2026-10-31)
-- **Référence native** (`scripts/reference-masks.mjs`, onnxruntime-node 1.30, BiRefNet_lite fp32, 1024) :
-  création de session 3,2 s ; inférence 7–60 s par image (très variable sur ce CPU partagé) ; pic mémoire
-  résident (VmHWM) **12,2 Go** avec réglages par défaut, **6,5 Go** avec `enableCpuMemArena`/`enableMemPattern`
-  désactivés, mono- ou multi-thread. ⇒ le modèle ne peut pas tenir dans la mémoire wasm32 (plafond
-  65 536 pages = 4 Go dans `ort-wasm-simd-threaded.mjs`), quels que soient les réglages.
-- **Reproduit hors navigateur** : onnxruntime-web (backend wasm, dans Node) sur BiRefNet_lite →
-  `OrtRun() ERROR_CODE 6 std::bad_alloc`, comme dans Chromium. Ce n'est donc pas un problème du bac à
-  sable Playwright.
-- **Candidats en WASM** (`scripts/bench/compare-candidates.mjs` : onnxruntime-web wasm dans Node,
-  1 thread, arena désactivée ; qualité vs masques de référence 1024 ; IoU au seuil 0,5) : voir le tableau
-  dans Décisions. Tous les trois **tiennent** dans le wasm32.
-- Temps de chargement / première inférence / suivantes **dans Chromium** : pas encore mesurés (pas de
-  modèle adopté). Test réseau zéro-requête externe : inchangé (aucun code applicatif modifié).
+- **Pourquoi BiRefNet_lite ne passe pas en WASM** : pic mémoire natif (onnxruntime-node, VmHWM) **7,0 Go**
+  avec arena désactivée sur les 20 photos (12,2 Go avec réglages par défaut) > plafond wasm32 4 Go
+  (65 536 pages). Reproduit hors navigateur (onnxruntime-web wasm dans Node → `std::bad_alloc`).
+- **Référence BiRefNet_lite 1024 native** (`tests/reference/reference.json`) : création de session 4,3 s ;
+  inférence médiane 33,7 s (24–43 s) sur ce CPU partagé.
+- **Banc WASM 20 photos** (onnxruntime-web wasm dans Node, 1 thread ; brut :
+  `docs/review/bench-wasm-20-photos.jsonl`) :
+
+  | Modèle | IoU moyen | IoU min | MAE moy. | Inférence médiane 1 thread | Pic mémoire (processus) |
+  |---|---|---|---|---|---|
+  | **ormbg** (retenu) | **0,684** | 0,081 | 0,114 | 13,5 s | 1,19 Go |
+  | IS-Net | 0,665 | 0,022 | 0,114 | 13,7 s | 1,52 Go |
+  | MODNet (4 portraits seulement) | 0,983 | 0,974 | 0,010 | 1,5 s (entrée 512) | 0,41 Go |
+
+  Par catégorie (ormbg) : portraits/cheveux 0,98–1,00 ; animaux 0,08–1,00 (très variable) ; produits
+  0,52–0,95 ; verre 0,41–0,74 ; voitures 0,59–0,71 ; logo néon 0,80 ; signatures 0,08–0,62 ; foule 0,53.
+- **Gain du multithread** (ormbg, 4 photos portraits, Node) : 1 thread ≈ 13,2 s → 4 threads ≈ 4,1 s
+  (**×3,2**). Le navigateur utilise `min(hardwareConcurrency, 4)` threads si `crossOriginIsolated`.
+- **Mesures Chromium headless (WASM, ormbg, 4 threads, `crossOriginIsolated` = true, run isolé ;
+  `docs/review/wasm-measures-chromium.json`)** :
+  - chargement du modèle (téléchargement local 168 Mo + création de session), estimé = clic→résultat −
+    inférence du 1er passage : **≈ 17 s** ;
+  - **1re inférence : 10,1 s** (préchauffage inclus) ; clic → résultat 27,4 s ;
+  - **inférences suivantes : 3,7 s et 4,3 s** ;
+  - IoU navigateur vs référence identiques au banc Node (0,985 / 0,998 / 0,953) → le prétraitement
+    transformers.js du navigateur et celui du banc concordent ;
+  - pic mémoire : non mesurable proprement dans Chromium headless ici (pas d'API fiable) ; en Node, le
+    même binaire wasm culmine à ~1,2 Go de mémoire processus.
+  - En lançant toute la suite Playwright en parallèle (2 workers), les inférences montent à 6,7–7,3 s
+    (CPU partagé) : chiffres ci-dessus = run isolé.
+- Test réseau zéro-requête externe : passe toujours (`tests/e2e/inference.spec.ts`).
 
 ## Décisions
 - Nom de marque retenu : **Cutova**.
@@ -293,32 +321,41 @@ modèles plus légers dans Décisions — **en attente de validation, aucun n'es
   importe ses fichiers par chemin exact, ce n'est plus un simple détail d'implémentation de
   `@huggingface/transformers`. Version `1.31.0-dev...` : versions `-dev`, à surveiller (voir LICENSES.md).
 
-- **(Mémoire WASM) Options évaluées pour le chemin WASM (CPU)** :
-  - a. WASM 64 bits (Memory64) — **écartée** : `onnxruntime-web@1.31.0-dev.20260914` ne livre que des
-    builds wasm32 (`ort-wasm-simd-threaded{,.asyncify,.jsep,.jspi}`), aucun build wasm64.
-  - b. Résolution réduite (768/640/512) — **écartée** : l'entrée du modèle est statique
-    (`input_image` float32 `[1,3,1024,1024]`, sortie `[1,1,1024,1024]`, lu dans les métadonnées de session).
-    Rendre l'entrée dynamique demanderait de réécrire le graphe ONNX (non tenté).
-  - c. Modèle plus léger pour le WASM — **comparatif ci-dessous, EN ATTENTE DE VALIDATION, rien n'est adopté.**
-
-  | Modèle (révision HF figée) | Licence des poids (fiche du modèle) | Fichier fp32 | Entrée | IoU personne / basket / chat | Erreur moy. (MAE) | Inférence WASM 1 thread | Pic mémoire natif |
-  |---|---|---|---|---|---|---|---|
-  | [`onnx-community/ormbg-ONNX`](https://huggingface.co/onnx-community/ormbg-ONNX) (`034e2d88`, base [`schirrmacher/ormbg`](https://huggingface.co/schirrmacher/ormbg)) | Apache-2.0 (en-tête de la fiche, et fiche d'origine) | 168 Mo (aussi fp16 84 Mo, uint8 42 Mo) | 1024 | 0,996 / 0,994 / 0,992 | 0,0006–0,0014 | 13–16 s | 735 Mo |
-  | [`BritishWerewolf/IS-Net`](https://huggingface.co/BritishWerewolf/IS-Net) (`9783722d`, IS-Net/DIS) | Apache-2.0 ("licensed under the Apache License 2.0 to match the original IS-Net model") | 170 Mo | 1024 | 0,996 / 0,997 / **0,693** | 0,0006–0,041 | 14–15 s | 823 Mo |
-  | [`Xenova/modnet`](https://huggingface.co/Xenova/modnet) (`fa2fa546`) | Apache-2.0 (en-tête de la fiche) | 25 Mo (aussi uint8 6 Mo) | 512 | 0,996 / 0,996 / **0,058** | 0,0007–0,086 | 1,3–1,7 s | 215 Mo |
-
-  Lecture : **ormbg** est le seul à dépasser IoU 0,97 sur les 3 images → candidat recommandé pour le
-  repli WASM ordinateur. Limites : ormbg a été entraîné sur des humains synthétiques (la fiche dit qu'il a
-  du mal sur de vraies photos), et nos 3 images de test sont des silhouettes unies sur fond uni (trop
-  faciles) → il faut valider sur de vraies photos avant de conclure. MODNet est réservé aux portraits
-  (rate le chat). IS-Net est un portage tiers (pas un dépôt officiel). Écarté : `liuyulvv/InSPyReNet_*`
-  (licence seulement en tag, fiche vide).
-  **Mobile sans WebGPU (iOS Safari : pas de Memory64, peu de mémoire)** : seule l'option c s'applique.
-  MODNet (25 Mo, ~215 Mo de pic) est le plus réaliste pour la mémoire, mais seulement pour les portraits ;
-  ormbg (~735 Mo de pic natif, plus en WASM) est à tester sur un vrai iPhone.
+- **(Mémoire WASM) Décision : WASM → ormbg ; WebGPU garde BiRefNet_lite.** Options évaluées :
+  a. wasm64 — écartée (aucun build wasm64 dans `onnxruntime-web@1.31.0-dev.20260914`) ;
+  b. résolution réduite — écartée (entrée du modèle statique `[1,3,1024,1024]`) ;
+  c. modèle plus léger — règle fixée : **meilleur IoU moyen sur 20 vraies photos, à condition de tenir
+  sous 4 Go** → ormbg (0,684) devant IS-Net (0,665) ; MODNet hors course (portraits seulement, 0,983 sur
+  les 4 portraits). Voir le tableau dans Mesures.
+  **Limite connue, à garder en tête** : ormbg est excellent sur les personnes (0,98–1,00) mais faible sur
+  les objets, verres, signatures et scènes chargées (IoU parfois < 0,1). Sur un appareil sans WebGPU, la
+  qualité sera donc nettement inférieure à BiRefNet pour ces catégories. Pistes futures : modèle WASM
+  dédié par catégorie, ou BiRefNet à résolution réduite si un export ONNX à entrée dynamique avec licence
+  claire existe.
+- **(Mémoire WASM) Un seul endroit à changer** : `src/core/model/models.json` > `engines.wasm`
+  (ou `engines.webgpu`). `fetch-model.mjs` télécharge automatiquement les modèles référencés ; le worker
+  détecte seul le nom d'entrée/sortie et si la sortie est en logits (sigmoid) ou déjà en [0,1].
+- **(Mémoire WASM) Mobile sans WebGPU (iOS Safari < 26 : pas de Memory64, peu de mémoire)** : c'est le
+  chemin ormbg (pic ~1,2 Go en wasm32) — à valider sur un vrai iPhone ; MODNet (0,41 Go, 25 Mo) reste un
+  repli possible pour les portraits si la mémoire ne suffit pas.
+- **(Mémoire WASM) Photos de test** : Unsplash, Pexels et Wikimedia sont bloqués dans ce bac à sable ;
+  20 photos **Pexels** récupérées via le miroir HF `ujin-song/pexels-image-60k` qui conserve l'identifiant
+  Pexels de chaque photo (licence Pexels ; liens d'origine dans `tests/images/SOURCES.md`, à revérifier à
+  la main).
+- **(Mémoire WASM) `/models/` servi en `Cache-Control: no-store, no-transform`** (dev/preview :
+  `vite.config.ts`) : le modèle est déjà persisté dans OPFS ; le cache HTTP en gardait une 2e copie et
+  Chromium échouait (`ERR_CACHE_WRITE_FAILURE`) car transformers.js lit le fichier deux fois en parallèle
+  (un GET "existe-t-il ?" dont le corps n'est jamais lu, puis le vrai GET). Le serveur `vite preview`
+  compresse quand même en gzip (pas de `Content-Length` → pas de pourcentage de progression en local) :
+  sans effet en production (à régler dans `_headers`, phase 4).
+- **(Mémoire WASM) Playwright** : `cdn.playwright.dev` est bloqué ici (impossible d'installer le Chromium
+  de la version 1.64.1). Variable optionnelle `PLAYWRIGHT_CHROMIUM_PATH` (config + `webgpu.spec.ts`) :
+  `PLAYWRIGHT_CHROMIUM_PATH=/opt/pw-browsers/chromium npx playwright test` fait tourner les 12 tests ici ;
+  sans la variable, comportement standard.
+- **(Mémoire WASM) Panneau de résultat** : attributs `data-state`/`data-run`/`data-engine`/`data-elapsed-ms`
+  (sans effet visuel) pour que les tests lisent le bon résultat (un test lisait l'état "done" du passage
+  précédent).
 
 ## Prochaine étape
-1. **Valider (ou refuser) un modèle de repli WASM** dans le comparatif ci-dessus (Décisions). Ensuite :
-   l'intégrer (choix de modèle selon le moteur), test Playwright "masque réel en WASM", captures
-   `tests/screenshots/wasm-result-*.png`, mesures dans Chromium.
-2. Valider WebGPU sur vraie machine, puis étape 5 : pipeline pleine résolution + exports.
+Phase 2 : pipeline pleine résolution + écran de résultat (remplace l'aperçu provisoire) + exports.
+Puis : valider WebGPU sur vraie machine (BiRefNet_lite) et le chemin WASM sur un vrai iPhone.

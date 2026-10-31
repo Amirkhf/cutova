@@ -21,10 +21,23 @@ const SECURITY_HEADERS: Record<string, string> = {
   ].join("; "),
 };
 
+/**
+ * Poids des modèles (`/models/`) : déjà mis en cache de façon persistante dans OPFS par le worker
+ * (src/core/model/opfs-cache.ts). `no-store` évite une 2e copie de ~170 Mo dans le cache HTTP du
+ * navigateur (et l'erreur Chromium `ERR_CACHE_WRITE_FAILURE` observée quand transformers.js lit le
+ * même fichier deux fois en parallèle) ; `no-transform` empêche la compression gzip à la volée,
+ * qui supprime le `Content-Length` (plus de barre de progression) et coûte du CPU pour un binaire
+ * quasi incompressible. Mêmes règles en production : voir public/_headers.
+ */
+export const MODEL_CACHE_CONTROL = "no-store, no-transform";
+
 function securityHeadersMiddleware(): Connect.NextHandleFunction {
-  return (_req, res, next) => {
+  return (req, res, next) => {
     for (const [name, value] of Object.entries(SECURITY_HEADERS)) {
       res.setHeader(name, value);
+    }
+    if (req.url?.startsWith("/models/")) {
+      res.setHeader("Cache-Control", MODEL_CACHE_CONTROL);
     }
     next();
   };

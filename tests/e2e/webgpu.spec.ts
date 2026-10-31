@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { chromiumExecutablePath } from "../../playwright.config.ts";
 
 /**
  * Chemin WebGPU, avec WebGPU logiciel (Dawn + SwiftShader) — sans ces drapeaux,
@@ -10,6 +11,7 @@ import { test, expect } from "@playwright/test";
  */
 test.use({
   launchOptions: {
+    executablePath: chromiumExecutablePath,
     args: ["--enable-unsafe-webgpu", "--enable-features=Vulkan,UseSkiaRenderer", "--use-angle=swiftshader", "--use-gl=swiftshader"],
   },
 });

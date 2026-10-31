@@ -5,7 +5,7 @@
  * le masque en Transferable. Ne connaît rien de l'UI.
  */
 import { AutoModel, AutoProcessor, env, RawImage } from "@huggingface/transformers";
-import { MODEL_INPUT_SIZE, MODEL_REPO_ID } from "../model/model-source.ts";
+import { getModelForEngine } from "../model/model-source.ts";
 import { createOpfsCache } from "../model/opfs-cache.ts";
 import { getWebGpuSupport } from "./webgpu-support.ts";
 import { getEngineLoadPlan, loadWithFallback, type EngineAttempt } from "./engine-selection.ts";
@@ -73,7 +73,10 @@ function reportProgress(info: unknown): void {
 }
 
 async function loadEngine(attempt: EngineAttempt): Promise<LoadedEngine> {
-  const model = await AutoModel.from_pretrained(MODEL_REPO_ID, {
+  // Modèle choisi par moteur dans models.json (WebGPU : BiRefNet_lite ; WASM : modèle plus léger
+  // qui tient sous le plafond mémoire wasm32 de 4 Go — voir context.md > Décisions).
+  const { repoId } = getModelForEngine(attempt.device);
+  const model = await AutoModel.from_pretrained(repoId, {
     device: attempt.device,
     dtype: attempt.dtype,
     local_files_only: true,
@@ -84,7 +87,7 @@ async function loadEngine(attempt: EngineAttempt): Promise<LoadedEngine> {
     // mono-thread, et la variante wasm sans asyncify).
     session_options: attempt.device === "wasm" ? { enableCpuMemArena: false, enableMemPattern: false } : {},
   });
-  const processor = await AutoProcessor.from_pretrained(MODEL_REPO_ID, { local_files_only: true });
+  const processor = await AutoProcessor.from_pretrained(repoId, { local_files_only: true });
   return { kind: attempt.kind, model, processor };
 }
 
@@ -115,7 +118,34 @@ function downgradeToWasm(): Promise<LoadedEngine> {
   return enginePromise;
 }
 
-async function runInference(engine: LoadedEngine, bitmap: ImageBitmap): Promise<{ mask: Uint8Array; engine: LoadedEngine }> {
+interface InferenceOutcome {
+  mask: Uint8Array;
+  width: number;
+  height: number;
+}
+
+/**
+ * Sortie brute du modèle → masque uint8. BiRefNet sort des logits (sigmoid nécessaire) ; ormbg /
+ * IS-Net sortent déjà une probabilité dans [0,1]. On détecte au lieu de configurer par modèle.
+ */
+function toMask(values: Float32Array): Uint8Array {
+  let min = Infinity;
+  let max = -Infinity;
+  for (let i = 0; i < values.length; i++) {
+    const v = values[i]!;
+    if (v < min) min = v;
+    if (v > max) max = v;
+  }
+  const isLogits = min < -1e-3 || max > 1 + 1e-3;
+  const out = new Uint8Array(values.length);
+  for (let i = 0; i < values.length; i++) {
+    const p = isLogits ? 1 / (1 + Math.exp(-values[i]!)) : values[i]!;
+    out[i] = Math.round(255 * p);
+  }
+  return out;
+}
+
+async function runInference(engine: LoadedEngine, bitmap: ImageBitmap): Promise<InferenceOutcome> {
   const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Contexte OffscreenCanvas 2D indisponible");
@@ -123,10 +153,13 @@ async function runInference(engine: LoadedEngine, bitmap: ImageBitmap): Promise<
   const image = RawImage.fromCanvas(canvas);
 
   const { pixel_values } = await engine.processor(image);
-  const { output_image } = await engine.model({ input_image: pixel_values });
-  const maskTensor = output_image[0].sigmoid().mul(255).to("uint8");
-  const mask = new Uint8Array(maskTensor.data as Uint8Array);
-  return { mask, engine };
+  // Nom d'entrée/sortie propre à chaque modèle : on prend la première entrée de la session, et la
+  // sortie `output_image` si elle existe (BiRefNet, IS-Net composite), sinon la première.
+  const session = (engine.model as unknown as { sessions: Record<string, { inputNames: string[]; outputNames: string[] }> }).sessions.model!;
+  const outputs = (await engine.model({ [session.inputNames[0]!]: pixel_values })) as Record<string, { dims: number[]; data: Float32Array }>;
+  const output = outputs.output_image ?? outputs[session.outputNames[0]!]!;
+  const dims = output.dims;
+  return { mask: toMask(output.data), width: dims[dims.length - 1]!, height: dims[dims.length - 2]! };
 }
 
 // File d'attente : une seule inférence à la fois, les suivantes patientent.
@@ -160,7 +193,7 @@ async function processJob(job: RunRequestQueued): Promise<void> {
   try {
     let engine = await ensureEngine();
     const started = performance.now();
-    let outcome: { mask: Uint8Array };
+    let outcome: InferenceOutcome;
     try {
       outcome = await runInference(engine, job.bitmap);
     } catch (err) {
@@ -176,8 +209,8 @@ async function processJob(job: RunRequestQueued): Promise<void> {
         type: "result",
         requestId: job.requestId,
         mask: outcome.mask,
-        width: MODEL_INPUT_SIZE,
-        height: MODEL_INPUT_SIZE,
+        width: outcome.width,
+        height: outcome.height,
         engine: engine.kind,
         elapsedMs,
       },

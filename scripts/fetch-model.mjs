@@ -1,27 +1,36 @@
 #!/usr/bin/env node
 /**
- * Télécharge les poids du modèle (+ fichiers de config) dans public/models/, avec
- * vérification SHA-256. public/models/ est gitignoré : ce script doit tourner avant
- * `npm run dev` / `npm run build` sur chaque poste et en CI.
+ * Télécharge les poids + fichiers de config des modèles utilisés par un moteur
+ * (`src/core/model/models.json` > `engines`) dans public/models/<repoId>/, avec vérification
+ * SHA-256. public/models/ est gitignoré : ce script doit tourner avant `npm run dev` /
+ * `npm run build` sur chaque poste et en CI.
  *
  * Usage :
- *   node scripts/fetch-model.mjs              # télécharge fp32 + fp16
- *   node scripts/fetch-model.mjs --only=fp32  # une seule variante
+ *   node scripts/fetch-model.mjs                 # tous les modèles utilisés, toutes variantes
+ *   node scripts/fetch-model.mjs --only=fp32     # une seule variante de poids
+ *   node scripts/fetch-model.mjs --model=ormbg   # un seul modèle (clé de models.json)
  *   MODEL_BASE_URL=https://cdn.example.com/models node scripts/fetch-model.mjs
+ *     (MODEL_BASE_URL remplace https://huggingface.co ; les fichiers y sont cherchés sous
+ *      <MODEL_BASE_URL>/<repoId>/<chemin>, même arborescence que public/models/)
  */
 import { createHash } from "node:crypto";
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { MODEL_AUX_FILES, MODEL_REPO_ID, MODEL_REVISION, MODEL_WEIGHT_FILES } from "./model-manifest.mjs";
+import { MODELS, USED_MODEL_IDS } from "./model-manifest.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..");
-const MODEL_BASE_URL = process.env.MODEL_BASE_URL ?? `https://huggingface.co/${MODEL_REPO_ID}/resolve/${MODEL_REVISION}`;
-const DEST_ROOT = path.join(REPO_ROOT, "public", "models", MODEL_REPO_ID);
 
-const onlyArg = process.argv.find((a) => a.startsWith("--only="));
-const only = onlyArg ? onlyArg.slice("--only=".length) : null;
+const arg = (name) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3) ?? null;
+const only = arg("only");
+const onlyModel = arg("model");
+
+function baseUrlFor(model) {
+  return process.env.MODEL_BASE_URL
+    ? `${process.env.MODEL_BASE_URL.replace(/\/$/, "")}/${model.repoId}`
+    : `https://huggingface.co/${model.repoId}/resolve/${model.revision}`;
+}
 
 function sha256(buffer) {
   return createHash("sha256").update(buffer).digest("hex");
@@ -49,13 +58,13 @@ async function downloadFile(url, destPath) {
   return buffer;
 }
 
-async function fetchWeightFile(file) {
-  const destPath = path.join(DEST_ROOT, file.path);
+async function fetchWeightFile(model, file) {
+  const destPath = path.join(REPO_ROOT, "public", "models", model.repoId, file.path);
   if (await existingFileMatches(destPath, file.sha256, file.size)) {
     console.log(`[skip] ${file.path} déjà présent et vérifié (${file.dtype})`);
     return;
   }
-  const url = `${MODEL_BASE_URL}/${file.path}`;
+  const url = `${baseUrlFor(model)}/${file.path}`;
   console.log(`[get]  ${file.path} (${file.dtype}, ${(file.size / 1_048_576).toFixed(1)} Mo) depuis ${url}`);
   const buffer = await downloadFile(url, destPath);
   const actualSha256 = sha256(buffer);
@@ -71,25 +80,25 @@ async function fetchWeightFile(file) {
   console.log(`[ok]   ${file.path} vérifié (SHA-256 correspond)`);
 }
 
-async function fetchAuxFile(name) {
-  const destPath = path.join(DEST_ROOT, name);
-  const url = `${MODEL_BASE_URL}/${name}`;
+async function fetchAuxFile(model, name) {
+  const destPath = path.join(REPO_ROOT, "public", "models", model.repoId, name);
+  const url = `${baseUrlFor(model)}/${name}`;
   console.log(`[get]  ${name} depuis ${url}`);
   await downloadFile(url, destPath);
 }
 
 async function main() {
-  const weightFiles = only ? MODEL_WEIGHT_FILES.filter((f) => f.dtype === only) : MODEL_WEIGHT_FILES;
-  if (only && weightFiles.length === 0) {
-    throw new Error(`--only=${only} ne correspond à aucune variante connue (fp32, fp16).`);
+  const ids = onlyModel ? [onlyModel] : USED_MODEL_IDS;
+  for (const id of ids) {
+    const model = MODELS[id];
+    if (!model) throw new Error(`--model=${id} : modèle inconnu dans models.json.`);
+    const weightFiles = Object.entries(model.weights)
+      .filter(([dtype]) => !only || dtype === only)
+      .map(([dtype, file]) => ({ dtype, ...file }));
+    for (const name of model.aux) await fetchAuxFile(model, name);
+    for (const file of weightFiles) await fetchWeightFile(model, file);
+    console.log(`[ok]   ${id} : public/models/${model.repoId}`);
   }
-  for (const name of MODEL_AUX_FILES) {
-    await fetchAuxFile(name);
-  }
-  for (const file of weightFiles) {
-    await fetchWeightFile(file);
-  }
-  console.log(`Terminé. Fichiers dans ${DEST_ROOT}`);
 }
 
 main().catch((err) => {
