@@ -115,3 +115,61 @@ test("mobile : l'écran de résultat tient dans 360 px sans défilement horizont
   expect(overflow).toBeLessThanOrEqual(0);
   await reviewShot(page, "phase2-result-mobile");
 });
+
+/** Point (fractions de l'image) → coordonnées écran dans l'aperçu (object-fit: contain). */
+async function screenPoint(page: Page, u: number, v: number): Promise<{ x: number; y: number }> {
+  return page.locator(".result-canvas").evaluate(
+    (el, [fu, fv]) => {
+      const c = el as HTMLCanvasElement;
+      const box = c.getBoundingClientRect();
+      const scale = Math.min(box.width / c.width, box.height / c.height);
+      const w = c.width * scale;
+      const h = c.height * scale;
+      return { x: box.left + (box.width - w) / 2 + fu! * w, y: box.top + (box.height - h) / 2 + fv! * h };
+    },
+    [u, v],
+  );
+}
+
+async function exportedAlpha(page: Page, points: [number, number][]): Promise<number[]> {
+  const png = await download(page, "png");
+  const alpha = await sharp(png.data).extractChannel(3).raw().toBuffer();
+  return points.map(([x, y]) => alpha[y * 2000 + x]!);
+}
+
+test("gomme / restauration : appliquées à l'export pleine résolution, annulables", async ({ page }) => {
+  await processPhoto(page);
+  // Chiot (opaque) en (700, 600) ; mur (transparent) en (1900, 66) sur l'image 2000×1332.
+  const subject: [number, number] = [700, 600];
+  const wall: [number, number] = [1900, 66];
+  const [subjectBefore, wallBefore] = await exportedAlpha(page, [subject, wall]);
+  expect(subjectBefore).toBeGreaterThan(200);
+  expect(wallBefore).toBeLessThan(40);
+
+  // Gomme : un trait horizontal sur le chiot.
+  await page.getByRole("radio", { name: "Erase" }).check();
+  await expect(page.locator(".result-panel")).toHaveAttribute("data-tool", "erase");
+  const a = await screenPoint(page, 0.33, 0.45);
+  const b = await screenPoint(page, 0.37, 0.45);
+  await page.mouse.move(a.x, a.y);
+  await page.mouse.down();
+  await page.mouse.move(b.x, b.y, { steps: 5 });
+  await page.mouse.up();
+  await expect(page.locator(".result-panel")).toHaveAttribute("data-edits", "1");
+  expect((await exportedAlpha(page, [subject]))[0]).toBe(0);
+
+  // Annuler : le chiot revient.
+  await page.getByRole("button", { name: "Undo" }).click();
+  expect((await exportedAlpha(page, [subject]))[0]).toBeGreaterThan(200);
+
+  // Restaurer : un clic sur le mur le rend opaque.
+  await page.getByRole("radio", { name: "Restore" }).check();
+  const w = await screenPoint(page, 0.95, 0.05);
+  await page.mouse.click(w.x, w.y);
+  expect((await exportedAlpha(page, [wall]))[0]).toBe(255);
+  await reviewShot(page, "p0-touchup-restore");
+
+  // Réinitialiser : retour au masque d'origine.
+  await page.getByRole("button", { name: "Reset" }).click();
+  expect((await exportedAlpha(page, [wall]))[0]).toBeLessThan(40);
+});

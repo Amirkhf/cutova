@@ -63,6 +63,13 @@ export const fr: Dictionary = {
     downloadSize: (width, height) => `Pleine résolution : ${width} × ${height} px`,
     newImage: "Nouvelle image",
     finishing: "Affinage des bords en pleine résolution…",
+    touchUpLegend: "Retouche",
+    toolCompare: "Comparer",
+    toolErase: "Gomme",
+    toolRestore: "Restaurer",
+    brushSize: "Taille du pinceau",
+    undo: "Annuler",
+    resetEdits: "Réinitialiser",
   },
   common: {
     skipToContent: "Aller au contenu",

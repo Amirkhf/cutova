@@ -19,6 +19,8 @@ export interface CompareSliderHandle {
   /** Calque "après" (pour y changer le fond : damier, blanc, couleur). */
   afterLayer: HTMLElement;
   setSplit: (percent: number) => void;
+  /** `false` = le cadre sert à autre chose (pinceau) : le glisser ne déplace plus le curseur. */
+  setSliderEnabled: (enabled: boolean) => void;
 }
 
 export function createCompareSlider({ id, label, beforeLabel, afterLabel, before, after }: CompareSliderOptions): CompareSliderHandle {
@@ -76,7 +78,9 @@ export function createCompareSlider({ id, label, beforeLabel, afterLabel, before
     return ((clientX - rect.left) / rect.width) * 100;
   };
   let dragging = false;
+  let sliderEnabled = true;
   frame.addEventListener("pointerdown", (event) => {
+    if (!sliderEnabled) return;
     dragging = true;
     frame.setPointerCapture(event.pointerId);
     setSplit(percentFromClientX(event.clientX));
@@ -92,5 +96,12 @@ export function createCompareSlider({ id, label, beforeLabel, afterLabel, before
   frame.addEventListener("pointerup", stop);
   frame.addEventListener("pointercancel", stop);
 
-  return { element: frame, afterLayer, setSplit };
+  const setSliderEnabled = (enabled: boolean) => {
+    sliderEnabled = enabled;
+    dragging = false;
+    slider.disabled = !enabled;
+    frame.classList.toggle("compare-frame--editing", !enabled);
+  };
+
+  return { element: frame, afterLayer, setSplit, setSliderEnabled };
 }

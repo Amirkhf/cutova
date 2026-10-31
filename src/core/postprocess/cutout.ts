@@ -1,6 +1,7 @@
 /**
  * Pipeline pleine résolution (navigateur) : masque du modèle (ex. 1024×1024, image étirée) →
- * masque à la taille d'origine, bords affinés par filtre guidé, sujet détouré sur fond transparent.
+ * masque affiné par filtre guidé à la résolution de travail (`buildCutout`), puis sujet détouré à la
+ * taille voulue (`composeCutout` : aperçu ou export pleine résolution).
  *
  * Mémoire : l'affinage se fait à une "résolution de travail" plafonnée (`REFINE_MAX_SIDE`), puis le
  * masque affiné est agrandi par le canvas (interpolation GPU/Skia) jusqu'à la pleine résolution.
@@ -13,8 +14,12 @@ import { guidedFilter, luminance } from "./guided-filter.ts";
 export const REFINE_MAX_SIDE = 2048;
 
 export interface CutoutResult {
-  /** Sujet pleine résolution, fond transparent. */
-  canvas: OffscreenCanvas;
+  /**
+   * Masque affiné à la résolution de travail, porté par le canal alpha d'un canvas : c'est lui que
+   * la gomme / restauration modifie (src/core/postprocess/brush.ts) avant composition.
+   */
+  mask: OffscreenCanvas;
+  /** Taille de l'image d'origine (= taille de l'export). */
   width: number;
   height: number;
   refineMs: number;
@@ -84,15 +89,22 @@ export function buildCutout(
     refined = guidedFilter(guide, refined, work.width, work.height, refineParams(work.width, work.height));
   }
 
-  // 3. Pleine résolution : image d'origine, puis masque affiné agrandi en "destination-in".
+  return { mask: maskToAlphaCanvas(refined, work.width, work.height), width, height, refineMs: performance.now() - started };
+}
+
+/**
+ * Composition : `image` dessinée à la taille `width`×`height`, puis masque agrandi en
+ * "destination-in" (interpolation lissée du canvas). Sert à l'aperçu (petite taille) comme à
+ * l'export (pleine résolution, `width`/`height` = taille de l'image).
+ */
+export function composeCutout(image: CanvasImageSource, mask: OffscreenCanvas, width: number, height: number): OffscreenCanvas {
   const canvas = new OffscreenCanvas(width, height);
   const ctx = context2d(canvas);
-  ctx.drawImage(image, 0, 0);
-  ctx.globalCompositeOperation = "destination-in";
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(maskToAlphaCanvas(refined, work.width, work.height), 0, 0, width, height);
+  ctx.drawImage(image, 0, 0, width, height);
+  ctx.globalCompositeOperation = "destination-in";
+  ctx.drawImage(mask, 0, 0, width, height);
   ctx.globalCompositeOperation = "source-over";
-
-  return { canvas, width, height, refineMs: performance.now() - started };
+  return canvas;
 }

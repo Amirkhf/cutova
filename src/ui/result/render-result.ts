@@ -10,7 +10,8 @@
 import type { Dictionary } from "../../i18n/index.ts";
 import { inferenceEngine } from "../../core/inference/engine-client.ts";
 import { MODEL_INPUT_SIZE } from "../../core/model/model-source.ts";
-import { buildCutout, workingSize } from "../../core/postprocess/cutout.ts";
+import { buildCutout, composeCutout, workingSize } from "../../core/postprocess/cutout.ts";
+import { brushRadius, containedRect, MaskHistory, paintStroke, toMaskPoint, type BrushMode } from "../../core/postprocess/brush.ts";
 import { backgroundFill, exportCanvas, exportFileName, type Background, type ExportFormat } from "../../core/export/export.ts";
 import { IMAGE_SELECTED_EVENT, type ImageSelectedDetail } from "../home/events.ts";
 import { createCompareSlider } from "./compare-slider.ts";
@@ -151,6 +152,52 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
     },
   );
 
+  // Retouche : gomme / restauration au pinceau sur le masque.
+  type Tool = "compare" | BrushMode;
+  let tool: Tool = "compare";
+  const touchUpGroup = radioGroup<Tool>(
+    "result-tool",
+    dict.result.touchUpLegend,
+    [
+      { value: "compare", label: dict.result.toolCompare },
+      { value: "erase", label: dict.result.toolErase },
+      { value: "restore", label: dict.result.toolRestore },
+    ],
+    "compare",
+    (value) => {
+      tool = value;
+      const editing = value !== "compare";
+      compare.setSliderEnabled(!editing);
+      // En retouche, le résultat occupe tout le cadre (curseur à 0 %).
+      compare.setSplit(editing ? 0 : 50);
+      section.dataset.tool = value;
+    },
+  );
+  const brushLabel = document.createElement("label");
+  brushLabel.className = "result-brush-size";
+  const brushText = document.createElement("span");
+  brushText.textContent = dict.result.brushSize;
+  const brushInput = document.createElement("input");
+  brushInput.type = "range";
+  brushInput.min = "1";
+  brushInput.max = "100";
+  brushInput.value = "20";
+  brushLabel.append(brushText, brushInput);
+  const undoButton = document.createElement("button");
+  undoButton.type = "button";
+  undoButton.className = "btn btn-secondary";
+  undoButton.textContent = dict.result.undo;
+  undoButton.disabled = true;
+  const resetButton = document.createElement("button");
+  resetButton.type = "button";
+  resetButton.className = "btn btn-secondary";
+  resetButton.textContent = dict.result.resetEdits;
+  resetButton.disabled = true;
+  const touchUpActions = document.createElement("div");
+  touchUpActions.className = "result-touchup-actions";
+  touchUpActions.append(undoButton, resetButton);
+  touchUpGroup.fieldset.append(brushLabel, touchUpActions);
+
   const size = document.createElement("p");
   size.className = "result-size";
 
@@ -172,7 +219,7 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
 
   const controls = document.createElement("div");
   controls.className = "result-controls";
-  controls.append(backgroundGroup.fieldset, formatGroup.fieldset, jpgNote, size, actions);
+  controls.append(touchUpGroup.fieldset, backgroundGroup.fieldset, formatGroup.fieldset, jpgNote, size, actions);
 
   const viewer = document.createElement("div");
   viewer.className = "result-viewer";
@@ -186,15 +233,99 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
     status.textContent = total > 0 ? dict.result.loadingModel(Math.round((loaded / total) * 100)) : dict.result.preparingModel;
   });
 
-  let cutout: OffscreenCanvas | null = null;
+  // Image d'origine (gardée ouverte tant que le résultat est affiché) + masque affiné éditable.
+  let full: ImageBitmap | null = null;
+  let mask: OffscreenCanvas | null = null;
+  let initialMask: ImageBitmap | null = null;
+  const history = new MaskHistory();
   let fileName = "image";
   let currentJob = 0;
 
+  function releaseImage(): void {
+    full?.close();
+    initialMask?.close();
+    full = null;
+    initialMask = null;
+    mask = null;
+    history.clear();
+    undoButton.disabled = true;
+    resetButton.disabled = true;
+  }
+
+  /** Aperçu "après" = composition image + masque à la taille de l'aperçu. */
+  function renderAfter(): void {
+    if (!full || !mask) return;
+    const preview = workingSize(full.width, full.height, PREVIEW_MAX_SIDE);
+    drawPreview(canvas, composeCutout(full, mask, preview.width, preview.height), preview.width, preview.height);
+  }
+
+  // Pinceau : coordonnées écran → masque (l'aperçu est affiché en object-fit: contain).
+  let stroke: { last: { x: number; y: number } } | null = null;
+  function maskPointFor(event: PointerEvent): { x: number; y: number } | null {
+    if (!mask) return null;
+    const box = canvas.getBoundingClientRect();
+    const image = containedRect({ x: box.left, y: box.top, width: box.width, height: box.height }, canvas.width, canvas.height);
+    return toMaskPoint(event.clientX, event.clientY, image, mask.width, mask.height);
+  }
+  function paintTo(point: { x: number; y: number }, from: { x: number; y: number }): void {
+    if (!mask || tool === "compare") return;
+    const ctx = mask.getContext("2d");
+    if (!ctx) return;
+    paintStroke(ctx, from, point, brushRadius(Number(brushInput.value), mask.width, mask.height), tool);
+    renderAfter();
+  }
+  compare.element.addEventListener("pointerdown", (event) => {
+    if (tool === "compare" || !mask || section.dataset.state !== "done") return;
+    const point = maskPointFor(event);
+    if (!point) return;
+    event.preventDefault();
+    compare.element.setPointerCapture(event.pointerId);
+    // Instantané AVANT de peindre (annulation), sans bloquer le premier point.
+    void history.push(mask).then(() => {
+      undoButton.disabled = false;
+    });
+    resetButton.disabled = false;
+    stroke = { last: point };
+    paintTo(point, point);
+  });
+  compare.element.addEventListener("pointermove", (event) => {
+    if (!stroke) return;
+    const point = maskPointFor(event);
+    if (!point) return;
+    paintTo(point, stroke.last);
+    stroke.last = point;
+  });
+  const endStroke = () => {
+    if (stroke) section.dataset.edits = String(Number(section.dataset.edits ?? 0) + 1);
+    stroke = null;
+  };
+  compare.element.addEventListener("pointerup", endStroke);
+  compare.element.addEventListener("pointercancel", endStroke);
+
+  undoButton.addEventListener("click", () => {
+    if (mask && history.undo(mask)) renderAfter();
+    undoButton.disabled = history.size === 0;
+  });
+  resetButton.addEventListener("click", () => {
+    if (!mask || !initialMask) return;
+    const ctx = mask.getContext("2d");
+    if (!ctx) return;
+    ctx.save();
+    ctx.globalCompositeOperation = "copy";
+    ctx.drawImage(initialMask, 0, 0);
+    ctx.restore();
+    history.clear();
+    undoButton.disabled = true;
+    resetButton.disabled = true;
+    renderAfter();
+  });
+
   downloadButton.addEventListener("click", async () => {
-    if (!cutout) return;
+    if (!full || !mask) return;
     downloadButton.disabled = true;
     try {
-      const blob = await exportCanvas(cutout, format, background);
+      // Pleine résolution, masque retouché compris.
+      const blob = await exportCanvas(composeCutout(full, mask, full.width, full.height), format, background);
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
@@ -227,18 +358,18 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
     section.dataset.run = String(Number(section.dataset.run ?? 0) + 1);
     delete section.dataset.engine;
     delete section.dataset.elapsedMs;
-    cutout = null;
+    releaseImage();
     downloadButton.disabled = true;
     size.textContent = "";
     fileName = file.name || "image";
     status.textContent = dict.result.preparingModel;
 
-    let full: ImageBitmap;
+    let image: ImageBitmap;
     let inferenceBitmap: ImageBitmap;
     try {
       // Image complète (réduite seulement si elle dépasse le budget de pixels de l'appareil) et
       // entrée du modèle (1024×1024 étirée, comme `preprocessor_config.json` le fait).
-      [full, inferenceBitmap] = await Promise.all([
+      [image, inferenceBitmap] = await Promise.all([
         createImageBitmap(file, resizeTo ? { resizeWidth: resizeTo.width, resizeHeight: resizeTo.height, resizeQuality: "high" } : {}),
         createImageBitmap(file, { resizeWidth: MODEL_INPUT_SIZE, resizeHeight: MODEL_INPUT_SIZE, resizeQuality: "high" }),
       ]);
@@ -250,13 +381,13 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
       return;
     }
     if (stale()) {
-      full.close();
+      image.close();
       inferenceBitmap.close();
       return;
     }
 
-    drawPreview(beforeCanvas, full, full.width, full.height);
-    drawPreview(canvas, full, full.width, full.height);
+    drawPreview(beforeCanvas, image, image.width, image.height);
+    drawPreview(canvas, image, image.width, image.height);
     compare.setSplit(50);
     status.textContent = dict.result.running;
 
@@ -267,10 +398,13 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
       // Laisse le navigateur afficher le message avant le calcul pleine résolution (synchrone).
       await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
       if (stale()) return;
-      const built = buildCutout(full, result.mask, result.width, result.height);
+      const built = buildCutout(image, result.mask, result.width, result.height);
       if (stale()) return;
-      cutout = built.canvas;
-      drawPreview(canvas, built.canvas, built.width, built.height);
+      full = image;
+      mask = built.mask;
+      initialMask = await createImageBitmap(built.mask);
+      if (stale()) return;
+      renderAfter();
       size.textContent = dict.result.downloadSize(built.width, built.height);
       status.textContent = dict.result.processingTime(result.elapsedMs + built.refineMs);
       section.dataset.engine = result.engine;
@@ -285,7 +419,8 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
       section.dataset.state = "error";
       status.textContent = dict.result.error;
     } finally {
-      full.close();
+      // Gardée seulement si elle est devenue l'image affichée (retouche + export).
+      if (full !== image) image.close();
     }
   }
 
@@ -296,6 +431,7 @@ export function renderResultPanel({ dict, onNewImage }: ResultPanelOptions): Res
 
   function destroy(): void {
     currentJob++;
+    releaseImage();
     window.removeEventListener(IMAGE_SELECTED_EVENT, onImageSelected);
     unsubscribeProgress();
   }

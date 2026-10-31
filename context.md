@@ -61,9 +61,11 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 - `scripts/model-mirror.mjs` — `r2-commands` (affiche les commandes `wrangler r2 object put`) et
   `serve` (faux R2 local avec CORS, pour `playwright.remote.config.ts` / `tests/e2e-remote/`).
 - `deploy/r2-cors.json` — modèle de règle CORS du bucket R2. `DEPLOY.md` — étapes de déploiement.
-- `src/core/postprocess/` — `guided-filter.ts` (filtre guidé O(N), pur, testé), `cutout.ts` (masque du
-  modèle → résolution de travail ≤ 2048 px → affinage guidé par la luminance → agrandi par le canvas à la
-  pleine résolution, composité en `destination-in` ; jamais de tableau Float32 pleine résolution).
+- `src/core/postprocess/` — `guided-filter.ts` (filtre guidé O(N), pur, testé), `cutout.ts`
+  (`buildCutout` : masque du modèle → résolution de travail ≤ 2048 px → affinage guidé → masque dans le
+  canal alpha d'un canvas ; `composeCutout` : image + masque agrandi en `destination-in`, à la taille de
+  l'aperçu ou de l'export ; jamais de tableau Float32 pleine résolution), `brush.ts` (gomme/restauration :
+  coordonnées écran → masque, traits de pinceau, historique d'annulation par instantanés ImageBitmap).
 - `src/core/export/export.ts` — formats PNG/WebP/JPG, nom de fichier sûr (`<nom>-cutova.<ext>`), fond
   (transparent / blanc / couleur validée `#rrggbb`), JPG transparent → blanc, encodage OffscreenCanvas.
   Export ZIP par lot : pas encore (P1).
@@ -172,7 +174,7 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 | Fond couleur | ✅ | blanc ou couleur au choix (aperçu + export) | fait (phase 2) | P0 |
 | Fond image | ✅ | — | à faire | P1 |
 | Fond flou | ✅ | — | à faire | P1 |
-| Pinceau magique (effacer/restaurer) = notre gomme / restauration | ✅ | — | à faire | P0 |
+| Pinceau magique (effacer/restaurer) = notre gomme / restauration | ✅ | gomme + restauration au pinceau, taille réglable, annuler, réinitialiser ; appliqué à l'export pleine résolution | fait | P0 |
 | Recadrage / redimensionnement | ✅ | — | à faire | P0 |
 | Formats réseaux sociaux | ✅ | — | à faire | P1 |
 | Formats marketplaces (Amazon, eBay, Etsy, Vinted, Shopify) | ✅ | — | à faire | P1 |
@@ -449,7 +451,14 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 - **(Phase 4) Bug de test évité** : `VITE_MODEL_BASE_URL=x cmd1 && cmd2` ne passe la variable qu'à
   `cmd1` ; le serveur de preview n'avait pas la bonne CSP. Corrigé avec l'option `env` de Playwright.
 
+- **(P0 gomme/restauration) Le masque retouché vit à la résolution de travail** (≤ 2048 px, canvas
+  alpha) et l'export recompose image d'origine + masque agrandi au moment du téléchargement : un coup de
+  pinceau ne coûte qu'un redessin de l'aperçu, et l'export reste en pleine résolution. Gomme =
+  `destination-out`, restauration = peinture opaque (restaure l'image d'origine, pas un masque
+  "intelligent"). Annulation : jusqu'à 20 instantanés. En mode retouche, le curseur avant/après est
+  désactivé et le résultat occupe tout le cadre. Pinceau à la souris/au doigt uniquement (pas
+  d'équivalent clavier : action de dessin, limite connue).
+
 ## Prochaine étape
-Fonctionnalités P0 restantes du tableau de parité, une par commit : (1) gomme / restauration (pinceau
-sur le masque), (2) recadrage / redimensionnement. Puis P1. Toujours à valider sur matériel réel :
-WebGPU (BiRefNet_lite) et WASM sur iPhone ; déploiement réel (`DEPLOY.md`).
+P0 restant : recadrage / redimensionnement (puis P1). Toujours à valider sur matériel réel : WebGPU
+(BiRefNet_lite) et WASM sur iPhone ; déploiement réel (`DEPLOY.md`).

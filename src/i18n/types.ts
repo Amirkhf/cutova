@@ -57,6 +57,13 @@ export interface Dictionary {
     downloadSize: (width: number, height: number) => string;
     newImage: string;
     finishing: string;
+    touchUpLegend: string;
+    toolCompare: string;
+    toolErase: string;
+    toolRestore: string;
+    brushSize: string;
+    undo: string;
+    resetEdits: string;
   };
   common: {
     skipToContent: string;

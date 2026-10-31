@@ -206,3 +206,39 @@
   opacity: 0.55;
   cursor: progress;
 }
+
+/* Retouche (gomme / restauration) : le cadre devient une zone de dessin */
+.compare-frame--editing {
+  cursor: crosshair;
+}
+
+.compare-frame--editing .compare-handle,
+.compare-frame--editing .compare-divider,
+.compare-frame--editing .compare-badge {
+  display: none;
+}
+
+.result-brush-size {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.result-brush-size input {
+  flex: 1;
+  accent-color: var(--color-accent);
+  min-height: 44px;
+}
+
+.result-touchup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.result-touchup-actions button {
+  min-height: 44px;
+}
