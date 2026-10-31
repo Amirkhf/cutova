@@ -181,7 +181,7 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 | Formats marketplaces (Amazon, eBay, Etsy, Vinted, Shopify) | ✅ | — | à faire | P1 |
 | Lot + export ZIP | ✅ | — | à faire | P1 |
 | Téléchargement HD | ✅ | PNG/WebP/JPG à la résolution d'origine, gratuit | fait (phase 2) | P0 |
-| Limites fichier/résolution | 22 Mo/fichier, 50 MP max en sortie, aperçu gratuit 0,25 MP | 50 Mo/fichier, pleine résolution gratuite, objectif ≥ 50 MP sur ordinateur (limite iOS : 16,7 MP) | à faire | P0 |
+| Limites fichier/résolution | 22 Mo/fichier, 50 MP max en sortie, aperçu gratuit 0,25 MP | 50 Mo/fichier, pleine résolution gratuite, budget 50 MP sur ordinateur (iOS : 16,7 MP), réduction automatique signalée au-delà | fait (50 MP à vérifier sur matériel réel) | P0 |
 | Coller une image par URL | ✅ | — | à faire | P1 (ouvre `connect-src`/`img-src` — à décider) |
 | Applis ordinateur + Android | ✅ | couvertes par la PWA | à faire | P1 |
 | Extension Photoshop | ✅ | — | plus tard | P2 |
