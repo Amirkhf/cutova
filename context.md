@@ -65,7 +65,8 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   (`buildCutout` : masque du modèle → résolution de travail ≤ 2048 px → affinage guidé → masque dans le
   canal alpha d'un canvas ; `composeCutout` : image + masque agrandi en `destination-in`, à la taille de
   l'aperçu ou de l'export ; jamais de tableau Float32 pleine résolution), `brush.ts` (gomme/restauration :
-  coordonnées écran → masque, traits de pinceau, historique d'annulation par instantanés ImageBitmap).
+  coordonnées écran → masque, traits de pinceau, historique d'annulation par instantanés ImageBitmap),
+  `crop.ts` (boîte englobante du sujet dans le masque, marge, passage masque → image, taille de sortie).
 - `src/core/export/export.ts` — formats PNG/WebP/JPG, nom de fichier sûr (`<nom>-cutova.<ext>`), fond
   (transparent / blanc / couleur validée `#rrggbb`), JPG transparent → blanc, encodage OffscreenCanvas.
   Export ZIP par lot : pas encore (P1).
@@ -175,7 +176,7 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 | Fond image | ✅ | — | à faire | P1 |
 | Fond flou | ✅ | — | à faire | P1 |
 | Pinceau magique (effacer/restaurer) = notre gomme / restauration | ✅ | gomme + restauration au pinceau, taille réglable, annuler, réinitialiser ; appliqué à l'export pleine résolution | fait | P0 |
-| Recadrage / redimensionnement | ✅ | — | à faire | P0 |
+| Recadrage / redimensionnement | ✅ | recadrage sur le sujet (+ marge) et largeur de sortie (rapport conservé, sans agrandissement) | fait | P0 |
 | Formats réseaux sociaux | ✅ | — | à faire | P1 |
 | Formats marketplaces (Amazon, eBay, Etsy, Vinted, Shopify) | ✅ | — | à faire | P1 |
 | Lot + export ZIP | ✅ | — | à faire | P1 |
@@ -192,7 +193,7 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 | Zéro upload (100 % navigateur) | ❌ | oui, vérifié par test réseau | fait | P0 |
 | Ombre portée | ❌ | — | à faire | P2 |
 | Contour / sticker | ❌ | — | à faire | P2 |
-| Recadrage auto avec marge | ❌ | — | à faire | P1 |
+| Recadrage auto avec marge | ❌ | "Recadrer sur le sujet" + marge 0–30 % | fait (avec le P0 recadrage) | P1 |
 | Annuler / rétablir | ❌ | — | à faire | P1 |
 | Curseur avant/après | ❌ | sur l'écran de résultat (clavier + pointeur) | fait (phase 2) | P1 |
 | Collage presse-papiers | ❌ | Ctrl+V sur l'accueil | fait (étape 3) | P1 |
@@ -459,6 +460,14 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   désactivé et le résultat occupe tout le cadre. Pinceau à la souris/au doigt uniquement (pas
   d'équivalent clavier : action de dessin, limite connue).
 
+- **(P0 recadrage) Recadrage = boîte englobante du masque** (alpha > 16) + marge en % du plus grand côté
+  du sujet, calculée sur le masque retouché (la gomme change donc le cadre). Redimensionnement = largeur
+  de sortie, rapport conservé, **jamais d'agrandissement** (aucun détail ajouté ; un champ vide = taille
+  de la région). L'aperçu montre le cadre (zone extérieure assombrie, trait pointillé) ; l'export
+  compose directement la région à la taille demandée (pas d'image pleine taille intermédiaire).
+
 ## Prochaine étape
-P0 restant : recadrage / redimensionnement (puis P1). Toujours à valider sur matériel réel : WebGPU
-(BiRefNet_lite) et WASM sur iPhone ; déploiement réel (`DEPLOY.md`).
+P0 du tableau de parité : tous faits. Suite : P1 dans l'ordre du tableau (détourage voitures/logos à
+évaluer, fond image, fond flou, formats réseaux sociaux / marketplaces, lot + ZIP, annuler/rétablir
+global…). Toujours à valider sur matériel réel : WebGPU (BiRefNet_lite) et WASM sur iPhone ; déploiement
+réel (`DEPLOY.md`).

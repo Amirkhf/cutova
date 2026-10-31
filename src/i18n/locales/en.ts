@@ -69,6 +69,12 @@ export const en: Dictionary = {
     brushSize: "Brush size",
     undo: "Undo",
     resetEdits: "Reset",
+    sizeLegend: "Size",
+    cropOriginal: "Original framing",
+    cropSubject: "Crop to subject",
+    cropMargin: "Margin",
+    outputWidth: "Width (px)",
+    outputSize: (width, height) => `Output: ${width} × ${height} px`,
   },
   common: {
     skipToContent: "Skip to content",

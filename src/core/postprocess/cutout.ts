@@ -9,6 +9,7 @@
  * tampons serait > 1 Go).
  */
 import { guidedFilter, luminance } from "./guided-filter.ts";
+import type { Region } from "./crop.ts";
 
 /** Plus grand côté de la résolution de travail pour l'affinage (≈ 4 MP max). */
 export const REFINE_MAX_SIDE = 2048;
@@ -97,14 +98,18 @@ export function buildCutout(
  * "destination-in" (interpolation lissée du canvas). Sert à l'aperçu (petite taille) comme à
  * l'export (pleine résolution, `width`/`height` = taille de l'image).
  */
-export function composeCutout(image: CanvasImageSource, mask: OffscreenCanvas, width: number, height: number): OffscreenCanvas {
+export function composeCutout(image: ImageBitmap, mask: OffscreenCanvas, width: number, height: number, region?: Region): OffscreenCanvas {
+  // `region` (pixels de l'image) = recadrage ; la même zone est prise dans le masque, à son échelle.
+  const r = region ?? { x: 0, y: 0, width: image.width, height: image.height };
+  const sx = mask.width / image.width;
+  const sy = mask.height / image.height;
   const canvas = new OffscreenCanvas(width, height);
   const ctx = context2d(canvas);
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(image, 0, 0, width, height);
+  ctx.drawImage(image, r.x, r.y, r.width, r.height, 0, 0, width, height);
   ctx.globalCompositeOperation = "destination-in";
-  ctx.drawImage(mask, 0, 0, width, height);
+  ctx.drawImage(mask, r.x * sx, r.y * sy, r.width * sx, r.height * sy, 0, 0, width, height);
   ctx.globalCompositeOperation = "source-over";
   return canvas;
 }

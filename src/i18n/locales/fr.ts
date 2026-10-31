@@ -70,6 +70,12 @@ export const fr: Dictionary = {
     brushSize: "Taille du pinceau",
     undo: "Annuler",
     resetEdits: "Réinitialiser",
+    sizeLegend: "Taille",
+    cropOriginal: "Cadrage d'origine",
+    cropSubject: "Recadrer sur le sujet",
+    cropMargin: "Marge",
+    outputWidth: "Largeur (px)",
+    outputSize: (width, height) => `Sortie : ${width} × ${height} px`,
   },
   common: {
     skipToContent: "Aller au contenu",

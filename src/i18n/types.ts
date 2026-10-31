@@ -64,6 +64,12 @@ export interface Dictionary {
     brushSize: string;
     undo: string;
     resetEdits: string;
+    sizeLegend: string;
+    cropOriginal: string;
+    cropSubject: string;
+    cropMargin: string;
+    outputWidth: string;
+    outputSize: (width: number, height: number) => string;
   };
   common: {
     skipToContent: string;

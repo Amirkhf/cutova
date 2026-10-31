@@ -173,3 +173,46 @@ test("gomme / restauration : appliquées à l'export pleine résolution, annulab
   await page.getByRole("button", { name: "Reset" }).click();
   expect((await exportedAlpha(page, [wall]))[0]).toBeLessThan(40);
 });
+
+test("recadrage sur le sujet (+ marge) et largeur de sortie appliqués à l'export", async ({ page }) => {
+  await processPhoto(page);
+  const panel = page.locator(".result-panel");
+  await expect(panel).toHaveAttribute("data-out-width", "2000");
+
+  // Recadrage sans marge : l'image exportée est plus petite et le sujet touche les bords.
+  await page.getByRole("radio", { name: "Crop to subject" }).check();
+  await page.getByLabel("Margin").fill("0");
+  const cropW = Number(await panel.getAttribute("data-out-width"));
+  const cropH = Number(await panel.getAttribute("data-out-height"));
+  expect(cropW).toBeLessThan(2000);
+  await expect(page.locator(".result-size")).toContainText(`Output: ${cropW} × ${cropH} px`);
+  const cropped = await download(page, "png");
+  const meta = await sharp(cropped.data).metadata();
+  expect([meta.width, meta.height]).toEqual([cropW, cropH]);
+  const alpha = await sharp(cropped.data).extractChannel(3).raw().toBuffer();
+  let left = cropW;
+  let right = -1;
+  for (let y = 0; y < cropH; y++) {
+    for (let x = 0; x < cropW; x++) {
+      if (alpha[y * cropW + x]! > 16) {
+        left = Math.min(left, x);
+        right = Math.max(right, x);
+      }
+    }
+  }
+  expect(left).toBeLessThanOrEqual(3);
+  expect(right).toBeGreaterThanOrEqual(cropW - 4);
+
+  // Largeur de sortie 500 px : rapport conservé.
+  await page.getByLabel("Width (px)").fill("500");
+  await expect(panel).toHaveAttribute("data-out-width", "500");
+  const resized = await download(page, "png");
+  const rmeta = await sharp(resized.data).metadata();
+  expect(rmeta.width).toBe(500);
+  expect(Math.abs(rmeta.height! - Math.round((cropH * 500) / cropW))).toBeLessThanOrEqual(1);
+  await reviewShot(page, "p0-crop-subject");
+
+  // Retour au cadrage d'origine : pleine taille.
+  await page.getByRole("radio", { name: "Original framing" }).check();
+  await expect(panel).toHaveAttribute("data-out-width", "2000");
+});
