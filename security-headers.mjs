@@ -9,10 +9,14 @@
  */
 
 /**
- * `devServer` : serveur de développement Vite uniquement. Il injecte le CSS dans des balises `<style>`
- * (rechargement à chaud) : sans `'unsafe-inline'`, la page s'afficherait sans aucun style. Jamais
- * utilisé pour `vite preview` ni en production, où le CSS est servi en fichiers (`style-src 'self'`).
+ * Nonce du serveur de DÉVELOPPEMENT uniquement (vite.config.ts > `html.cspNonce`). Vite injecte le
+ * CSS dans des balises `<style>` portant ce nonce (rechargement à chaud) ; la CSP de dev autorise ce
+ * nonce et rien d'autre. Valeur fixe : acceptable car jamais servie en preview ni en production, où
+ * le CSS est en fichiers (`style-src 'self'`).
  */
+export const DEV_STYLE_NONCE = "cutova-dev-only";
+
+/** `devServer` : CSP du serveur de dev Vite (styles injectés autorisés par nonce). */
 export function contentSecurityPolicy(modelOrigin = null, { devServer = false } = {}) {
   const extra = modelOrigin ? ` ${modelOrigin}` : "";
   return [
@@ -21,7 +25,7 @@ export function contentSecurityPolicy(modelOrigin = null, { devServer = false } 
     "worker-src 'self' blob:",
     `connect-src 'self'${extra}`,
     "img-src 'self' blob: data:",
-    devServer ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
+    devServer ? `style-src 'self' 'nonce-${DEV_STYLE_NONCE}'` : "style-src 'self'",
     "font-src 'self'",
     "object-src 'none'",
     "base-uri 'self'",

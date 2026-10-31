@@ -63,6 +63,18 @@ Dans la suite, remplace `exemple.com` par ton domaine.
   ```
 
   Attendu : `HTTP/2 200` et `access-control-allow-origin: https://exemple.com`.
+- [ ] Vérifier que les gros fichiers arrivent **avec leur taille** (sinon la barre de progression ne peut
+      pas afficher de pourcentage), même quand le navigateur accepte la compression :
+
+  ```bash
+  curl -s -D - -o /dev/null -H "Accept-Encoding: gzip, br" https://models.exemple.com/onnx-community/ormbg-ONNX/resolve/034e2d884afbab897e10e78fc5bb566b29533fd6/onnx/model.onnx
+  ```
+
+  Attendu : une ligne `content-length: 176116019` et **aucune** ligne `content-encoding: gzip`/`br`.
+  Les commandes d'envoi posent `Cache-Control: no-store, no-transform` sur chaque fichier ;
+  `no-transform` interdit à Cloudflare de les compresser à la volée. Si `content-length` manque quand
+  même : Dashboard → ton domaine → *Rules* → *Compression Rules* → règle « Hostname equals
+  `models.exemple.com` » → *Disable compression*.
 - [ ] Cache au bord du réseau (recommandé) : Dashboard → ton domaine → *Caching* → *Cache Rules* →
       *Create rule* : « Hostname equals `models.exemple.com` » → *Eligible for cache*, *Edge TTL* :
       « Ignore cache-control header and use this TTL » → 1 an. (Le navigateur, lui, ne garde pas de copie

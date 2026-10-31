@@ -1,7 +1,7 @@
 {
   "id": "remove-bg-alternative",
   "type": "article",
-  "$comment": "Comparatif : uniquement des faits listés dans context.md > Parité (limites remove.bg). Pas de date de fermeture de remove.bg tant qu'on n'a pas de source publique à citer (voir context.md > Décisions).",
+  "$comment": "Comparatif : faits listés dans context.md > Parité (limites remove.bg). Date de fermeture du site autonome de remove.bg : source officielle citée (FAQ remove.bg), formulée avec nos mots.",
   "locales": {
     "en": {
       "path": "/remove-bg-alternative/",
@@ -14,17 +14,56 @@
       ],
       "table": {
         "caption": "remove.bg and Cutova compared",
-        "head": ["", "remove.bg", "Cutova"],
+        "head": [
+          "",
+          "remove.bg",
+          "Cutova"
+        ],
         "rows": [
-          ["Where the image is processed", "On remote servers", "In your browser, on your device"],
-          ["Free download", "Preview up to 0.25 megapixels", "Full resolution"],
-          ["Maximum file size", "22 MB", "50 MB"],
-          ["Account required", "For credits and full resolution", "No"],
-          ["Output formats", "PNG, JPG and more", "PNG, WebP, JPG"],
-          ["Works for people, animals, products", "Yes", "Yes"]
+          [
+            "Where the image is processed",
+            "On remote servers",
+            "In your browser, on your device"
+          ],
+          [
+            "Free download",
+            "Preview up to 0.25 megapixels",
+            "Full resolution"
+          ],
+          [
+            "Maximum file size",
+            "22 MB",
+            "50 MB"
+          ],
+          [
+            "Account required",
+            "For credits and full resolution",
+            "No"
+          ],
+          [
+            "Output formats",
+            "PNG, JPG and more",
+            "PNG, WebP, JPG"
+          ],
+          [
+            "Works for people, animals, products",
+            "Yes",
+            "Yes"
+          ]
         ]
       },
       "sections": [
+        {
+          "h2": "remove.bg's standalone site is closing",
+          "paragraphs": [
+            "remove.bg has announced that its standalone website will stop being available on December 1, 2026, at 9:00 a.m. CET. If you relied on it for quick cutouts, Cutova covers the same everyday job, for free and without sending your photos anywhere."
+          ],
+          "source": {
+            "prefix": "Source:",
+            "label": "remove.bg FAQ (official announcement)",
+            "url": "https://www.remove.bg/faq"
+          }
+        },
         {
           "h2": "When Cutova is the better choice",
           "paragraphs": [
@@ -46,9 +85,18 @@
         }
       ],
       "faq": [
-        { "q": "Is Cutova a copy of remove.bg?", "a": "No. Cutova is an independent product built on open-source AI models (MIT and Apache-2.0 licenses). It is not affiliated with remove.bg." },
-        { "q": "Can I use the results commercially?", "a": "Yes. The images you create are yours, and the models Cutova uses are published under licenses that allow commercial use." },
-        { "q": "Is there an API like remove.bg?", "a": "Not yet. An API is planned. For now, Cutova is a web app that works one image at a time." }
+        {
+          "q": "Is Cutova a copy of remove.bg?",
+          "a": "No. Cutova is an independent product built on open-source AI models (MIT and Apache-2.0 licenses). It is not affiliated with remove.bg."
+        },
+        {
+          "q": "Can I use the results commercially?",
+          "a": "Yes. The images you create are yours, and the models Cutova uses are published under licenses that allow commercial use."
+        },
+        {
+          "q": "Is there an API like remove.bg?",
+          "a": "Not yet. An API is planned. For now, Cutova is a web app that works one image at a time."
+        }
       ]
     },
     "fr": {
@@ -62,17 +110,56 @@
       ],
       "table": {
         "caption": "remove.bg et Cutova comparés",
-        "head": ["", "remove.bg", "Cutova"],
+        "head": [
+          "",
+          "remove.bg",
+          "Cutova"
+        ],
         "rows": [
-          ["Où l'image est traitée", "Sur des serveurs distants", "Dans votre navigateur, sur votre appareil"],
-          ["Téléchargement gratuit", "Aperçu jusqu'à 0,25 mégapixel", "Pleine résolution"],
-          ["Taille maximale du fichier", "22 Mo", "50 Mo"],
-          ["Compte nécessaire", "Pour les crédits et la pleine résolution", "Non"],
-          ["Formats de sortie", "PNG, JPG et autres", "PNG, WebP, JPG"],
-          ["Personnes, animaux, produits", "Oui", "Oui"]
+          [
+            "Où l'image est traitée",
+            "Sur des serveurs distants",
+            "Dans votre navigateur, sur votre appareil"
+          ],
+          [
+            "Téléchargement gratuit",
+            "Aperçu jusqu'à 0,25 mégapixel",
+            "Pleine résolution"
+          ],
+          [
+            "Taille maximale du fichier",
+            "22 Mo",
+            "50 Mo"
+          ],
+          [
+            "Compte nécessaire",
+            "Pour les crédits et la pleine résolution",
+            "Non"
+          ],
+          [
+            "Formats de sortie",
+            "PNG, JPG et autres",
+            "PNG, WebP, JPG"
+          ],
+          [
+            "Personnes, animaux, produits",
+            "Oui",
+            "Oui"
+          ]
         ]
       },
       "sections": [
+        {
+          "h2": "Le site autonome de remove.bg ferme",
+          "paragraphs": [
+            "remove.bg a annoncé que son site autonome ne sera plus accessible à partir du 1er décembre 2026 à 9 h (heure de Paris, CET). Si vous l'utilisiez pour vos détourages rapides, Cutova fait le même travail au quotidien, gratuitement et sans envoyer vos photos."
+          ],
+          "source": {
+            "prefix": "Source :",
+            "label": "FAQ de remove.bg (annonce officielle)",
+            "url": "https://www.remove.bg/faq"
+          }
+        },
         {
           "h2": "Quand Cutova est le meilleur choix",
           "paragraphs": [
@@ -94,9 +181,18 @@
         }
       ],
       "faq": [
-        { "q": "Cutova est-il une copie de remove.bg ?", "a": "Non. Cutova est un produit indépendant construit sur des modèles d'IA open source (licences MIT et Apache-2.0). Il n'a aucun lien avec remove.bg." },
-        { "q": "Puis-je utiliser les résultats commercialement ?", "a": "Oui. Les images que vous créez vous appartiennent, et les modèles utilisés par Cutova sont publiés sous des licences qui autorisent l'usage commercial." },
-        { "q": "Y a-t-il une API comme chez remove.bg ?", "a": "Pas encore. Une API est prévue. Pour l'instant, Cutova est une application web qui traite une image à la fois." }
+        {
+          "q": "Cutova est-il une copie de remove.bg ?",
+          "a": "Non. Cutova est un produit indépendant construit sur des modèles d'IA open source (licences MIT et Apache-2.0). Il n'a aucun lien avec remove.bg."
+        },
+        {
+          "q": "Puis-je utiliser les résultats commercialement ?",
+          "a": "Oui. Les images que vous créez vous appartiennent, et les modèles utilisés par Cutova sont publiés sous des licences qui autorisent l'usage commercial."
+        },
+        {
+          "q": "Y a-t-il une API comme chez remove.bg ?",
+          "a": "Pas encore. Une API est prévue. Pour l'instant, Cutova est une application web qui traite une image à la fois."
+        }
       ]
     }
   }

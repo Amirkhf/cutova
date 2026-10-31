@@ -115,6 +115,8 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 - Détail complet des vérifications : voir `LICENSES.md`.
 
 ## Sécurité
+- **Serveur de dev uniquement** : `style-src 'self' 'nonce-cutova-dev-only'` (styles injectés par Vite,
+  voir Décisions) ; preview et production : `style-src 'self'`.
 - **Source unique des en-têtes : `security-headers.mjs`** (racine), utilisée par `vite.config.ts`
   (dev/preview) ET par `scripts/postbuild.mjs`, qui écrit `dist/_headers` (Cloudflare Pages : en-têtes
   sur `/*`, `Cache-Control` long sur `/assets/*`, `no-store, no-transform` sur `/models/*`). En plus de
@@ -234,7 +236,8 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   déclenchés correctement en conditions réelles (pas seulement en test unitaire). L'échec observé est
   un `ShaderHelper` error : *"Too many storage buffers in shader. Current: 11, Max is 10"* —
   limite `maxStorageBuffersPerShaderStage` du backend logiciel SwiftShader, probablement plus haute
-  sur un vrai GPU. **À retester sur du matériel GPU réel avant de tirer une conclusion sur WebGPU.**
+  sur un vrai GPU. **[Infirmé sur un vrai Mac (Chrome) : même erreur, même plafond de 10. Ce n'était
+  pas un artefact de SwiftShader — voir Décisions > "WebGPU : plafond de 10 storage buffers".]**
 - **[Dépassé, voir "Mémoire WASM" ci-dessous]** Le chemin WASM produit désormais un vrai masque (modèle ormbg).
 - Conclusion provisoire : l'infrastructure (sélection de moteur, repli, cache OPFS, téléchargement,
   isolation réseau, affichage d'erreur) fonctionne et est testée ; mais ni WASM ni WebGPU n'ont pu
@@ -422,9 +425,10 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 - **(Phase 3) Repli statique dans `#app`** (h1 + accroche de l'application, remplacés par le rendu JS) et
   sections statiques sous l'application (Comment ça marche, Pourquoi, FAQ, liens vers les guides) :
   lisibles par les robots qui n'exécutent pas JavaScript. CLS mesuré : 0.
-- **(Phase 3) Pas de date de fermeture de remove.bg sur les pages publiques** : l'info est dans
-  Décisions mais sans source publique à citer ; comparatif limité aux limites listées dans Parité, avec
-  mention de marque ("non affilié"). À ajouter avec un lien source si on veut l'utiliser.
+- **(Phase 3, mis à jour) Date de fermeture de remove.bg sur `/remove-bg-alternative/` (EN + FR)** :
+  le site autonome de remove.bg n'est plus accessible à partir du 1er décembre 2026 à 9 h CET. Source
+  officielle citée par un lien sur la page (https://www.remove.bg/faq, `rel="noopener noreferrer
+  external"`), texte reformulé avec nos mots (pas de reprise de leur bandeau). Testé (`seo.spec.ts`).
 - **(Phase 3) robots.txt** : tout autorisé (`/models/` exclu : ce ne sont pas des pages) + autorisation
   explicite des robots d'IA (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User,
   Claude-SearchBot, anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended,
@@ -467,12 +471,48 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   compose directement la région à la taille demandée (pas d'image pleine taille intermédiaire).
 
 - **Bug corrigé (CSS absent en `npm run dev`)** : le serveur de dev Vite injecte le CSS dans des
-  `<style>`, bloqués par `style-src 'self'` → page sans aucun style. La CSP du **serveur de dev
-  uniquement** autorise `'unsafe-inline'` pour les styles (`security-headers.mjs`, option `devServer`) ;
-  preview et production restent stricts (testé). Les tests e2e utilisent le build, d'où le bug non vu.
+  `<style>`, bloqués par `style-src 'self'` → page sans aucun style. Correctif strict : **nonce de dev**
+  (`html.cspNonce` dans vite.config.ts, en mode `serve` seulement ; Vite le pose sur les `<style>` qu'il
+  injecte) et CSP de dev `style-src 'self' 'nonce-cutova-dev-only'` — pas de `'unsafe-inline'`. Preview
+  et production restent `style-src 'self'`. Test `tests/e2e/dev-server.spec.ts` : aucune violation CSP
+  et capture dev = capture preview (écart moyen < 1/255). Serveur de dev ajouté à `playwright.config.ts`
+  (port 5174).
+- **(Mac réel) WebGPU : plafond de 10 storage buffers.** Sur un vrai Mac (Chrome), comme sur
+  SwiftShader, l'adaptateur plafonne `maxStorageBuffersPerShaderStage` à 10 ; un shader de BiRefNet_lite
+  en demande 11 → `OrtRun()` échoue. Aucune option de dtype ni `requiredLimits` ne dépasse le plafond de
+  l'adaptateur (confirmé par d'autres projets : github.com/Muluk-m/ai-image-playground/pull/119,
+  github.com/YoshiRi/cv-playground). Décisions :
+  - Le worker lit les limites et logge `[cutova] GPU limits: maxStorageBuffersPerShaderStage=X,
+    maxStorageBufferBindingSize=Y, maxBufferSize=Z, shader-f16=oui/non`.
+  - `models.json` > `birefnet-lite.webgpu.minStorageBuffersPerShaderStage: 11` ; si l'adaptateur offre
+    moins, **WASM directement, sans tenter WebGPU** (`engine-selection.ts`, testé en unitaire).
+  - Quand WebGPU est tenté, nous créons le GPUDevice avec **toutes les limites maximales de
+    l'adaptateur** + `shader-f16`, et le passons à ONNX Runtime (`env.backends.onnx.webgpu.device`).
+  - `?webgpu=force` dans l'URL : tente WebGPU malgré les limites (diagnostic sur matériel réel, tests).
+  - Version d'onnxruntime-web **inchangée** (1.31.0-dev, celle que transformers.js 4.3.2 fixe
+    exactement) : la limite vient de l'adaptateur, pas d'ORT ; la stable 1.31.1 demanderait un
+    `overrides` npm (deux copies d'ORT ou décalage JS/binaire) sans bénéfice démontré.
+  - Conséquence : dans Chrome actuel, BiRefNet_lite (WebGPU) ne tourne quasiment jamais ; la plupart
+    des visiteurs auront ormbg (WASM). Piste : essayer ormbg en WebGPU (plus rapide) si ses shaders
+    tiennent sous 10.
+- **(Mac réel) Bug corrigé : le repli WASM réexécutait l'erreur WebGPU.** Cause : transformers.js
+  enchaîne toutes les exécutions d'un worker sur une promesse globale (`webInferenceChain =
+  webInferenceChain.then(run)`, idem `webInitChain` pour les sessions) ; après un rejet, chaque appel
+  suivant renvoie la même erreur sans s'exécuter — la session ormbg (bien créée avec
+  `executionProviders: ['wasm']`) n'était jamais lancée. Correctif : le worker rend l'image au thread
+  principal (`fallback`), qui **remplace le worker par un worker neuf en WASM forcé** et relance la même
+  requête ; tout worker qui a renvoyé une erreur est aussi remplacé avant l'image suivante
+  (`engine-client.ts`). Fournisseur d'exécution explicite et loggé à chaque chargement. Testé sur
+  SwiftShader (`webgpu.spec.ts`) : sans paramètre → WASM direct ; `?webgpu=force` → échec WebGPU → worker
+  neuf → `fournisseur d'exécution : wasm` → vrai masque.
+- **(Mac réel) `Content-Length` des modèles** : le serveur statique de `vite preview` compressait les
+  `.onnx` en gzip (sans `Content-Length` → "Unable to determine content-length", pas de pourcentage).
+  `/models/` est désormais servi par notre middleware (vite.config.ts, dev : `public/models`, preview :
+  `dist/models`) avec `Content-Length`, `Content-Encoding: identity` et `no-store, no-transform`. Testé
+  (`inference.spec.ts`, et faux R2 dans `tests/e2e-remote/`). R2 : `no-transform` posé à l'envoi +
+  vérification `curl` dans DEPLOY.md (règle de compression à désactiver si besoin).
 
 ## Prochaine étape
-P0 du tableau de parité : tous faits. Suite : P1 dans l'ordre du tableau (détourage voitures/logos à
-évaluer, fond image, fond flou, formats réseaux sociaux / marketplaces, lot + ZIP, annuler/rétablir
-global…). Toujours à valider sur matériel réel : WebGPU (BiRefNet_lite) et WASM sur iPhone ; déploiement
-réel (`DEPLOY.md`).
+Revérifier sur le vrai Mac (build preview) : ligne `[cutova] GPU limits`, WASM direct, temps affiché.
+Puis : essayer ormbg sur WebGPU quand BiRefNet ne passe pas (plus rapide que WASM si ses shaders
+tiennent sous 10) ; P1 du tableau de parité ; WASM sur iPhone ; déploiement réel (`DEPLOY.md`).

@@ -17,8 +17,9 @@ describe("security-headers", () => {
     expect(contentSecurityPolicy()).toContain("connect-src 'self';");
   });
 
-  it("styles inline autorisés uniquement pour le serveur de dev (CSS injecté par Vite)", () => {
-    expect(contentSecurityPolicy(null, { devServer: true })).toContain("style-src 'self' 'unsafe-inline'");
+  it("styles injectés par Vite autorisés par nonce, uniquement pour le serveur de dev", () => {
+    expect(contentSecurityPolicy(null, { devServer: true })).toContain("style-src 'self' 'nonce-cutova-dev-only'");
+    expect(contentSecurityPolicy(null, { devServer: true })).not.toContain("unsafe-inline");
     expect(contentSecurityPolicy()).toContain("style-src 'self';");
     expect(cloudflareHeadersFile()).not.toContain("unsafe-inline");
   });

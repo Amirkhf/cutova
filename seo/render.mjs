@@ -102,10 +102,14 @@ export function faqHtml(title, faq) {
   return `<section class="seo-section seo-faq" aria-labelledby="faq-title"><h2 id="faq-title">${esc(title)}</h2>\n${items}\n</section>`;
 }
 
-function sectionHtml({ h2, paragraphs = [], list = [] }) {
+function sectionHtml({ h2, paragraphs = [], list = [], source = null }) {
   const ps = paragraphs.map((p) => `<p>${esc(p)}</p>`).join("\n");
   const ul = list.length ? `<ul>${list.map((li) => `<li>${esc(li)}</li>`).join("")}</ul>` : "";
-  return `<section class="seo-section"><h2>${esc(h2)}</h2>\n${ps}${ul}</section>`;
+  // Source citée (lien sortant, sans transmettre de référent ni d'accès à notre page).
+  const src = source
+    ? `<p class="seo-source">${esc(source.prefix)} <a href="${esc(source.url)}" rel="noopener noreferrer external">${esc(source.label)}</a></p>`
+    : "";
+  return `<section class="seo-section"><h2>${esc(h2)}</h2>\n${ps}${ul}${src}</section>`;
 }
 
 function tableHtml({ caption, head, rows }) {

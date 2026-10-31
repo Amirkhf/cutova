@@ -59,6 +59,19 @@ for (const { path, lang } of PAGES) {
   });
 }
 
+test("/remove-bg-alternative : date de fermeture de remove.bg avec sa source officielle (EN et FR)", async ({ page }) => {
+  for (const [path, date] of [
+    ["/remove-bg-alternative/", "December 1, 2026"],
+    ["/fr/alternative-remove-bg/", "1er décembre 2026"],
+  ] as const) {
+    await page.goto(path);
+    await expect(page.locator("main")).toContainText(date);
+    const source = page.locator('.seo-source a[href="https://www.remove.bg/faq"]');
+    await expect(source).toHaveCount(1);
+    await expect(source).toHaveAttribute("rel", /noopener/);
+  }
+});
+
 test("fichiers racine : robots.txt (robots IA autorisés), sitemap.xml (10 URL), llms.txt", async ({ request }) => {
   const robots = await (await request.get("/robots.txt")).text();
   expect(robots).toContain("User-agent: GPTBot\nAllow: /");

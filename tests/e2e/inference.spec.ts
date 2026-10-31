@@ -43,6 +43,11 @@ const SUCCESS_STATUS = /Processed in/i;
 
 test("parcours complet (WASM) : aucune requête externe, aucune donnée d'image envoyée", async ({ page }) => {
   const violations = trackNetwork(page);
+  // Poids du modèle servis avec Content-Length et sans compression : la progression peut afficher %.
+  const modelHeaders: Record<string, string>[] = [];
+  page.on("response", (r) => {
+    if (r.url().endsWith(".onnx") && r.status() === 200) modelHeaders.push(r.headers());
+  });
 
   await page.goto("/");
   const isolated = await page.evaluate(() => crossOriginIsolated);
@@ -52,6 +57,11 @@ test("parcours complet (WASM) : aucune requête externe, aucune donnée d'image 
   await expect(page.locator(".result-status")).toContainText(SETTLED_STATUS, { timeout: 150_000 });
 
   expect(violations).toEqual([]);
+  expect(modelHeaders.length).toBeGreaterThan(0);
+  for (const h of modelHeaders) {
+    expect(Number(h["content-length"])).toBeGreaterThan(1_000_000);
+    expect(h["content-encoding"] ?? "identity").toBe("identity");
+  }
 });
 
 test("clic sur un exemple : le pipeline aboutit et le masque est composité dans l'aperçu", async ({ page }) => {

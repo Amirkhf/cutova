@@ -8,7 +8,7 @@ import { AutoModel, AutoProcessor, env, RawImage } from "@huggingface/transforme
 import { getModelForEngine } from "../model/model-source.ts";
 import { MODEL_BASE_URL, REMOTE_PATH_TEMPLATE, remoteOrtDir } from "../model/remote.ts";
 import { createOpfsCache } from "../model/opfs-cache.ts";
-import { getWebGpuSupport } from "./webgpu-support.ts";
+import { createMaxDevice, formatGpuLimits, getWebGpuSupport, type WebGpuSupport } from "./webgpu-support.ts";
 import { getEngineLoadPlan, loadWithFallback, type EngineAttempt } from "./engine-selection.ts";
 import type { EngineKind, MainToWorkerMessage, WorkerToMainMessage } from "./protocol.ts";
 
@@ -42,7 +42,8 @@ env.useWasmCache = false;
 // `.asyncify` instrumente tout le module pour pouvoir suspendre/reprendre l'exécution WASM
 // (nécessaire pour l'EP webgpu) mais alourdit la mémoire : on ne le charge que si CE navigateur
 // expose `navigator.gpu` ; sinon la variante sans suffixe, plus légère, suffit pour l'EP wasm.
-const needsAsyncStackSwitching = typeof navigator !== "undefined" && !!navigator.gpu;
+// Fixé au chargement selon le plan réellement retenu (voir loadEngineWithFallback).
+let needsAsyncStackSwitching = false;
 const wasmEnv = env.backends.onnx.wasm;
 if (!wasmEnv) {
   throw new Error("onnxruntime-web wasm backend introuvable dans env.backends.onnx");
@@ -86,28 +87,44 @@ function reportProgress(info: unknown): void {
   }
 }
 
+/** Options reçues avec le message `load` (voir engine-client.ts). */
+let loadOptions: { forceWasm: boolean; forceWebGpu: boolean } = { forceWasm: false, forceWebGpu: false };
+let gpuSupport: WebGpuSupport | null = null;
+let gpuDeviceReady: Promise<void> | null = null;
+
+/** Device WebGPU créé par nous (limites maximales de l'adaptateur) et confié à ONNX Runtime. */
+function ensureGpuDevice(): Promise<void> {
+  gpuDeviceReady ??= (async () => {
+    if (!gpuSupport) return;
+    const device = await createMaxDevice(gpuSupport);
+    const webgpuEnv = (env.backends.onnx as unknown as { webgpu?: { device: GPUDevice } }).webgpu;
+    if (webgpuEnv) webgpuEnv.device = device;
+    console.info(`[cutova] GPUDevice créé : maxStorageBuffersPerShaderStage=${device.limits.maxStorageBuffersPerShaderStage}`);
+  })();
+  return gpuDeviceReady;
+}
+
 async function loadEngine(attempt: EngineAttempt): Promise<LoadedEngine> {
   // Modèle choisi par moteur dans models.json (WebGPU : BiRefNet_lite ; WASM : modèle plus léger
   // qui tient sous le plafond mémoire wasm32 de 4 Go — voir context.md > Décisions).
-  const { repoId, revision } = getModelForEngine(attempt.device);
+  const { id, repoId, revision } = getModelForEngine(attempt.device);
+  if (attempt.device === "webgpu") await ensureGpuDevice();
   const model = await AutoModel.from_pretrained(repoId, {
     revision,
     device: attempt.device,
     dtype: attempt.dtype,
     local_files_only: !MODEL_BASE_URL,
     progress_callback: reportProgress,
-    // Réduit la pression mémoire au prix de la vitesse — bon défaut général sur WASM, mais
-    // ne suffit pas seul à faire tenir ce modèle sous la limite mémoire wasm32 à 1024×1024
-    // (voir context.md > Mesures : std::bad_alloc reproduit même avec ce réglage, fp16,
-    // mono-thread, et la variante wasm sans asyncify).
-    session_options: attempt.device === "wasm" ? { enableCpuMemArena: false, enableMemPattern: false } : {},
+    // WASM : fournisseur d'exécution explicite (jamais hérité) + arena désactivée (mémoire).
+    session_options:
+      attempt.device === "wasm" ? { executionProviders: ["wasm"], enableCpuMemArena: false, enableMemPattern: false } : { executionProviders: ["webgpu"] },
   });
   const processor = await AutoProcessor.from_pretrained(repoId, { revision, local_files_only: !MODEL_BASE_URL });
+  console.info(`[cutova] Modèle ${id} chargé, fournisseur d'exécution : ${attempt.device} (${attempt.dtype})`);
   return { kind: attempt.kind, model, processor };
 }
 
 async function loadEngineWithFallback(): Promise<LoadedEngine> {
-  wasmEnv!.wasmPaths = await wasmPaths();
   const opfsCache = await createOpfsCache();
   if (opfsCache) {
     env.useCustomCache = true;
@@ -116,8 +133,17 @@ async function loadEngineWithFallback(): Promise<LoadedEngine> {
   // Sinon : on laisse le comportement par défaut de transformers.js (Cache API navigateur,
   // sinon aucun cache) — jamais de plantage, voir src/core/model/opfs-cache.ts.
 
-  const gpuSupport = await getWebGpuSupport();
-  const plan = getEngineLoadPlan(gpuSupport);
+  gpuSupport = loadOptions.forceWasm ? null : await getWebGpuSupport();
+  if (gpuSupport) console.info(formatGpuLimits(gpuSupport));
+  const { plan, webgpuSkipped } = getEngineLoadPlan(
+    gpuSupport ?? { available: false, shaderF16: false, limits: null },
+    getModelForEngine("webgpu").webgpu,
+    loadOptions,
+  );
+  if (webgpuSkipped) console.info(`[cutova] WebGPU non tenté : ${webgpuSkipped} → WASM.`);
+  // `.asyncify` seulement si WebGPU est réellement tenté (variante plus lourde en mémoire).
+  needsAsyncStackSwitching = plan.some((attempt) => attempt.device === "webgpu");
+  wasmEnv!.wasmPaths = await wasmPaths();
   return loadWithFallback(plan, loadEngine, (failed, err) =>
     console.warn(`[cutova] Chargement ${failed.kind} échoué, tentative suivante.`, err),
   );
@@ -125,12 +151,6 @@ async function loadEngineWithFallback(): Promise<LoadedEngine> {
 
 async function ensureEngine(): Promise<LoadedEngine> {
   enginePromise ??= loadEngineWithFallback();
-  return enginePromise;
-}
-
-/** Abandonne l'engin courant (ex. échec à la première inférence) et force un repli WASM. */
-function downgradeToWasm(): Promise<LoadedEngine> {
-  enginePromise = loadEngine({ device: "wasm", dtype: "fp32", kind: "wasm" });
   return enginePromise;
 }
 
@@ -206,18 +226,23 @@ async function drainQueue(): Promise<void> {
 }
 
 async function processJob(job: RunRequestQueued): Promise<void> {
+  let keepBitmap = false;
   try {
-    let engine = await ensureEngine();
+    const engine = await ensureEngine();
     const started = performance.now();
     let outcome: InferenceOutcome;
     try {
       outcome = await runInference(engine, job.bitmap);
     } catch (err) {
       if (engine.kind === "wasm") throw err;
-      // Échec à la première inférence (pas seulement au chargement) : repli WASM, un seul essai.
-      console.warn(`[cutova] Inférence ${engine.kind} échouée, repli WASM.`, err);
-      engine = await downgradeToWasm();
-      outcome = await runInference(engine, job.bitmap);
+      // Échec WebGPU à l'inférence : ce worker ne peut plus rien exécuter (promesse globale de
+      // transformers.js rejetée). On rend l'image au thread principal, qui relance un worker neuf
+      // en WASM forcé (engine-client.ts).
+      const reason = err instanceof Error ? err.message.split("\n")[0]!.slice(0, 300) : String(err);
+      console.warn(`[cutova] Inférence ${engine.kind} échouée, repli WASM dans un nouveau worker.`, reason);
+      keepBitmap = true;
+      post({ type: "fallback", requestId: job.requestId, bitmap: job.bitmap, reason }, [job.bitmap]);
+      return;
     }
     const elapsedMs = performance.now() - started;
     post(
@@ -235,13 +260,14 @@ async function processJob(job: RunRequestQueued): Promise<void> {
   } catch (err) {
     post({ type: "error", requestId: job.requestId, message: err instanceof Error ? err.message : String(err) });
   } finally {
-    job.bitmap.close();
+    if (!keepBitmap) job.bitmap.close();
   }
 }
 
 self.addEventListener("message", (event: MessageEvent<MainToWorkerMessage>) => {
   const message = event.data;
   if (message.type === "load") {
+    loadOptions = { forceWasm: !!message.forceWasm, forceWebGpu: !!message.forceWebGpu };
     ensureEngine()
       .then((engine) => post({ type: "ready", engine: engine.kind }))
       .catch((err) => post({ type: "error", requestId: null, message: err instanceof Error ? err.message : String(err) }));

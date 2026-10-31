@@ -12,6 +12,10 @@ test("modèles et ONNX Runtime chargés depuis le stockage externe, sous COEP/CS
   page.on("console", (m) => {
     if (/Content Security Policy|Cross-Origin-Embedder|blocked/i.test(m.text())) cspErrors.push(m.text());
   });
+  const modelHeaders: Record<string, string>[] = [];
+  page.on("response", (r) => {
+    if (r.url().endsWith(".onnx") && r.status() === 200) modelHeaders.push(r.headers());
+  });
   page.on("request", (r) => {
     const url = new URL(r.url());
     hosts.add(url.host);
@@ -30,6 +34,9 @@ test("modèles et ONNX Runtime chargés depuis le stockage externe, sous COEP/CS
   expect(fromMirror.some((p) => /\/resolve\/[0-9a-f]{40}\/onnx\/model\.onnx$/.test(p))).toBe(true);
   expect(fromMirror.some((p) => /^\/onnxruntime-web\/.+\/ort-wasm-simd-threaded.*\.wasm$/.test(p))).toBe(true);
   expect(cspErrors).toEqual([]);
+  // Taille connue → progression en pourcentage possible (comme sur R2 avec no-transform).
+  expect(modelHeaders.length).toBeGreaterThan(0);
+  for (const h of modelHeaders) expect(Number(h["content-length"])).toBeGreaterThan(1_000_000);
 });
 
 test("le site n'embarque plus ni /models/ ni les binaires ONNX Runtime (limite 25 Mio de Pages)", async ({ request }) => {

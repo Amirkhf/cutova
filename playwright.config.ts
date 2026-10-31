@@ -14,12 +14,21 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:4173",
   },
-  webServer: {
-    command: "npm run build && npm run preview -- --port 4173",
-    url: "http://localhost:4173",
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
-  },
+  webServer: [
+    {
+      command: "npm run build && npm run preview -- --port 4173",
+      url: "http://localhost:4173",
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      // Serveur de dev (tests/e2e/dev-server.spec.ts : rendu identique au build, CSP de dev).
+      command: "npx vite --port 5174 --strictPort",
+      url: "http://localhost:5174",
+      reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
+    },
+  ],
   projects: [
     {
       name: "chromium",
