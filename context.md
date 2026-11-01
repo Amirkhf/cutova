@@ -644,6 +644,10 @@ Bing, IndexNow) et tests sur matériel réel.
   secrets (pas dans `wrangler.toml`, qui est la source de vérité de Pages pour les autres champs).
 - **(N5) IndexNow** : le script suit l'index des sitemaps (un sitemap par langue).
 
+- **(2026-11-01) Site blanc pour tout le monde** (demande de l'éditeur) : le mode sombre automatique
+  (`prefers-color-scheme`) est retiré de `tokens.css` et `stats.css`, `color-scheme: light` ; le thème
+  sombre ne reste accessible que via `[data-theme="dark"]` (inutilisé). Testé avec un système en mode sombre.
+
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` dans l'ordre (champs légaux, domaine, R2, Pages + `SITE_URL`, D1,
    Cloudflare Access, Search Console, Bing, IndexNow) et tester sur matériel réel (GPU récent, iPhone,

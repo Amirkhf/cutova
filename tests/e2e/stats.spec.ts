@@ -26,7 +26,7 @@ test("dev : tableau de bord avec données de démo, périodes, accessibilité, c
   expect(axe.violations.map((v) => v.id)).toEqual([]);
   await page.screenshot({ path: path.join(SHOTS, "stats-desktop-light.png"), fullPage: true });
 
-  await page.emulateMedia({ colorScheme: "dark" });
+  await page.emulateMedia({ colorScheme: "dark" }); // le site reste clair (décision : blanc pour tous)
   const axeDark = await new AxeBuilder({ page }).analyze();
   expect(axeDark.violations.map((v) => v.id)).toEqual([]);
   await page.screenshot({ path: path.join(SHOTS, "stats-desktop-dark.png"), fullPage: true });

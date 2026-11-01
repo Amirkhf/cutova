@@ -10,19 +10,6 @@
   --seq-3: #d9772b;
   --seq-4: #b3261e;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --chart-1: #8a7dff;
-    --chart-2: #2fbe9a;
-    --chart-3: #f0a35b;
-    --chart-4: #ff6b5e;
-    --seq-0: #2fbe9a;
-    --seq-1: #7fd3b4;
-    --seq-2: #e8c85a;
-    --seq-3: #f0a35b;
-    --seq-4: #ff6b5e;
-  }
-}
 :root[data-theme="dark"] {
   --chart-1: #8a7dff;
   --chart-2: #2fbe9a;

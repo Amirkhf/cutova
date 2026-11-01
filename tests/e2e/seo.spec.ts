@@ -178,3 +178,15 @@ test("sélecteur de langue des pages statiques : les 5 langues, page courante ma
   await page.waitForURL((u) => u.pathname === "/id/untuk/fotografer/");
   await expect(page.locator(".seo-footer-lang-list a")).toHaveCount(5);
 });
+
+test("site blanc pour tout le monde : même si le système est en mode sombre", async ({ browser }) => {
+  const context = await browser.newContext({ colorScheme: "dark" });
+  const page = await context.newPage();
+  for (const url of ["/", "/es/", "/white-background/", "/fr/confidentialite/", "/stats/"]) {
+    await page.goto(url);
+    const { bg, color } = await page.evaluate(() => ({ bg: getComputedStyle(document.body).backgroundColor, color: getComputedStyle(document.body).color }));
+    expect(bg, url).toBe("rgb(250, 250, 247)");
+    expect(color, url).toBe("rgb(20, 22, 26)");
+  }
+  await context.close();
+});
