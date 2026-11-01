@@ -1,0 +1,463 @@
+{
+  "id": "photo-background",
+  "type": "howto",
+  "tool": true,
+  "$comment": "Page outil « fond photo » (N4). Le bouton d'appel ouvre l'outil avec un fond photo présélectionné (?bg=photo, lu par src/core/editor/url-preset.ts). Photos de fond : Pexels, voir public/backgrounds/SOURCES.md.",
+  "locales": {
+    "en": {
+      "path": "/photo-background/",
+      "title": "Change a Photo's Background to Another Photo — Free | Cutova",
+      "description": "Replace the background of a photo with a new scene (sea, city, sky, night lights) or blur the original, in seconds and at full resolution. Free, no upload.",
+      "h1": "Put a new photo behind your subject",
+      "answer": {
+        "label": "Short answer:",
+        "text": "open Cutova with a photo background already selected, add your picture, then choose one of the six free background photos (or a blur of the original) and download it. The AI cuts out your subject and places it on the new scene, in your browser."
+      },
+      "intro": [
+        "A new scene can turn an ordinary snapshot into a poster, a post or a cleaner portrait. The cutout is the easy part; what makes the result believable is choosing a background that matches your photo."
+      ],
+      "cta": {
+        "query": "?bg=photo",
+        "label": "Open the tool with a photo background"
+      },
+      "totalTime": "PT2M",
+      "steps": [
+        {
+          "name": "Open the tool with a photo background",
+          "text": "Use the button on this page: Cutova opens on the Background tab with a photo background already chosen."
+        },
+        {
+          "name": "Add your picture",
+          "text": "Choose a file, drag it onto the page or paste it with Ctrl+V."
+        },
+        {
+          "name": "Pick a scene",
+          "text": "Choose among the free photos: sea and pier, night lights, sunny field, city at sunset, dusk hills, blue sky. Or choose Blur to keep your own background, softened."
+        },
+        {
+          "name": "Make it fit",
+          "text": "Add a soft shadow, and adjust brightness, contrast or temperature so the subject matches the light of the scene."
+        },
+        {
+          "name": "Download",
+          "text": "Download a JPG or PNG at the size of your original, or all your images in one ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Choose a background that matches",
+          "list": [
+            "Light: if your subject is lit from the left, prefer a scene with light coming from the left.",
+            "Distance: a portrait taken up close looks natural on a blurred, distant background (night lights, sky).",
+            "Color: warm skin tones sit well on sunset scenes; cool light suits the sea and the sky.",
+            "Horizon: for full-body photos, keep the feet below the horizon line of the scene."
+          ]
+        },
+        {
+          "h2": "Blur instead of replacing",
+          "paragraphs": [
+            "Sometimes the best background is the one you already have. The Blur option keeps your original scene but softens it, like a large-aperture lens: the subject stands out and the place is still recognizable. Raise the strength until distractions disappear."
+          ]
+        },
+        {
+          "h2": "Make the subject look like it belongs",
+          "paragraphs": [
+            "Small adjustments make a big difference. A light shadow grounds the subject. A little warmth or coolness (Temperature) helps it match the scene. If the edges show a halo from the old background, clean them with the Erase brush."
+          ]
+        },
+        {
+          "h2": "About the background photos",
+          "paragraphs": [
+            "The six scenes come from Pexels, whose license allows free use, including commercial use, without attribution. Using your own image as a background is planned."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can I use my own photo as the background?",
+          "a": "Not yet. For now you can choose one of the six free scenes, a blur of your original photo, a solid color or transparency. Custom background images are planned."
+        },
+        {
+          "q": "Will the result be full resolution?",
+          "a": "Yes. The background scene is scaled to cover your photo, and the download keeps the size of your original."
+        },
+        {
+          "q": "Can I use the result commercially?",
+          "a": "Yes. Your images stay yours, the background photos come from Pexels (free for commercial use) and the AI models are under licenses that allow commercial use."
+        },
+        {
+          "q": "Why does my subject look pasted on?",
+          "a": "Usually the light does not match. Try another scene, add a soft shadow, and adjust brightness and temperature until the subject and background look lit the same way."
+        },
+        {
+          "q": "Is my photo uploaded?",
+          "a": "No. Everything happens in your browser and the photo never leaves your device."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/fond-photo/",
+      "title": "Changer le fond d'une photo par une autre photo — Gratuit | Cutova",
+      "description": "Remplacez le fond d'une photo par un nouveau décor (mer, ville, ciel, lumières de nuit) ou floutez l'original, en quelques secondes et en pleine résolution. Gratuit, sans envoi.",
+      "h1": "Mettre un nouveau décor derrière votre sujet",
+      "answer": {
+        "label": "En bref :",
+        "text": "ouvrez Cutova avec un fond photo déjà choisi, ajoutez votre image, puis choisissez l'une des six photos de fond libres (ou un flou de l'original) et téléchargez. L'IA détoure votre sujet et le place sur le nouveau décor, dans votre navigateur."
+      },
+      "intro": [
+        "Un nouveau décor peut transformer une simple photo en affiche, en publication ou en portrait plus soigné. Le détourage est la partie facile ; ce qui rend le résultat crédible, c'est un fond qui va avec votre photo."
+      ],
+      "cta": {
+        "query": "?bg=photo",
+        "label": "Ouvrir l'outil avec un fond photo"
+      },
+      "totalTime": "PT2M",
+      "steps": [
+        {
+          "name": "Ouvrez l'outil avec un fond photo",
+          "text": "Utilisez le bouton de cette page : Cutova s'ouvre sur l'onglet Arrière-plan avec un fond photo déjà choisi."
+        },
+        {
+          "name": "Ajoutez votre image",
+          "text": "Choisissez un fichier, glissez-le sur la page ou collez-le avec Ctrl+V."
+        },
+        {
+          "name": "Choisissez un décor",
+          "text": "Parmi les photos libres : mer et ponton, lumières de nuit, champ au soleil, ville au couchant, collines au crépuscule, ciel bleu. Ou choisissez Flou pour garder votre propre fond, adouci."
+        },
+        {
+          "name": "Accordez le sujet au décor",
+          "text": "Ajoutez une ombre douce, et réglez luminosité, contraste ou température pour que le sujet ait la même lumière que la scène."
+        },
+        {
+          "name": "Téléchargez",
+          "text": "Téléchargez un JPG ou un PNG à la taille de l'original, ou toutes vos images dans un ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Choisir un fond qui va avec la photo",
+          "list": [
+            "La lumière : si votre sujet est éclairé par la gauche, préférez un décor éclairé par la gauche.",
+            "La distance : un portrait pris de près paraît naturel sur un fond lointain et flou (lumières de nuit, ciel).",
+            "Les couleurs : les tons chauds de la peau vont bien avec un coucher de soleil ; une lumière froide convient à la mer et au ciel.",
+            "L'horizon : pour une photo en pied, gardez les pieds sous la ligne d'horizon du décor."
+          ]
+        },
+        {
+          "h2": "Flouter plutôt que remplacer",
+          "paragraphs": [
+            "Parfois, le meilleur fond est celui que vous avez déjà. L'option Flou garde la scène d'origine mais l'adoucit, comme un objectif très ouvert : le sujet ressort et le lieu reste reconnaissable. Augmentez l'intensité jusqu'à ce que les éléments gênants disparaissent."
+          ]
+        },
+        {
+          "h2": "Donner l'impression que le sujet était là",
+          "paragraphs": [
+            "De petits réglages changent tout. Une ombre légère pose le sujet au sol. Un peu de chaleur ou de froid (Température) l'accorde à la scène. Si un liseré de l'ancien fond reste sur les bords, nettoyez-le avec la gomme."
+          ]
+        },
+        {
+          "h2": "À propos des photos de fond",
+          "paragraphs": [
+            "Les six décors viennent de Pexels, dont la licence permet un usage libre, y compris commercial, sans mention obligatoire. L'utilisation de votre propre image comme fond est prévue."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Puis-je utiliser ma propre photo comme fond ?",
+          "a": "Pas encore. Pour l'instant, vous pouvez choisir l'un des six décors libres, un flou de votre photo d'origine, une couleur unie ou la transparence. Les fonds personnalisés sont prévus."
+        },
+        {
+          "q": "Le résultat est-il en pleine résolution ?",
+          "a": "Oui. Le décor est agrandi pour couvrir votre photo, et le téléchargement garde la taille de l'original."
+        },
+        {
+          "q": "Puis-je utiliser le résultat commercialement ?",
+          "a": "Oui. Vos images restent les vôtres, les photos de fond viennent de Pexels (usage commercial libre) et les modèles d'IA sont sous des licences qui permettent l'usage commercial."
+        },
+        {
+          "q": "Pourquoi mon sujet a-t-il l'air collé ?",
+          "a": "Le plus souvent, la lumière ne correspond pas. Essayez un autre décor, ajoutez une ombre douce, et réglez luminosité et température jusqu'à ce que sujet et fond semblent éclairés de la même façon."
+        },
+        {
+          "q": "Ma photo est-elle envoyée sur un serveur ?",
+          "a": "Non. Tout se passe dans votre navigateur et la photo ne quitte jamais votre appareil."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/fundo-com-foto/",
+      "title": "Trocar o Fundo de uma Foto por Outra Foto — Grátis | Cutova",
+      "description": "Troque o fundo de uma foto por um novo cenário (mar, cidade, céu, luzes da noite) ou desfoque o original, em segundos e na resolução original. Grátis, sem upload.",
+      "h1": "Como trocar o fundo de uma foto por outro cenário",
+      "answer": {
+        "label": "Resposta rápida:",
+        "text": "abra o Cutova com um fundo de foto já selecionado, adicione sua imagem, escolha uma das seis fotos de fundo grátis (ou o desfoque do original) e baixe. A IA recorta a pessoa ou o objeto e coloca no novo cenário, direto no navegador."
+      },
+      "intro": [
+        "Um cenário novo pode transformar uma foto comum em cartaz, post ou retrato mais caprichado. O recorte é a parte fácil; o que deixa o resultado convincente é escolher um fundo que combine com a sua foto."
+      ],
+      "cta": {
+        "query": "?bg=photo",
+        "label": "Abrir a ferramenta com fundo de foto"
+      },
+      "totalTime": "PT2M",
+      "steps": [
+        {
+          "name": "Abra a ferramenta com fundo de foto",
+          "text": "Use o botão desta página: o Cutova abre na aba Fundo com um fundo de foto já escolhido."
+        },
+        {
+          "name": "Adicione sua imagem",
+          "text": "Escolha um arquivo, arraste para a página ou cole com Ctrl+V."
+        },
+        {
+          "name": "Escolha um cenário",
+          "text": "Entre as fotos grátis: mar e píer, luzes da noite, campo ensolarado, cidade ao pôr do sol, colinas ao entardecer, céu azul. Ou escolha Desfoque para manter o seu fundo, suavizado."
+        },
+        {
+          "name": "Ajuste para combinar",
+          "text": "Adicione uma sombra suave e ajuste brilho, contraste ou temperatura para o objeto ter a mesma luz do cenário."
+        },
+        {
+          "name": "Baixe",
+          "text": "Baixe em JPG ou PNG no tamanho original, ou todas as imagens em um ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Escolha um fundo que combine",
+          "list": [
+            "Luz: se a pessoa está iluminada pela esquerda, prefira um cenário com luz vindo da esquerda.",
+            "Distância: um retrato feito de perto fica natural em um fundo distante e desfocado (luzes da noite, céu).",
+            "Cor: tons de pele quentes combinam com pôr do sol; luz fria combina com mar e céu.",
+            "Horizonte: em fotos de corpo inteiro, mantenha os pés abaixo da linha do horizonte do cenário."
+          ]
+        },
+        {
+          "h2": "Desfocar em vez de trocar",
+          "paragraphs": [
+            "Às vezes o melhor fundo é o que você já tem. A opção Desfoque mantém o cenário original, mas suavizado, como uma lente bem aberta: o objeto se destaca e o lugar continua reconhecível. Aumente a intensidade até as distrações sumirem."
+          ]
+        },
+        {
+          "h2": "Para o objeto parecer que estava lá",
+          "paragraphs": [
+            "Pequenos ajustes fazem muita diferença. Uma sombra leve \"assenta\" o objeto no chão. Um pouco mais quente ou mais frio (Temperatura) ajuda a combinar com a cena. Se ficar um contorno do fundo antigo nas bordas, limpe com o pincel Apagar."
+          ]
+        },
+        {
+          "h2": "Sobre as fotos de fundo",
+          "paragraphs": [
+            "Os seis cenários vêm do Pexels, cuja licença permite uso livre, inclusive comercial, sem precisar dar crédito. Usar a sua própria imagem como fundo está nos planos."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Posso usar minha própria foto como fundo?",
+          "a": "Ainda não. Por enquanto você pode escolher um dos seis cenários grátis, o desfoque da foto original, uma cor sólida ou transparência. Fundos personalizados estão nos planos."
+        },
+        {
+          "q": "O resultado fica na resolução original?",
+          "a": "Sim. O cenário é ampliado para cobrir a sua foto, e o download mantém o tamanho do original."
+        },
+        {
+          "q": "Posso usar o resultado comercialmente?",
+          "a": "Sim. Suas imagens continuam suas, as fotos de fundo vêm do Pexels (uso comercial liberado) e os modelos de IA têm licenças que permitem uso comercial."
+        },
+        {
+          "q": "Por que a pessoa parece recortada e colada?",
+          "a": "Geralmente a luz não combina. Tente outro cenário, adicione uma sombra suave e ajuste brilho e temperatura até objeto e fundo parecerem iluminados do mesmo jeito."
+        },
+        {
+          "q": "Minha foto é enviada para algum servidor?",
+          "a": "Não. Tudo acontece no seu navegador e a foto nunca sai do seu aparelho."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/fondo-con-foto/",
+      "title": "Cambiar el Fondo de una Foto por Otra Foto — Gratis | Cutova",
+      "description": "Cambia el fondo de una foto por un nuevo escenario (mar, ciudad, cielo, luces nocturnas) o desenfoca el original, en segundos y a resolución completa. Gratis, sin subir nada.",
+      "h1": "Cómo cambiar el fondo de una foto por otro escenario",
+      "answer": {
+        "label": "Respuesta corta:",
+        "text": "abre Cutova con un fondo de foto ya seleccionado, añade tu imagen, elige una de las seis fotos de fondo gratuitas (o un desenfoque del original) y descarga. La IA recorta a la persona o el objeto y lo coloca en el nuevo escenario, en tu navegador."
+      },
+      "intro": [
+        "Un escenario nuevo puede convertir una foto normal en un cartel, una publicación o un retrato más cuidado. El recorte es la parte fácil; lo que hace creíble el resultado es elegir un fondo que encaje con tu foto."
+      ],
+      "cta": {
+        "query": "?bg=photo",
+        "label": "Abrir la herramienta con fondo de foto"
+      },
+      "totalTime": "PT2M",
+      "steps": [
+        {
+          "name": "Abre la herramienta con fondo de foto",
+          "text": "Usa el botón de esta página: Cutova se abre en la pestaña Fondo con un fondo de foto ya elegido."
+        },
+        {
+          "name": "Añade tu imagen",
+          "text": "Elige un archivo, arrástralo a la página o pégalo con Ctrl+V."
+        },
+        {
+          "name": "Elige un escenario",
+          "text": "Entre las fotos gratuitas: mar y muelle, luces nocturnas, campo soleado, ciudad al atardecer, colinas al anochecer, cielo azul. O elige Desenfoque para mantener tu propio fondo, suavizado."
+        },
+        {
+          "name": "Haz que encaje",
+          "text": "Añade una sombra suave y ajusta brillo, contraste o temperatura para que el sujeto tenga la misma luz que la escena."
+        },
+        {
+          "name": "Descarga",
+          "text": "Descarga un JPG o PNG al tamaño de tu original, o todas tus imágenes en un ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Elige un fondo que encaje",
+          "list": [
+            "Luz: si tu sujeto está iluminado desde la izquierda, elige un escenario con la luz desde la izquierda.",
+            "Distancia: un retrato hecho de cerca queda natural sobre un fondo lejano y desenfocado (luces nocturnas, cielo).",
+            "Color: los tonos de piel cálidos quedan bien con un atardecer; la luz fría encaja con el mar y el cielo.",
+            "Horizonte: en fotos de cuerpo entero, deja los pies por debajo de la línea del horizonte del escenario."
+          ]
+        },
+        {
+          "h2": "Desenfocar en lugar de cambiar",
+          "paragraphs": [
+            "A veces el mejor fondo es el que ya tienes. La opción Desenfoque mantiene tu escena original pero la suaviza, como un objetivo muy luminoso: el sujeto destaca y el lugar sigue siendo reconocible. Sube la intensidad hasta que desaparezcan las distracciones."
+          ]
+        },
+        {
+          "h2": "Que parezca que el sujeto estaba allí",
+          "paragraphs": [
+            "Los pequeños ajustes marcan la diferencia. Una sombra ligera asienta al sujeto. Un poco más cálido o más frío (Temperatura) lo integra en la escena. Si en los bordes queda un halo del fondo anterior, límpialo con el pincel Borrar."
+          ]
+        },
+        {
+          "h2": "Sobre las fotos de fondo",
+          "paragraphs": [
+            "Los seis escenarios proceden de Pexels, cuya licencia permite el uso libre, también comercial, sin necesidad de atribución. Usar tu propia imagen como fondo está previsto."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Puedo usar mi propia foto como fondo?",
+          "a": "Todavía no. De momento puedes elegir uno de los seis escenarios gratuitos, un desenfoque de tu foto original, un color liso o transparencia. Los fondos personalizados están previstos."
+        },
+        {
+          "q": "¿El resultado tiene resolución completa?",
+          "a": "Sí. El escenario se amplía para cubrir tu foto y la descarga mantiene el tamaño de tu original."
+        },
+        {
+          "q": "¿Puedo usar el resultado con fines comerciales?",
+          "a": "Sí. Tus imágenes siguen siendo tuyas, las fotos de fondo proceden de Pexels (uso comercial libre) y los modelos de IA tienen licencias que permiten el uso comercial."
+        },
+        {
+          "q": "¿Por qué mi sujeto parece pegado encima?",
+          "a": "Normalmente porque la luz no coincide. Prueba otro escenario, añade una sombra suave y ajusta brillo y temperatura hasta que sujeto y fondo parezcan iluminados igual."
+        },
+        {
+          "q": "¿Se sube mi foto a algún servidor?",
+          "a": "No. Todo ocurre en tu navegador y la foto nunca sale de tu dispositivo."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/background-foto/",
+      "title": "Ganti Background Foto dengan Foto Lain — Gratis | Cutova",
+      "description": "Ganti background foto dengan pemandangan baru (laut, kota, langit, lampu malam) atau buat blur, dalam hitungan detik dan resolusi penuh. Gratis, tanpa upload.",
+      "h1": "Cara mengganti background foto dengan pemandangan lain",
+      "answer": {
+        "label": "Jawaban singkat:",
+        "text": "buka Cutova dengan background foto yang sudah terpilih, tambahkan gambar Anda, pilih salah satu dari enam foto background gratis (atau blur dari foto asli), lalu unduh. AI memotong objek Anda dan menaruhnya di pemandangan baru, langsung di browser."
+      },
+      "intro": [
+        "Pemandangan baru bisa mengubah foto biasa menjadi poster, postingan, atau potret yang lebih rapi. Memotong objek itu mudah; yang membuat hasilnya meyakinkan adalah memilih background yang cocok dengan foto Anda."
+      ],
+      "cta": {
+        "query": "?bg=photo",
+        "label": "Buka alat dengan background foto"
+      },
+      "totalTime": "PT2M",
+      "steps": [
+        {
+          "name": "Buka alat dengan background foto",
+          "text": "Gunakan tombol di halaman ini: Cutova terbuka di tab Background dengan background foto yang sudah dipilih."
+        },
+        {
+          "name": "Tambahkan gambar",
+          "text": "Pilih file, seret ke halaman, atau tempel dengan Ctrl+V."
+        },
+        {
+          "name": "Pilih pemandangan",
+          "text": "Pilih dari foto gratis: laut dan dermaga, lampu malam, padang cerah, kota saat senja, bukit saat petang, langit biru. Atau pilih Blur untuk mempertahankan background Anda sendiri dalam keadaan buram."
+        },
+        {
+          "name": "Sesuaikan agar menyatu",
+          "text": "Tambahkan bayangan lembut, lalu atur kecerahan, kontras, atau suhu warna agar cahaya objek sama dengan pemandangan."
+        },
+        {
+          "name": "Unduh",
+          "text": "Unduh JPG atau PNG seukuran foto asli, atau semua gambar dalam satu ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Pilih background yang cocok",
+          "list": [
+            "Cahaya: jika objek disinari dari kiri, pilih pemandangan dengan cahaya dari kiri juga.",
+            "Jarak: potret jarak dekat terlihat natural di background jauh yang buram (lampu malam, langit).",
+            "Warna: warna kulit yang hangat cocok dengan suasana senja; cahaya yang dingin cocok dengan laut dan langit.",
+            "Cakrawala: untuk foto seluruh badan, letakkan kaki di bawah garis cakrawala pemandangan."
+          ]
+        },
+        {
+          "h2": "Blur, bukan diganti",
+          "paragraphs": [
+            "Kadang background terbaik adalah yang sudah Anda punya. Opsi Blur mempertahankan pemandangan asli tetapi membuatnya lembut, seperti lensa dengan bukaan besar: objek lebih menonjol dan tempatnya tetap dikenali. Naikkan kekuatannya sampai gangguan di belakang hilang."
+          ]
+        },
+        {
+          "h2": "Agar objek terlihat benar-benar ada di sana",
+          "paragraphs": [
+            "Penyesuaian kecil berpengaruh besar. Bayangan tipis membuat objek terlihat menapak. Sedikit lebih hangat atau dingin (Suhu warna) membantu menyatu dengan pemandangan. Jika ada sisa garis dari background lama di tepi, rapikan dengan kuas Hapus."
+          ]
+        },
+        {
+          "h2": "Tentang foto background",
+          "paragraphs": [
+            "Keenam pemandangan berasal dari Pexels, yang lisensinya mengizinkan penggunaan bebas, termasuk komersial, tanpa wajib mencantumkan sumber. Memakai gambar Anda sendiri sebagai background sedang direncanakan."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Bisakah memakai foto saya sendiri sebagai background?",
+          "a": "Belum. Untuk saat ini Anda bisa memilih salah satu dari enam pemandangan gratis, blur dari foto asli, warna polos, atau transparan. Background kustom sedang direncanakan."
+        },
+        {
+          "q": "Apakah hasilnya beresolusi penuh?",
+          "a": "Ya. Pemandangan diperbesar untuk menutupi foto Anda, dan unduhan tetap seukuran foto asli."
+        },
+        {
+          "q": "Bolehkah hasilnya dipakai untuk keperluan komersial?",
+          "a": "Boleh. Gambar Anda tetap milik Anda, foto background berasal dari Pexels (bebas untuk penggunaan komersial), dan model AI memakai lisensi yang mengizinkan penggunaan komersial."
+        },
+        {
+          "q": "Kenapa objek saya terlihat seperti tempelan?",
+          "a": "Biasanya karena cahayanya tidak cocok. Coba pemandangan lain, tambahkan bayangan lembut, lalu atur kecerahan dan suhu warna sampai objek dan background terlihat disinari dengan cara yang sama."
+        },
+        {
+          "q": "Apakah foto saya diunggah ke server?",
+          "a": "Tidak. Semuanya terjadi di browser Anda dan foto tidak pernah keluar dari perangkat Anda."
+        }
+      ]
+    }
+  }
+}

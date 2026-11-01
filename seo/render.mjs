@@ -123,8 +123,10 @@ function stepsHtml(title, steps) {
   return `<section class="seo-section" aria-labelledby="steps-title"><h2 id="steps-title">${esc(title)}</h2><ol class="seo-steps">\n${items}\n</ol></section>`;
 }
 
-function ctaHtml(chrome, homePath) {
-  return `<p class="seo-cta"><a class="btn btn-primary" href="${esc(homePath)}">${esc(chrome.cta)}</a><span>${esc(chrome.ctaNote)}</span></p>`;
+/** Appel à l'action ; une page peut viser l'outil avec un réglage présélectionné (`cta.query`, ex. `?bg=white`). */
+function ctaHtml(chrome, homePath, cta = null) {
+  const href = cta?.query ? `${homePath}${cta.query}` : homePath;
+  return `<p class="seo-cta"><a class="btn btn-primary" href="${esc(href)}">${esc(cta?.label ?? chrome.cta)}</a><span>${esc(chrome.ctaNote)}</span></p>`;
 }
 
 /** Icône de la marque (ciseaux), identique à l'en-tête de l'application. */
@@ -200,13 +202,14 @@ export function renderArticlePage({ lang, head, brand, chrome, homePath, page, b
   const parts = [
     `<nav class="seo-breadcrumb" aria-label="${esc(chrome.breadcrumbLabel)}"><ol>${crumbs}</ol></nav>`,
     `<h1>${esc(page.h1)}</h1>`,
+    page.answer ? `<p class="seo-answer"><strong>${esc(page.answer.label)}</strong> ${esc(page.answer.text)}</p>` : "",
     ...page.intro.map((p) => `<p class="seo-lead">${esc(p)}</p>`),
-    page.noCta ? "" : ctaHtml(chrome, homePath),
+    page.noCta ? "" : ctaHtml(chrome, homePath, page.cta),
     page.table ? tableHtml(page.table) : "",
     page.steps ? stepsHtml(chrome.stepsTitle, page.steps) : "",
     ...(page.sections ?? []).map(sectionHtml),
     page.faq?.length ? faqHtml(chrome.faqTitle, page.faq) : "",
-    page.noCta ? "" : ctaHtml(chrome, homePath),
+    page.noCta ? "" : ctaHtml(chrome, homePath, page.cta),
     page.trademark ? `<p class="seo-note">${esc(chrome.trademarkNote)}</p>` : "",
   ].filter(Boolean);
   return `<!doctype html>

@@ -15,6 +15,7 @@ import { brushRadius, containedRect, paintStroke, type BrushMode } from "../../c
 import { computeGeometry, scaleGeometry, type OutputGeometry } from "../../core/editor/geometry.ts";
 import { renderComposite } from "../../core/editor/render.ts";
 import { FORMAT_PRESETS, findPreset, safeColor, type BackgroundSetting, type FormatPreset } from "../../core/editor/settings.ts";
+import { backgroundFromQuery } from "../../core/editor/url-preset.ts";
 import { loadPreferences, rememberColor, rememberPreset, savePreferences } from "../../core/editor/prefs.ts";
 import { exportCanvas, exportFileName, type ExportFormat } from "../../core/export/export.ts";
 import { createZip, uniqueNames } from "../../core/export/zip.ts";
@@ -897,8 +898,13 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
     else renderStrip();
   }
 
+  // Lien d'une page guide (`/?bg=white`, `/?bg=photo`) : fond présélectionné pour chaque image ajoutée.
+  const urlBackground = backgroundFromQuery(location.search, BACKGROUND_PHOTOS);
+  if (urlBackground) selectTab("background");
+
   function addDoc(file: File, resizeTo?: { width: number; height: number }): void {
     const doc = new EditorDoc(file, resizeTo);
+    if (urlBackground) doc.settings.background = { ...urlBackground };
     doc.thumbnailUrl = URL.createObjectURL(file);
     docs.push(doc);
     section.hidden = false;

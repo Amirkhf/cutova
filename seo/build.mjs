@@ -81,13 +81,15 @@ async function main() {
     locales
       .filter((l) => doc.locales[l])
       .map((l) => ({ href: doc.locales[l].path, hreflang: site.locales[l].hreflang, label: site.locales[l].languageName, code: l === "pt-br" ? "PT" : l.toUpperCase(), current: l === locale }));
-  const linksOf = (locale, types) =>
-    pages.filter((p) => types.includes(p.type ?? "article") && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].h1 }));
+  const linksOf = (locale, types, tool = false) =>
+    pages
+      .filter((p) => types.includes(p.type ?? "article") && Boolean(p.tool) === tool && p.locales[locale])
+      .map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].h1 }));
   /** Colonnes du pied de page (mêmes sur toutes les pages d'une langue). */
   const columnsFor = (locale) => {
     const chrome = site.locales[locale];
     return [
-      { title: chrome.footerTools, links: [{ path: chrome.home, label: chrome.footerToolRemove }, ...linksOf(locale, ["article"])] },
+      { title: chrome.footerTools, links: [{ path: chrome.home, label: chrome.footerToolRemove }, ...linksOf(locale, ["howto"], true), ...linksOf(locale, ["article"])] },
       { title: chrome.footerGuides, links: linksOf(locale, ["howto"]) },
       { title: chrome.footerUses, links: pages.filter((p) => p.type === "segment" && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].card.title })) },
       { title: chrome.footerHelp, links: [{ path: `${chrome.home}#how`, label: chrome.footerHow }, { path: `${chrome.home}#faq-title`, label: chrome.footerFaq }] },

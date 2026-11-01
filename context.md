@@ -168,6 +168,12 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   réciproque sur 5 langues + x-default (`pt-BR`, `es`, `id`), un sitemap par langue (`sitemap-<locale>.xml`)
   + index `sitemap.xml`, sélecteur de langue sans JavaScript (`<details>`) dans l'en-tête des pages
   statiques et liste des 5 langues dans le pied de page.
+- **N4 (faite)** : `/white-background/` et `/photo-background/` × 5 langues (`/fr/fond-blanc/`,
+  `/fr/fond-photo/`, `/pt-br/fundo-branco/`, `/pt-br/fundo-com-foto/`, `/es/fondo-blanco/`,
+  `/es/fondo-con-foto/`, `/id/background-putih/`, `/id/background-foto/`) : réponse directe sous le h1
+  (`answer`), étapes (JSON-LD HowTo), FAQ (FAQPage), bouton vers l'outil `?bg=white` / `?bg=photo`
+  (fond présélectionné et onglet Arrière-plan ouvert, `src/core/editor/url-preset.ts`). Rangées dans la
+  colonne « Outils » du pied de page (`"tool": true`). Total : 90 pages.
 
 ## Tables SQLite
 - **D1 `cutova-stats`** (Cloudflare, liaison `DB`) — `daily_events` (`migrations/0001_daily_events.sql`) :
@@ -623,6 +629,10 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   outils web), « você » en pt-BR, « Anda » en indonésien. Marqueurs `[À COMPLÉTER]` gardés tels quels dans
   les pages légales traduites (le contrôle du build les compte). Trois FAQ EN/FR devenues fausses corrigées
   (lot d'images, fonds photo/flou, API).
+
+- **(N4) Présélection par l'URL** : `?bg=white|photo` (option `&photo=<id>` de la liste fermée), toute
+  autre valeur ignorée ; le réglage s'applique à chaque image ajoutée pendant la visite. Pas de nouvelle
+  donnée envoyée (la page vue compte seulement le chemin, sans la requête).
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` (champs légaux, domaine, R2, Pages, Search Console, Bing,
