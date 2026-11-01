@@ -81,6 +81,126 @@
           "a": "Les plateformes changent leurs règles : vérifiez les règles actuelles avant de publier."
         }
       ]
+    },
+    "pt-br": {
+      "path": "/pt-br/para/marketing/",
+      "title": "Removedor de Fundo para Artes de Marketing | Cutova",
+      "description": "Crie posts para redes sociais, anúncios e slides com recortes limpos nas cores da sua marca, no tamanho certo. Grátis e privado.",
+      "h1": "Recortes limpos para artes de marketing",
+      "card": {
+        "title": "Equipes de marketing",
+        "text": "Artes para redes sociais, anúncios e apresentações nas cores da marca."
+      },
+      "intro": [
+        "Posts, banners e slides precisam da mesma coisa: o objeto sem o fundo, no formato certo. O Cutova faz as duas coisas no mesmo lugar."
+      ],
+      "sections": [
+        {
+          "h2": "Usos comuns",
+          "list": [
+            "Posts e stories para redes sociais em tamanhos prontos",
+            "Fotos de produtos e da equipe nas cores da marca",
+            "Slides e materiais de uma página",
+            "Rascunhos rápidos de anúncios"
+          ]
+        },
+        {
+          "h2": "Como o Cutova ajuda",
+          "paragraphs": [
+            "Escolha a cor de fundo uma vez: ela fica salva nas cores recentes. Escolha um tamanho pronto (post quadrado, vertical, story, prévia de link) e baixe, ou exporte uma série inteira em ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Consigo usar exatamente a cor da nossa marca?",
+          "a": "Sim, informe qualquer cor no seletor de cores; ela fica salva no seu navegador."
+        },
+        {
+          "q": "Os tamanhos das plataformas estão sempre atualizados?",
+          "a": "As plataformas mudam as regras: confira as atuais antes de publicar."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/para/marketing/",
+      "title": "Quitar Fondos para Creatividades de Marketing | Cutova",
+      "description": "Crea publicaciones para redes, anuncios y presentaciones con recortes limpios en los colores de tu marca y al tamaño adecuado. Gratis y privado.",
+      "h1": "Recortes limpios para tus creatividades de marketing",
+      "card": {
+        "title": "Equipos de marketing",
+        "text": "Imágenes para redes, anuncios y presentaciones en los colores de tu marca."
+      },
+      "intro": [
+        "Publicaciones, banners y diapositivas necesitan lo mismo: un sujeto sin su fondo y en el formato adecuado. Cutova hace ambas cosas en un solo lugar."
+      ],
+      "sections": [
+        {
+          "h2": "Usos habituales",
+          "list": [
+            "Publicaciones e historias para redes en tamaños predefinidos",
+            "Fotos de producto y del equipo sobre los colores de marca",
+            "Presentaciones y fichas de una página",
+            "Bocetos rápidos de anuncios"
+          ]
+        },
+        {
+          "h2": "Cómo te ayuda Cutova",
+          "paragraphs": [
+            "Elige un color de fondo una vez: se queda en tus colores recientes. Elige un tamaño predefinido (publicación cuadrada, vertical, historia, vista previa de enlace) y descarga, o exporta una serie entera en un ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Puedo usar exactamente el color de nuestra marca?",
+          "a": "Sí, introduce cualquier color en el selector; se recuerda en tu navegador."
+        },
+        {
+          "q": "¿Los tamaños de las plataformas están siempre al día?",
+          "a": "Las plataformas cambian sus normas: revisa las actuales antes de publicar."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/untuk/marketing/",
+      "title": "Hapus Background untuk Materi Marketing | Cutova",
+      "description": "Buat konten media sosial, iklan, dan slide dengan potongan rapi dalam warna brand Anda, di ukuran yang tepat. Gratis dan privat.",
+      "h1": "Potongan rapi untuk materi marketing",
+      "card": {
+        "title": "Tim marketing",
+        "text": "Visual untuk media sosial, iklan, dan presentasi dalam warna brand."
+      },
+      "intro": [
+        "Postingan, banner, dan slide butuh hal yang sama: objek tanpa background, dalam format yang tepat. Cutova melakukan keduanya di satu tempat."
+      ],
+      "sections": [
+        {
+          "h2": "Kegunaan umum",
+          "list": [
+            "Postingan dan story media sosial dalam ukuran siap pakai",
+            "Foto produk dan tim dengan warna brand",
+            "Slide presentasi dan materi satu halaman",
+            "Draf iklan yang cepat"
+          ]
+        },
+        {
+          "h2": "Bagaimana Cutova membantu",
+          "paragraphs": [
+            "Pilih warna background sekali saja: warna itu tersimpan di daftar warna terakhir. Pilih ukuran siap pakai (postingan persegi, potret, story, pratinjau tautan) lalu unduh, atau ekspor satu seri sekaligus dalam ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Bisakah memakai warna brand kami dengan tepat?",
+          "a": "Bisa, masukkan warna apa saja di pemilih warna; warna itu diingat oleh browser Anda."
+        },
+        {
+          "q": "Apakah ukuran setiap platform selalu terbaru?",
+          "a": "Platform bisa mengubah aturannya: cek aturan terbaru sebelum mengunggah."
+        }
+      ]
     }
   }
 }

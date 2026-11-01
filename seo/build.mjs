@@ -18,6 +18,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { en } from "../src/i18n/locales/en.ts";
 import { fr } from "../src/i18n/locales/fr.ts";
+import { es } from "../src/i18n/locales/es.ts";
+import { ptBr } from "../src/i18n/locales/pt-br.ts";
+import { id } from "../src/i18n/locales/id.ts";
 import {
   absoluteUrl,
   breadcrumbLd,
@@ -30,6 +33,7 @@ import {
   llmsTxt,
   renderArticlePage,
   robotsTxt,
+  sitemapIndexXml,
   sitemapXml,
   webApplicationLd,
   webSiteLd,
@@ -38,7 +42,7 @@ import {
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
 const CONTENT = path.join(ROOT, "content");
-const DICTS = { en, fr };
+const DICTS = { en, fr, "pt-br": ptBr, es, id };
 const DEFAULT_LOCALE = "en";
 
 const SITE_URL = process.env.SITE_URL || "http://localhost:4173";
@@ -72,10 +76,11 @@ async function main() {
   const locales = Object.keys(site.locales);
   const url = (p) => absoluteUrl(SITE_URL, p);
   const alternatesOf = (doc) => locales.filter((l) => doc.locales[l]).map((l) => ({ hreflang: site.locales[l].hreflang, href: url(doc.locales[l].path) }));
-  const otherLanguageOf = (doc, locale) => {
-    const other = locales.find((l) => l !== locale && doc.locales[l]);
-    return other ? { href: doc.locales[other].path, hreflang: site.locales[other].hreflang, label: site.locales[other].languageName } : null;
-  };
+  /** Toutes les versions linguistiques publiées d'une page (sélecteur de langue). */
+  const languagesOf = (doc, locale) =>
+    locales
+      .filter((l) => doc.locales[l])
+      .map((l) => ({ href: doc.locales[l].path, hreflang: site.locales[l].hreflang, label: site.locales[l].languageName, code: l === "pt-br" ? "PT" : l.toUpperCase(), current: l === locale }));
   const linksOf = (locale, types) =>
     pages.filter((p) => types.includes(p.type ?? "article") && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].h1 }));
   /** Colonnes du pied de page (mêmes sur toutes les pages d'une langue). */
@@ -88,10 +93,6 @@ async function main() {
       { title: chrome.footerHelp, links: [{ path: `${chrome.home}#how`, label: chrome.footerHow }, { path: `${chrome.home}#faq-title`, label: chrome.footerFaq }] },
       { title: chrome.footerLegal, links: linksOf(locale, ["legal"]) },
     ];
-  };
-  const homeOtherLanguage = (locale) => {
-    const other = locales.find((l) => l !== locale);
-    return other ? { href: home.locales[other].path, hreflang: site.locales[other].hreflang, label: site.locales[other].languageName } : null;
   };
   // Galerie : dimensions réelles des images (attributs width/height → pas de décalage de mise en page).
   const GALLERY_IDS = ["people", "products", "animals", "cars", "graphics"];
@@ -147,11 +148,11 @@ async function main() {
         page: { ...page, trademark: doc.id === "remove-bg-alternative", noCta: doc.type === "legal" },
         breadcrumb,
         columns: columnsFor(locale),
-        otherLanguage: otherLanguageOf(doc, locale),
+        languages: languagesOf(doc, locale),
         assets,
       });
       await writePage(page.path, html);
-      sitemap.push({ loc: canonical, alternates: alternatesOf(doc), xDefault: url(doc.locales[DEFAULT_LOCALE].path) });
+      sitemap.push({ locale, loc: canonical, alternates: alternatesOf(doc), xDefault: url(doc.locales[DEFAULT_LOCALE].path) });
     }
   }
 
@@ -189,17 +190,21 @@ async function main() {
           home: content,
           uses: pages.filter((p) => p.type === "segment" && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, ...p.locales[locale].card })),
           galleryItems,
-        })}\n    ${footerHtml({ chrome, brand: site.brand, columns: columnsFor(locale), otherLanguage: homeOtherLanguage(locale) })}`,
+        })}\n    ${footerHtml({ chrome, brand: site.brand, columns: columnsFor(locale), languages: languagesOf(home, locale) })}`,
       );
     if (!html.includes('data-locale=') || !html.includes('rel="canonical"') || !html.includes("seo-home")) {
       throw new Error("[seo] dist/index.html n'a pas la structure attendue (html lang / title / #app).");
     }
     await writePage(content.path, html);
-    homeEntries.push({ loc: canonical, alternates: alternatesOf(home), xDefault: url(home.locales[DEFAULT_LOCALE].path) });
+    homeEntries.push({ locale, loc: canonical, alternates: alternatesOf(home), xDefault: url(home.locales[DEFAULT_LOCALE].path) });
   }
 
   sitemap.unshift(...homeEntries);
-  await writeFile(path.join(DIST, "sitemap.xml"), sitemapXml(sitemap));
+  // Un sitemap par langue (avec alternances hreflang) + index `sitemap.xml` (cité par robots.txt).
+  for (const locale of locales) {
+    await writeFile(path.join(DIST, `sitemap-${locale}.xml`), sitemapXml(sitemap.filter((e) => e.locale === locale)));
+  }
+  await writeFile(path.join(DIST, "sitemap.xml"), sitemapIndexXml(locales.map((l) => url(`/sitemap-${l}.xml`))));
   await writeFile(path.join(DIST, "robots.txt"), robotsTxt(SITE_URL));
   await writeFile(
     path.join(DIST, "llms.txt"),
@@ -208,23 +213,20 @@ async function main() {
       summary: "Cutova is a free web app that removes the background from images directly in the browser. Images are never uploaded: an open-source AI model runs on the user's device (WebGPU when available, otherwise WebAssembly).",
       details: [
         "Key facts: free, no account, full-resolution download (up to about 50 megapixels on desktop), input PNG/JPEG/WebP/AVIF/GIF up to 50 MB, output transparent PNG, WebP or JPG, transparent/white/custom color background.",
-        "Models: BiRefNet_lite (MIT) on WebGPU, ormbg (Apache-2.0) on CPU/WebAssembly. Available in English and French.",
+        "Models: BiRefNet_lite (MIT) on WebGPU, ormbg (Apache-2.0) on CPU/WebAssembly. Available in English, French, Brazilian Portuguese, Spanish and Indonesian.",
       ],
       sections: [
         {
           title: "Pages",
-          links: [
-            { label: "Cutova — remove background (English)", path: home.locales.en.path, description: home.locales.en.description },
-            { label: "Cutova — supprimer l'arrière-plan (français)", path: home.locales.fr.path, description: home.locales.fr.description },
-          ],
+          links: locales.map((l) => ({ label: `Cutova (${site.locales[l].languageName})`, path: home.locales[l].path, description: home.locales[l].description })),
         },
         ...locales.flatMap((locale) =>
           [
-            [["article", "howto"], { en: "Guides (English)", fr: "Guides (français)" }],
-            [["segment"], { en: "Use cases (English)", fr: "Usages par métier (français)" }],
-            [["legal"], { en: "Legal (English)", fr: "Légal (français)" }],
-          ].map(([types, titles]) => ({
-            title: titles[locale],
+            [["article", "howto"], "Guides"],
+            [["segment"], "Use cases"],
+            [["legal"], "Legal"],
+          ].map(([types, title]) => ({
+            title: `${title} (${site.locales[locale].languageName})`,
             links: pages
               .filter((p) => types.includes(p.type ?? "article") && p.locales[locale])
               .map((p) => ({ label: p.locales[locale].h1, path: p.locales[locale].path, description: p.locales[locale].description })),

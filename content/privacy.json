@@ -120,6 +120,183 @@
           ]
         }
       ]
+    },
+    "pt-br": {
+      "path": "/pt-br/privacidade/",
+      "title": "Política de privacidade | Cutova",
+      "description": "O Cutova processa suas imagens inteiramente no seu navegador: sem upload, sem cadastro, sem cookies de rastreamento.",
+      "h1": "Política de privacidade",
+      "intro": [
+        "Resumindo: suas imagens nunca saem do seu aparelho. Não temos contas, nem cookies de rastreamento, nem dados sobre você. Só contamos, de forma anônima, como a ferramenta é usada (por exemplo, quantos recortes foram feitos hoje), para melhorá-la."
+      ],
+      "sections": [
+        {
+          "h2": "Suas imagens",
+          "paragraphs": [
+            "A remoção de fundo roda dentro do seu navegador, com um modelo de IA baixado no seu aparelho. As imagens nunca são enviadas para os nossos servidores nem para ninguém, e não conseguimos vê-las. O site é construído de forma que não consegue enviar dados de imagem para outro site (Content Security Policy rígida)."
+          ]
+        },
+        {
+          "h2": "O que fica guardado no seu aparelho",
+          "list": [
+            "Os arquivos do modelo de IA, guardados no armazenamento do navegador (Origin Private File System) para não serem baixados de novo. Você pode apagá-los limpando os dados deste site no navegador.",
+            "Algumas preferências (cores de fundo recentes, formato e tamanhos de exportação favoritos), guardadas no armazenamento local do navegador. Elas nunca são enviadas para lugar nenhum."
+          ]
+        },
+        {
+          "h2": "Estatísticas de uso anônimas",
+          "paragraphs": [
+            "Para saber se o Cutova funciona bem e quais recursos são úteis, a página envia alguns eventos anônimos para o nosso próprio servidor (mesmo site, sem terceiros): uma página vista, um recorte concluído ou com falha, uma troca para o mecanismo mais lento, um download, uma ferramenta usada, uma exportação em ZIP.",
+            "Cada evento contém apenas: o tipo de evento, o caminho da página, o idioma da interface, o mecanismo e o modelo de IA usados, a ferramenta, o formato de exportação, uma faixa de tempo (por exemplo \"2–5 s\") e uma faixa de tamanho de imagem (por exemplo \"1–4 megapixels\"). Nunca a imagem, o nome dela, um cookie, um identificador, o seu endereço IP, os detalhes completos do seu navegador ou a página de onde você veio.",
+            "Os eventos são somados em totais diários em um banco de dados (Cloudflare D1): só guardamos números como \"120 downloads em PNG em 1º de novembro\", nunca uma linha por visitante. O seu endereço IP é usado só por alguns segundos, na memória, para bloquear abusos, e nunca é gravado.",
+            "Se o seu navegador envia \"Do Not Track\" ou \"Global Privacy Control\", nada é enviado."
+          ]
+        },
+        {
+          "h2": "O que o nosso provedor de hospedagem vê",
+          "paragraphs": [
+            "Como em qualquer site, o nosso provedor (Cloudflare) trata os dados técnicos necessários para entregar páginas e arquivos, como o endereço IP e o tipo de navegador, e pode manter registros de segurança por pouco tempo. Não usamos esses dados para publicidade nem para criação de perfis.",
+            "Prazo de conservação dos registros de hospedagem: [À COMPLÉTER]. Nenhuma ferramenta de análise de terceiros é usada."
+          ]
+        },
+        {
+          "h2": "Cookies",
+          "paragraphs": [
+            "O Cutova não usa cookies de publicidade nem de rastreamento. Por isso, nenhum aviso de consentimento é necessário."
+          ]
+        },
+        {
+          "h2": "Seus direitos e contato",
+          "paragraphs": [
+            "Você pode tirar dúvidas sobre seus dados ou exercer seus direitos (acesso, eliminação, oposição), conforme a LGPD e o RGPD, escrevendo para: [À COMPLÉTER]. Você também pode procurar a autoridade de proteção de dados (no Brasil, a ANPD).",
+            "Controlador dos dados: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Alterações",
+          "paragraphs": [
+            "Se esta política mudar, esta página será atualizada com uma nova data. Última atualização: [À COMPLÉTER]."
+          ]
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/privacidad/",
+      "title": "Política de privacidad | Cutova",
+      "description": "Cutova procesa tus imágenes por completo en tu navegador: sin subir nada, sin cuenta, sin cookies de seguimiento.",
+      "h1": "Política de privacidad",
+      "intro": [
+        "En resumen: tus imágenes nunca salen de tu dispositivo. No tenemos cuentas, ni cookies de seguimiento, ni datos sobre ti. Solo contamos, de forma anónima, cómo se usa la herramienta (por ejemplo, cuántos recortes se han hecho hoy), para mejorarla."
+      ],
+      "sections": [
+        {
+          "h2": "Tus imágenes",
+          "paragraphs": [
+            "La eliminación del fondo se ejecuta dentro de tu navegador, con un modelo de IA descargado en tu dispositivo. Las imágenes nunca se envían a nuestros servidores ni a nadie, y no podemos verlas. La web está construida para que no pueda enviar datos de imagen a otro sitio (Content Security Policy estricta)."
+          ]
+        },
+        {
+          "h2": "Qué se guarda en tu dispositivo",
+          "list": [
+            "Los archivos del modelo de IA, guardados en el almacenamiento de tu navegador (Origin Private File System) para no volver a descargarlos. Puedes borrarlos eliminando los datos de este sitio en tu navegador.",
+            "Algunas preferencias (colores de fondo recientes, formato y tamaños de exportación favoritos), guardadas en el almacenamiento local de tu navegador. Nunca se envían a ninguna parte."
+          ]
+        },
+        {
+          "h2": "Estadísticas de uso anónimas",
+          "paragraphs": [
+            "Para saber si Cutova funciona bien y qué funciones son útiles, la página envía algunos eventos anónimos a nuestro propio servidor (la misma web, sin terceros): una página vista, un recorte terminado o fallido, un cambio al motor más lento, una descarga, una herramienta usada, una exportación en ZIP.",
+            "Cada evento contiene solo: el tipo de evento, la ruta de la página, el idioma de la interfaz, el motor y el modelo de IA usados, la herramienta, el formato de exportación, un intervalo de tiempo (por ejemplo «2–5 s») y un intervalo de tamaño de imagen (por ejemplo «1–4 megapíxeles»). Nunca la imagen, su nombre, una cookie, un identificador, tu dirección IP, los datos completos de tu navegador ni la página de la que vienes.",
+            "Los eventos se suman en totales diarios en una base de datos (Cloudflare D1): solo guardamos números como «120 descargas en PNG el 1 de noviembre», nunca una fila por visitante. Tu dirección IP se usa solo unos segundos, en memoria, para bloquear abusos, y nunca se guarda.",
+            "Si tu navegador envía «Do Not Track» o «Global Privacy Control», no se envía nada."
+          ]
+        },
+        {
+          "h2": "Qué ve nuestro proveedor de alojamiento",
+          "paragraphs": [
+            "Como en cualquier web, nuestro proveedor (Cloudflare) trata los datos técnicos necesarios para servir páginas y archivos, como la dirección IP y el tipo de navegador, y puede conservar registros de seguridad durante poco tiempo. No usamos estos datos para publicidad ni para elaborar perfiles.",
+            "Plazo de conservación de los registros de alojamiento: [À COMPLÉTER]. No se usa ninguna herramienta de analítica de terceros."
+          ]
+        },
+        {
+          "h2": "Cookies",
+          "paragraphs": [
+            "Cutova no instala cookies publicitarias ni de seguimiento. Por eso no hace falta ningún aviso de consentimiento."
+          ]
+        },
+        {
+          "h2": "Tus derechos y contacto",
+          "paragraphs": [
+            "Puedes hacer cualquier pregunta sobre tus datos o ejercer tus derechos (acceso, supresión, oposición) escribiendo a: [À COMPLÉTER]. También puedes acudir a tu autoridad de protección de datos (en España, la AEPD).",
+            "Responsable del tratamiento: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Cambios",
+          "paragraphs": [
+            "Si esta política cambia, esta página se actualizará con una nueva fecha. Última actualización: [À COMPLÉTER]."
+          ]
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/privasi/",
+      "title": "Kebijakan privasi | Cutova",
+      "description": "Cutova memproses gambar Anda sepenuhnya di browser: tanpa upload, tanpa akun, tanpa cookie pelacak.",
+      "h1": "Kebijakan privasi",
+      "intro": [
+        "Singkatnya: gambar Anda tidak pernah keluar dari perangkat. Kami tidak punya akun, cookie pelacak, atau data tentang Anda. Kami hanya menghitung secara anonim bagaimana alat ini dipakai (misalnya berapa gambar yang diproses hari ini), untuk memperbaikinya."
+      ],
+      "sections": [
+        {
+          "h2": "Gambar Anda",
+          "paragraphs": [
+            "Penghapusan background berjalan di dalam browser Anda, dengan model AI yang diunduh ke perangkat Anda. Gambar tidak pernah dikirim ke server kami atau ke siapa pun, dan kami tidak bisa melihatnya. Situs ini dibuat sehingga tidak bisa mengirim data gambar ke situs lain (Content Security Policy yang ketat)."
+          ]
+        },
+        {
+          "h2": "Yang disimpan di perangkat Anda",
+          "list": [
+            "File model AI, disimpan di penyimpanan browser (Origin Private File System) agar tidak diunduh ulang. Anda bisa menghapusnya dengan menghapus data situs ini di browser.",
+            "Beberapa preferensi (warna background terakhir, format dan ukuran ekspor favorit), disimpan di penyimpanan lokal browser. Preferensi ini tidak pernah dikirim ke mana pun."
+          ]
+        },
+        {
+          "h2": "Statistik penggunaan anonim",
+          "paragraphs": [
+            "Untuk mengetahui apakah Cutova bekerja dengan baik dan fitur mana yang berguna, halaman mengirim beberapa peristiwa anonim ke server kami sendiri (situs yang sama, tanpa pihak ketiga): halaman dilihat, gambar berhasil atau gagal diproses, peralihan ke mesin yang lebih lambat, unduhan, alat yang dipakai, ekspor ZIP.",
+            "Setiap peristiwa hanya berisi: jenis peristiwa, jalur halaman, bahasa antarmuka, mesin dan model AI yang dipakai, alat, format ekspor, rentang waktu (misalnya \"2–5 dtk\") dan rentang ukuran gambar (misalnya \"1–4 megapiksel\"). Tidak pernah gambar, nama file, cookie, pengenal, alamat IP Anda, detail lengkap browser Anda, atau halaman asal Anda.",
+            "Peristiwa dijumlahkan menjadi total harian di sebuah database (Cloudflare D1): kami hanya menyimpan angka seperti \"120 unduhan PNG pada 1 November\", tidak pernah satu baris per pengunjung. Alamat IP Anda hanya dipakai beberapa detik, di memori, untuk mencegah penyalahgunaan, dan tidak pernah disimpan.",
+            "Jika browser Anda mengirim \"Do Not Track\" atau \"Global Privacy Control\", tidak ada yang dikirim sama sekali."
+          ]
+        },
+        {
+          "h2": "Yang dilihat penyedia hosting kami",
+          "paragraphs": [
+            "Seperti situs web lain, penyedia hosting kami (Cloudflare) memproses data teknis yang diperlukan untuk mengirim halaman dan file, seperti alamat IP dan jenis browser, dan bisa menyimpan log keamanan dalam waktu singkat. Kami tidak memakai data ini untuk iklan atau pembuatan profil.",
+            "Masa simpan log hosting: [À COMPLÉTER]. Tidak ada alat analitik pihak ketiga yang dipakai."
+          ]
+        },
+        {
+          "h2": "Cookie",
+          "paragraphs": [
+            "Cutova tidak memasang cookie iklan atau pelacak. Karena itu, tidak perlu banner persetujuan."
+          ]
+        },
+        {
+          "h2": "Hak Anda dan kontak",
+          "paragraphs": [
+            "Anda bisa bertanya apa pun tentang data Anda atau menggunakan hak Anda (akses, penghapusan, keberatan) dengan menulis ke: [À COMPLÉTER]. Anda juga bisa menghubungi otoritas pelindungan data di negara Anda.",
+            "Pengendali data: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Perubahan",
+          "paragraphs": [
+            "Jika kebijakan ini berubah, halaman ini akan diperbarui dengan tanggal baru. Pembaruan terakhir: [À COMPLÉTER]."
+          ]
+        }
+      ]
     }
   }
 }

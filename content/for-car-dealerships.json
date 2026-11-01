@@ -81,6 +81,126 @@
           "a": "Pas encore : vous pouvez choisir une couleur, une de nos photos libres ou un flou de l'original. Les fonds personnalisés sont prévus."
         }
       ]
+    },
+    "pt-br": {
+      "path": "/pt-br/para/concessionarias/",
+      "title": "Removedor de Fundo para Fotos de Carros | Cutova",
+      "description": "Dê às fotos dos veículos um fundo limpo e padronizado para anúncios e showroom. Grátis, privado, no seu navegador.",
+      "h1": "Fotos de veículos mais limpas para os seus anúncios",
+      "card": {
+        "title": "Concessionárias e lojas de carros",
+        "text": "Fotos de veículos padronizadas, com fundo limpo."
+      },
+      "intro": [
+        "Carros fotografados em um pátio cheio ficam melhores com um fundo limpo e padronizado. O Cutova ajuda você a chegar lá rapidinho, em cada foto do veículo."
+      ],
+      "sections": [
+        {
+          "h2": "Usos comuns",
+          "list": [
+            "Fotos de anúncio com fundo neutro ou com a identidade da loja",
+            "Visual padronizado em todo o estoque",
+            "Versões com fundo desfocado que mantêm o contexto",
+            "Posts nas redes sociais para novos veículos"
+          ]
+        },
+        {
+          "h2": "Como o Cutova ajuda",
+          "paragraphs": [
+            "Processe uma série inteira de fotos de uma vez, aplique o mesmo fundo em todas e exporte tudo em ZIP. Reflexos e vidros transparentes são difíceis para qualquer ferramenta automática: confira cada resultado."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Ele remove o fundo atrás dos vidros do carro?",
+          "a": "Vidro é difícil para a remoção automática de fundo; use o pincel Apagar para corrigir o que sobrar."
+        },
+        {
+          "q": "Posso usar a foto do nosso showroom como fundo?",
+          "a": "Ainda não: você pode escolher uma cor, uma das nossas fotos grátis ou o desfoque do original. Fundos personalizados estão nos planos."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/para/concesionarios/",
+      "title": "Quitar el Fondo de Fotos de Coches | Cutova",
+      "description": "Da a las fotos de tus vehículos un fondo limpio y uniforme para anuncios y exposición. Gratis, privado, en tu navegador.",
+      "h1": "Fotos de vehículos más limpias para tus anuncios",
+      "card": {
+        "title": "Concesionarios",
+        "text": "Fotos de vehículos uniformes sobre fondos limpios."
+      },
+      "intro": [
+        "Los coches fotografiados en una campa llena lucen mejor sobre un fondo limpio y uniforme. Cutova te ayuda a conseguirlo rápido en cada foto del vehículo."
+      ],
+      "sections": [
+        {
+          "h2": "Usos habituales",
+          "list": [
+            "Fotos de anuncio sobre fondo neutro o con tu imagen de marca",
+            "Aspecto uniforme en todo el stock",
+            "Versiones con fondo desenfocado que mantienen el contexto",
+            "Publicaciones en redes para las novedades"
+          ]
+        },
+        {
+          "h2": "Cómo te ayuda Cutova",
+          "paragraphs": [
+            "Procesa una serie completa de fotos de una vez, aplica el mismo fondo a todas y exporta todo en un ZIP. Los reflejos y las ventanillas transparentes son difíciles para cualquier herramienta automática: revisa cada resultado."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Quita el fondo que se ve a través de las ventanillas?",
+          "a": "El cristal es difícil para la eliminación automática de fondos; usa el pincel Borrar para corregir lo que quede."
+        },
+        {
+          "q": "¿Puedo usar una foto de nuestra exposición como fondo?",
+          "a": "Todavía no: puedes elegir un color, una de nuestras fotos gratuitas o un desenfoque del original. Los fondos personalizados están previstos."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/untuk/dealer-mobil/",
+      "title": "Hapus Background Foto Mobil | Cutova",
+      "description": "Buat foto kendaraan dengan background bersih dan seragam untuk iklan dan showroom. Gratis, privat, di browser Anda.",
+      "h1": "Foto kendaraan yang lebih rapi untuk iklan Anda",
+      "card": {
+        "title": "Dealer mobil",
+        "text": "Foto kendaraan seragam dengan background bersih."
+      },
+      "intro": [
+        "Mobil yang difoto di area parkir yang ramai akan terlihat lebih baik dengan background bersih dan seragam. Cutova membantu Anda melakukannya dengan cepat untuk setiap foto kendaraan."
+      ],
+      "sections": [
+        {
+          "h2": "Kegunaan umum",
+          "list": [
+            "Foto iklan dengan background netral atau sesuai brand",
+            "Tampilan seragam untuk seluruh stok",
+            "Versi background blur yang tetap menunjukkan suasana",
+            "Postingan media sosial untuk unit baru"
+          ]
+        },
+        {
+          "h2": "Bagaimana Cutova membantu",
+          "paragraphs": [
+            "Proses satu seri foto sekaligus, terapkan background yang sama ke semuanya, lalu ekspor dalam satu ZIP. Pantulan dan kaca transparan sulit bagi alat otomatis mana pun: periksa setiap hasil."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Apakah background di balik kaca mobil ikut terhapus?",
+          "a": "Kaca sulit untuk penghapusan background otomatis; gunakan kuas Hapus untuk merapikan sisanya."
+        },
+        {
+          "q": "Bisakah memakai foto showroom kami sebagai background?",
+          "a": "Belum: Anda bisa memilih warna, salah satu foto gratis kami, atau versi blur dari foto asli. Background kustom sedang direncanakan."
+        }
+      ]
     }
   }
 }

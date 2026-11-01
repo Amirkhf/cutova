@@ -162,9 +162,12 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   photographers, marketing, developers, ecommerce, media, car-dealerships, enterprise ; 3 pages légales
   (`/legal/` ↔ `/fr/mentions-legales/`, `/privacy/` ↔ `/fr/confidentialite/`, `/terms/` ↔ `/fr/conditions/`)
   avec champs `[À COMPLÉTER]`. Total : 32 pages, sitemap à jour.
-- À faire : pt-br / es / id.
-- Pages SEO `/for/{segment}` prévues (textes 100 % originaux) : individuals, photographers,
-  marketing, developers, ecommerce, media, car-dealerships, enterprise.
+- **N3 (faite)** : pt-br, es, id — interface (`src/i18n/locales/{pt-br,es,id}.ts`) et toutes les pages
+  (16 × 5 langues = 80 pages). URL traduites : `/pt-br/tutoriais/…`, `/pt-br/para/…`, `/es/guias/…`,
+  `/es/para/…`, `/id/panduan/…`, `/id/untuk/…`, pages légales traduites (`/es/aviso-legal/`, …). hreflang
+  réciproque sur 5 langues + x-default (`pt-BR`, `es`, `id`), un sitemap par langue (`sitemap-<locale>.xml`)
+  + index `sitemap.xml`, sélecteur de langue sans JavaScript (`<details>`) dans l'en-tête des pages
+  statiques et liste des 5 langues dans le pied de page.
 
 ## Tables SQLite
 - **D1 `cutova-stats`** (Cloudflare, liaison `DB`) — `daily_events` (`migrations/0001_daily_events.sql`) :
@@ -614,6 +617,12 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   `/api/` dans robots.txt (aussi pour les robots d'IA), hors sitemap. Données de démo : serveur `vite` dev
   et `npm run seed:demo` (D1 LOCAL, refuse `--remote`) ; jamais dans le bundle ni en production.
 - **(N2) Jours en UTC** pour l'agrégation (compteurs D1 par jour UTC) : simple et identique partout.
+
+- **(N3) Traductions** : adaptées aux recherches locales (pt-BR « remover fundo », es « quitar fondo »,
+  id « hapus background », mot réellement tapé en Indonésie), tutoiement en espagnol (usage courant des
+  outils web), « você » en pt-BR, « Anda » en indonésien. Marqueurs `[À COMPLÉTER]` gardés tels quels dans
+  les pages légales traduites (le contrôle du build les compte). Trois FAQ EN/FR devenues fausses corrigées
+  (lot d'images, fonds photo/flou, API).
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` (champs légaux, domaine, R2, Pages, Search Console, Bing,

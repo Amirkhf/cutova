@@ -6,11 +6,13 @@ import path from "node:path";
 
 /** Pages statiques générées par seo/build.mjs (après `npm run build`), lues depuis content/. */
 const CONTENT = path.resolve(import.meta.dirname, "../../content");
+const SITE = JSON.parse(readFileSync(path.join(CONTENT, "site.json"), "utf8")) as { locales: Record<string, { hreflang: string; home: string }> };
+const LOCALES = Object.keys(SITE.locales);
 const PAGES = readdirSync(CONTENT)
   .filter((f) => f.endsWith(".json") && f !== "site.json")
   .flatMap((f) => {
     const doc = JSON.parse(readFileSync(path.join(CONTENT, f), "utf8")) as { type?: string; locales: Record<string, { path: string }> };
-    return Object.entries(doc.locales).map(([lang, page]) => ({ path: page.path, lang, legal: doc.type === "legal" }));
+    return Object.entries(doc.locales).map(([lang, page]) => ({ path: page.path, lang, hreflang: SITE.locales[lang]!.hreflang, legal: doc.type === "legal", count: Object.keys(doc.locales).length }));
   });
 
 async function hreflangs(page: Page): Promise<Record<string, string>> {
@@ -19,7 +21,7 @@ async function hreflangs(page: Page): Promise<Record<string, string>> {
   );
 }
 
-for (const { path, lang, legal } of PAGES) {
+for (const { path, lang, hreflang, legal, count } of PAGES) {
   test(`SEO ${path} : langue, titre, description, canonical, hreflang réciproques, JSON-LD, h1`, async ({ page, request }) => {
     const external: string[] = [];
     page.on("request", (r) => {
@@ -39,12 +41,13 @@ for (const { path, lang, legal } of PAGES) {
 
     // hreflang : la page se cite elle-même, et chaque alternative renvoie vers elle (réciprocité).
     const alts = await hreflangs(page);
-    expect(alts[lang]).toBe(path);
+    expect(alts[hreflang]).toBe(path);
+    expect(Object.keys(alts)).toHaveLength(count + 1); // toutes les langues + x-default
     expect(alts["x-default"]).toBeTruthy();
     for (const [code, altPath] of Object.entries(alts)) {
       if (code === "x-default" || altPath === path) continue;
       const html = await (await request.get(altPath)).text();
-      expect(html, `${altPath} doit pointer vers ${path}`).toContain(`hreflang="${lang}" href="${new URL(canonical!).href}"`);
+      expect(html, `${altPath} doit pointer vers ${path}`).toContain(`hreflang="${hreflang}" href="${new URL(canonical!).href}"`);
     }
 
     // JSON-LD valide.
@@ -76,15 +79,26 @@ test("fichiers racine : robots.txt (robots IA autorisés), sitemap.xml (toutes l
   expect(robots).toContain("User-agent: GPTBot\nAllow: /");
   expect(robots).toContain("User-agent: ClaudeBot\nAllow: /");
   expect(robots).toMatch(/Sitemap: https?:\/\/.+\/sitemap\.xml/);
-  const sitemap = await (await request.get("/sitemap.xml")).text();
-  expect(sitemap.match(/<loc>/g)).toHaveLength(PAGES.length);
+  const index = await (await request.get("/sitemap.xml")).text();
+  expect(index).toContain("<sitemapindex");
+  expect(index.match(/<loc>/g)).toHaveLength(LOCALES.length);
+  let total = 0;
+  for (const locale of LOCALES) {
+    expect(index).toContain(`/sitemap-${locale}.xml</loc>`);
+    const sitemap = await (await request.get(`/sitemap-${locale}.xml`)).text();
+    const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]!).pathname);
+    expect(locs.sort()).toEqual(PAGES.filter((p) => p.lang === locale).map((p) => p.path).sort());
+    expect(sitemap).toContain('hreflang="x-default"');
+    total += locs.length;
+  }
+  expect(total).toBe(PAGES.length);
   const llms = await request.get("/llms.txt");
   expect(llms.status()).toBe(200);
   expect(await llms.text()).toMatch(/^# Cutova\n\n> /);
 });
 
-test("pages guides : aucune violation axe (EN et FR)", async ({ page }) => {
-  for (const url of ["/", "/remove-bg-alternative/", "/fr/tutoriels/creer-png-transparent/", "/fr/", "/for/ecommerce/", "/fr/confidentialite/"]) {
+test("pages guides : aucune violation axe (5 langues)", async ({ page }) => {
+  for (const url of ["/", "/remove-bg-alternative/", "/fr/tutoriels/creer-png-transparent/", "/fr/", "/for/ecommerce/", "/fr/confidentialite/", "/pt-br/", "/es/guias/quitar-fondo-de-una-foto/", "/id/untuk/toko-online/"]) {
     await page.goto(url);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.map((v) => `${url}: ${v.id}`)).toEqual([]);
@@ -142,4 +156,25 @@ test("pages légales : champs à compléter visibles, liées depuis toutes les p
   }
   await page.goto("/how-to/make-transparent-png/");
   await expect(page.locator('footer a[href="/privacy/"]')).toBeVisible();
+});
+
+test("accueils pt-br, es, id : l'application démarre dans la langue de la page", async ({ page }) => {
+  for (const [url, label] of [["/pt-br/", "Escolher uma imagem"], ["/es/", "Elegir una imagen"], ["/id/", "Pilih gambar"]] as const) {
+    await page.goto(url);
+    await expect(page.getByRole("button", { name: label })).toBeVisible();
+  }
+  await page.getByLabel("Bahasa").selectOption("es");
+  await page.waitForURL((u) => u.pathname === "/es/");
+});
+
+test("sélecteur de langue des pages statiques : les 5 langues, page courante marquée, sans JavaScript", async ({ page }) => {
+  await page.goto("/es/para/fotografos/");
+  const menu = page.locator(".seo-header .seo-lang");
+  await menu.locator("summary").click();
+  const links = menu.locator(".seo-lang-list a");
+  await expect(links).toHaveCount(5);
+  await expect(menu.locator('a[aria-current="page"]')).toHaveAttribute("href", "/es/para/fotografos/");
+  await links.filter({ hasText: "Bahasa Indonesia" }).click();
+  await page.waitForURL((u) => u.pathname === "/id/untuk/fotografer/");
+  await expect(page.locator(".seo-footer-lang-list a")).toHaveCount(5);
 });

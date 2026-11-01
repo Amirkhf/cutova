@@ -6,7 +6,7 @@ import { renderUploadCard, type UploadCardHandle } from "./upload-card.ts";
 import { renderEditor, type EditorHandle } from "../editor/editor.ts";
 
 /** Pages d'accueil publiées par langue (seo/build.mjs, content/site.json). */
-const LOCALE_HOME_PATHS: Partial<Record<Locale, string>> = { en: "/", fr: "/fr/" };
+const LOCALE_HOME_PATHS: Record<Locale, string> = { en: "/", fr: "/fr/", "pt-br": "/pt-br/", es: "/es/", id: "/id/" };
 
 export function renderHome(root: HTMLElement, initialLocale: Locale): void {
   let locale = initialLocale;

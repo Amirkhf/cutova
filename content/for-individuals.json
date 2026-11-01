@@ -81,6 +81,126 @@
           "a": "Elles ne quittent jamais votre appareil. Cutova ne peut pas les voir."
         }
       ]
+    },
+    "pt-br": {
+      "path": "/pt-br/para/uso-pessoal/",
+      "title": "Removedor de Fundo Grátis para Fotos Pessoais | Cutova",
+      "description": "Remova o fundo das suas fotos para foto de perfil, figurinhas, convites e trabalhos da escola. Grátis, privado, sem cadastro.",
+      "h1": "Remoção de fundo para as suas fotos do dia a dia",
+      "card": {
+        "title": "Fotos do dia a dia",
+        "text": "Foto de perfil, figurinhas, trabalhos da escola e montagens divertidas."
+      },
+      "intro": [
+        "Trocar a foto de perfil, fazer uma figurinha do seu pet ou preparar uma imagem para um trabalho da escola: o Cutova faz isso em poucos segundos, sem cadastro e sem enviar suas fotos para lugar nenhum."
+      ],
+      "sections": [
+        {
+          "h2": "Usos comuns",
+          "list": [
+            "Foto de perfil com fundo limpo ou colorido",
+            "Figurinhas com contorno branco para mensagens e impressão",
+            "Convites, cartões e montagens de fotos",
+            "Trabalhos da escola e de grupos"
+          ]
+        },
+        {
+          "h2": "Como o Cutova ajuda",
+          "paragraphs": [
+            "Suas fotos ficam no celular ou no computador: a IA roda no navegador. Adicione várias imagens de uma vez, escolha um fundo e baixe uma por uma ou todas juntas em um ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Posso usar o Cutova no celular?",
+          "a": "Sim, em um navegador de celular recente. Fotos grandes podem ser reduzidas para caber na memória do aparelho."
+        },
+        {
+          "q": "Minhas fotos de família estão seguras?",
+          "a": "Elas nunca saem do seu aparelho. O Cutova não consegue vê-las."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/para/particulares/",
+      "title": "Quitar Fondos Gratis para tus Fotos Personales | Cutova",
+      "description": "Quita el fondo de tus fotos para fotos de perfil, stickers, invitaciones y trabajos del cole. Gratis, privado, sin cuenta.",
+      "h1": "Quitar fondos para tus fotos de todos los días",
+      "card": {
+        "title": "Fotos del día a día",
+        "text": "Fotos de perfil, stickers, trabajos de clase y montajes divertidos."
+      },
+      "intro": [
+        "Cambiar tu foto de perfil, hacer un sticker de tu mascota o preparar una imagen para un trabajo de clase: Cutova lo hace en unos segundos, sin cuenta y sin enviar tus fotos a ningún sitio."
+      ],
+      "sections": [
+        {
+          "h2": "Usos habituales",
+          "list": [
+            "Fotos de perfil con fondo limpio o de color",
+            "Stickers con borde blanco para mensajes e impresiones",
+            "Invitaciones, tarjetas y collages de fotos",
+            "Trabajos de clase y de asociaciones"
+          ]
+        },
+        {
+          "h2": "Cómo te ayuda Cutova",
+          "paragraphs": [
+            "Tus fotos se quedan en tu móvil o tu ordenador: la IA funciona en tu navegador. Añade varias imágenes a la vez, elige un fondo y descárgalas una a una o todas juntas en un ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Puedo usar Cutova en el móvil?",
+          "a": "Sí, en un navegador móvil reciente. Las fotos grandes pueden reducirse para caber en la memoria del teléfono."
+        },
+        {
+          "q": "¿Mis fotos familiares están seguras?",
+          "a": "Nunca salen de tu dispositivo. Cutova no puede verlas."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/untuk/pribadi/",
+      "title": "Hapus Background Gratis untuk Foto Pribadi | Cutova",
+      "description": "Hapus background foto Anda untuk foto profil, stiker, undangan, dan tugas sekolah. Gratis, privat, tanpa akun.",
+      "h1": "Hapus background untuk foto sehari-hari Anda",
+      "card": {
+        "title": "Foto sehari-hari",
+        "text": "Foto profil, stiker, tugas sekolah, dan editan seru."
+      },
+      "intro": [
+        "Ganti foto profil, bikin stiker dari hewan peliharaan, atau siapkan gambar untuk tugas sekolah: Cutova melakukannya dalam beberapa detik, tanpa akun dan tanpa mengirim foto Anda ke mana pun."
+      ],
+      "sections": [
+        {
+          "h2": "Kegunaan umum",
+          "list": [
+            "Foto profil dengan background bersih atau berwarna",
+            "Stiker dengan garis tepi putih untuk chat dan cetak",
+            "Undangan, kartu ucapan, dan kolase foto",
+            "Tugas sekolah dan kegiatan komunitas"
+          ]
+        },
+        {
+          "h2": "Bagaimana Cutova membantu",
+          "paragraphs": [
+            "Foto Anda tetap di HP atau komputer: AI berjalan di browser. Tambahkan beberapa gambar sekaligus, pilih background, lalu unduh satu per satu atau semuanya dalam satu ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Bisakah memakai Cutova di HP?",
+          "a": "Bisa, di browser HP versi terbaru. Foto besar mungkin diperkecil agar muat di memori HP."
+        },
+        {
+          "q": "Apakah foto keluarga saya aman?",
+          "a": "Foto tidak pernah keluar dari perangkat Anda. Cutova tidak bisa melihatnya."
+        }
+      ]
     }
   }
 }

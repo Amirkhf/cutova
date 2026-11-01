@@ -81,6 +81,126 @@
           "a": "Oui, dans Effets → Ombre portée."
         }
       ]
+    },
+    "pt-br": {
+      "path": "/pt-br/para/e-commerce/",
+      "title": "Fotos de Produto com Fundo Branco para Lojas Virtuais | Cutova",
+      "description": "Coloque fotos de produto em fundo branco puro, nos tamanhos certos para a sua loja, uma por uma ou em lote. Grátis, sem upload.",
+      "h1": "Fotos de produto com fundo branco, prontas para a sua loja",
+      "card": {
+        "title": "Lojas virtuais",
+        "text": "Fotos de produto com fundo branco, no tamanho certo para a loja."
+      },
+      "intro": [
+        "A maioria das lojas virtuais e dos marketplaces quer fotos de produto com fundo limpo. Com o Cutova, você consegue isso em segundos, na resolução original, sem enviar seu catálogo para lugar nenhum."
+      ],
+      "sections": [
+        {
+          "h2": "Usos comuns",
+          "list": [
+            "Foto principal do produto em branco puro (#FFFFFF)",
+            "Tamanhos quadrados e horizontais para anúncios",
+            "Processamento em lote de uma linha de produtos com download em ZIP",
+            "Sombra projetada para um visual mais natural"
+          ]
+        },
+        {
+          "h2": "Como o Cutova ajuda",
+          "paragraphs": [
+            "Escolha um formato de loja: o fundo vira branco automaticamente e o produto fica centralizado, com a margem que você definir. Adicione várias fotos e baixe todas de uma vez."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Qual tamanho devo usar no meu marketplace?",
+          "a": "Cada plataforma tem suas próprias regras, e elas mudam: confira as exigências atuais e escolha o tamanho pronto mais próximo, ou defina a sua própria largura."
+        },
+        {
+          "q": "Posso colocar uma sombra embaixo do produto?",
+          "a": "Sim, em Efeitos → Sombra."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/para/tiendas-online/",
+      "title": "Fotos de Producto con Fondo Blanco para Tiendas Online | Cutova",
+      "description": "Pon tus fotos de producto sobre fondo blanco puro, en tamaños listos para tu tienda, una a una o por lotes. Gratis, sin subir nada.",
+      "h1": "Fotos de producto con fondo blanco, listas para tu tienda",
+      "card": {
+        "title": "Tiendas online",
+        "text": "Fotos de producto con fondo blanco en tamaños listos para vender."
+      },
+      "intro": [
+        "La mayoría de tiendas online y marketplaces piden fotos de producto con un fondo limpio. Con Cutova las tienes en segundos, a resolución completa, sin enviar tu catálogo a ningún sitio."
+      ],
+      "sections": [
+        {
+          "h2": "Usos habituales",
+          "list": [
+            "Imagen principal del producto sobre blanco puro (#FFFFFF)",
+            "Tamaños cuadrados y horizontales para fichas de producto",
+            "Procesamiento por lotes de una serie de productos con descarga en ZIP",
+            "Sombra para un aspecto más natural"
+          ]
+        },
+        {
+          "h2": "Cómo te ayuda Cutova",
+          "paragraphs": [
+            "Elige un formato de tienda: el fondo pasa a blanco automáticamente y el producto queda centrado con el margen que tú decidas. Añade varias fotos y descárgalas todas de una vez."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Qué tamaño uso para mi marketplace?",
+          "a": "Cada plataforma tiene sus propias normas y cambian con el tiempo: revisa los requisitos actuales y elige el tamaño predefinido más cercano o indica tu propio ancho."
+        },
+        {
+          "q": "¿Puedo añadir una sombra bajo el producto?",
+          "a": "Sí, en Efectos → Sombra."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/untuk/toko-online/",
+      "title": "Foto Produk Background Putih untuk Toko Online | Cutova",
+      "description": "Buat foto produk dengan background putih bersih dalam ukuran siap pakai untuk toko online dan marketplace, satu per satu atau sekaligus. Gratis, tanpa upload.",
+      "h1": "Foto produk background putih, siap untuk toko Anda",
+      "card": {
+        "title": "Penjual online",
+        "text": "Foto produk background putih dalam ukuran siap pakai."
+      },
+      "intro": [
+        "Sebagian besar toko online dan marketplace menginginkan foto produk dengan background bersih. Dengan Cutova, Anda mendapatkannya dalam hitungan detik, dalam resolusi penuh, tanpa mengirim katalog Anda ke mana pun."
+      ],
+      "sections": [
+        {
+          "h2": "Kegunaan umum",
+          "list": [
+            "Foto utama produk dengan background putih bersih (#FFFFFF)",
+            "Ukuran persegi dan lanskap untuk listing produk",
+            "Proses banyak foto produk sekaligus dengan unduhan ZIP",
+            "Bayangan agar tampilan lebih natural"
+          ]
+        },
+        {
+          "h2": "Bagaimana Cutova membantu",
+          "paragraphs": [
+            "Pilih format toko: background otomatis menjadi putih dan produk diletakkan di tengah dengan margin yang bisa Anda atur. Tambahkan beberapa foto dan unduh semuanya sekaligus."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Ukuran apa yang cocok untuk marketplace saya?",
+          "a": "Setiap platform punya aturan sendiri dan aturannya bisa berubah: cek persyaratan terbaru, lalu pilih ukuran siap pakai yang paling dekat atau tentukan lebar sendiri."
+        },
+        {
+          "q": "Bisakah menambahkan bayangan di bawah produk?",
+          "a": "Bisa, di Efek → Bayangan."
+        }
+      ]
     }
   }
 }

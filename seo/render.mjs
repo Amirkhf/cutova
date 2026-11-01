@@ -130,11 +130,34 @@ function ctaHtml(chrome, homePath) {
 /** Icône de la marque (ciseaux), identique à l'en-tête de l'application. */
 const BRAND_ICON = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>`;
 
-export function headerHtml({ brand, chrome, homePath, otherLanguage }) {
+/**
+ * Liens vers la même page dans les autres langues. `languages` = [{ href, hreflang, label, code,
+ * current }] calculées par seo/build.mjs (toutes les langues publiées de la page, page courante incluse).
+ */
+function languageLinks(languages) {
+  return languages
+    .map((l) =>
+      l.current
+        ? `<li><a href="${esc(l.href)}" hreflang="${esc(l.hreflang)}" lang="${esc(l.hreflang)}" aria-current="page">${esc(l.label)}</a></li>`
+        : `<li><a href="${esc(l.href)}" hreflang="${esc(l.hreflang)}" lang="${esc(l.hreflang)}">${esc(l.label)}</a></li>`,
+    )
+    .join("");
+}
+
+const GLOBE_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>`;
+
+/** Sélecteur de langue sans JavaScript (<details>) : fonctionne avec la CSP stricte. */
+function languageMenu(chrome, languages) {
+  if (languages.length < 2) return "";
+  const current = languages.find((l) => l.current);
+  return `<details class="seo-lang"><summary>${GLOBE_ICON}<span class="sr-only">${esc(chrome.footerLanguageTitle)}: ${esc(current?.label ?? "")}</span><span aria-hidden="true">${esc(current?.code ?? "")}</span></summary><ul class="seo-lang-list">${languageLinks(languages)}</ul></details>`;
+}
+
+export function headerHtml({ brand, chrome, homePath, languages = [] }) {
   return `<header class="seo-header">
   <a class="seo-brand" href="${esc(homePath)}">${BRAND_ICON}<span>${esc(brand)}</span></a>
   <nav aria-label="${esc(chrome.nav)}" class="seo-nav">
-    ${otherLanguage ? `<a href="${esc(otherLanguage.href)}" hreflang="${esc(otherLanguage.hreflang)}" lang="${esc(otherLanguage.hreflang)}">${esc(otherLanguage.label)}</a>` : ""}
+    ${languageMenu(chrome, languages)}
     <a class="btn btn-primary seo-nav-cta" href="${esc(homePath)}">${esc(chrome.cta)}</a>
   </nav>
 </header>`;
@@ -144,7 +167,7 @@ export function headerHtml({ brand, chrome, homePath, otherLanguage }) {
  * Pied de page en colonnes (outils, guides, usages, aide, légal) + choix de langue.
  * `columns` = [{ title, links: [{ path, label }] }] calculées par seo/build.mjs pour chaque langue.
  */
-export function footerHtml({ chrome, brand, columns, otherLanguage }) {
+export function footerHtml({ chrome, brand, columns, languages = [] }) {
   const cols = columns
     .filter((c) => c.links.length)
     .map(
@@ -154,9 +177,10 @@ export function footerHtml({ chrome, brand, columns, otherLanguage }) {
           .join("")}</ul></div>`,
     )
     .join("\n  ");
-  const lang = otherLanguage
-    ? `<p class="seo-footer-lang"><span>${esc(chrome.footerLanguageTitle)} :</span> <a href="${esc(otherLanguage.href)}" hreflang="${esc(otherLanguage.hreflang)}" lang="${esc(otherLanguage.hreflang)}">${esc(otherLanguage.label)}</a></p>`
-    : "";
+  const lang =
+    languages.length > 1
+      ? `<div class="seo-footer-lang"><p class="seo-footer-title">${esc(chrome.footerLanguageTitle)}</p><ul class="seo-footer-lang-list">${languageLinks(languages)}</ul></div>`
+      : "";
   return `<footer class="seo-footer">
   <div class="seo-footer-brand"><p class="seo-footer-name">${esc(brand)}</p><p>${esc(chrome.footerTagline)}</p><p>${esc(chrome.footerPrivacy)}</p>${lang}</div>
   <nav class="seo-footer-cols" aria-label="${esc(chrome.footerNav)}">
@@ -169,7 +193,7 @@ export function footerHtml({ chrome, brand, columns, otherLanguage }) {
  * Page statique complète (article / tutoriel). `assets` = { css: [href], js: [href] } venant du
  * manifeste Vite (même CSS que l'application : jetons, polices, boutons).
  */
-export function renderArticlePage({ lang, head, brand, chrome, homePath, page, breadcrumb, columns, otherLanguage, assets }) {
+export function renderArticlePage({ lang, head, brand, chrome, homePath, page, breadcrumb, columns, languages, assets }) {
   const crumbs = breadcrumb
     .map((c, i) => (i < breadcrumb.length - 1 ? `<li><a href="${esc(c.path)}">${esc(c.name)}</a></li>` : `<li aria-current="page">${esc(c.name)}</li>`))
     .join("");
@@ -197,11 +221,11 @@ export function renderArticlePage({ lang, head, brand, chrome, homePath, page, b
   </head>
   <body class="seo-page">
     <a class="skip-link" href="#main">${esc(chrome.skipToContent)}</a>
-    ${headerHtml({ brand, chrome, homePath, otherLanguage })}
+    ${headerHtml({ brand, chrome, homePath, languages })}
     <main id="main" class="seo-main">
 ${parts.join("\n")}
     </main>
-    ${footerHtml({ chrome, brand, columns, otherLanguage })}
+    ${footerHtml({ chrome, brand, columns, languages })}
   </body>
 </html>
 `;
@@ -262,6 +286,15 @@ ${faqHtml(chrome.faqTitle, home.faq)}
 }
 
 // --- Fichiers racine -------------------------------------------------------------------------
+
+/** Index des sitemaps (un sitemap par langue). */
+export function sitemapIndexXml(locations) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${locations.map((loc) => `  <sitemap><loc>${esc(loc)}</loc></sitemap>`).join("\n")}
+</sitemapindex>
+`;
+}
 
 /** sitemap.xml avec alternances hreflang (une entrée <url> par page et par langue). */
 export function sitemapXml(entries) {

@@ -168,6 +168,258 @@
         "alt": "{tab} : {stage}"
       },
       "usesTitle": "Pensé pour votre métier"
+    },
+    "pt-br": {
+      "path": "/pt-br/",
+      "title": "Remover Fundo de Imagem Grátis — Sem Upload | Cutova",
+      "description": "Remova o fundo de qualquer foto em segundos, grátis e em alta resolução. O Cutova funciona direto no navegador: sem cadastro, sem upload, PNG transparente, WebP ou JPG.",
+      "howTitle": "Como funciona",
+      "how": [
+        {
+          "title": "Adicione uma foto",
+          "text": "Escolha um arquivo, arraste e solte ou cole com Ctrl+V. PNG, JPEG, WebP, AVIF e GIF de até 50 MB."
+        },
+        {
+          "title": "A IA encontra o objeto principal",
+          "text": "Um modelo de segmentação de código aberto roda no seu aparelho e usa a placa de vídeo quando disponível. Nada é enviado para um servidor."
+        },
+        {
+          "title": "Baixe o recorte",
+          "text": "Deixe o fundo transparente ou escolha branco ou qualquer cor, e baixe em PNG, WebP ou JPG na resolução original."
+        }
+      ],
+      "whyTitle": "Por que o Cutova",
+      "why": [
+        {
+          "title": "Grátis",
+          "text": "Remover o fundo e baixar em tamanho original não custa nada. Sem créditos para comprar e sem marca d'água."
+        },
+        {
+          "title": "Resolução original",
+          "text": "Você recebe o tamanho da foto original, até cerca de 50 megapixels no computador, e não uma prévia pequena."
+        },
+        {
+          "title": "Zero upload",
+          "text": "Suas imagens são processadas no navegador. Elas nunca são enviadas, guardadas ou usadas para treinar nada."
+        },
+        {
+          "title": "Sem cadastro",
+          "text": "Abra a página e comece. Não precisa criar conta nem informar e-mail."
+        }
+      ],
+      "faq": [
+        {
+          "q": "O Cutova é grátis mesmo?",
+          "a": "Sim. Remover o fundo e baixar na resolução original é grátis e não exige cadastro. O processamento acontece no seu próprio aparelho, então não existe custo de servidor por imagem para repassar a você."
+        },
+        {
+          "q": "Minhas fotos são enviadas para algum lugar?",
+          "a": "Não. O modelo de IA é baixado uma vez no seu navegador e roda ali. Suas imagens nunca saem do seu aparelho. A página é construída de um jeito que não consegue enviar dados de imagem para outro site."
+        },
+        {
+          "q": "Quais formatos de arquivo posso usar?",
+          "a": "Você pode adicionar arquivos PNG, JPEG, WebP, AVIF e GIF de até 50 MB. O resultado pode ser baixado como PNG transparente, WebP ou JPG (o JPG não tem transparência, então é usado um fundo branco ou colorido)."
+        },
+        {
+          "q": "Por que a primeira imagem demora mais?",
+          "a": "Na primeira vez, o navegador baixa o modelo de IA (de 110 a 220 MB, dependendo do aparelho) e o prepara. Depois ele fica guardado no armazenamento do navegador, e as próximas imagens começam bem mais rápido."
+        },
+        {
+          "q": "Funciona no celular?",
+          "a": "Sim, em um navegador de celular recente. Fotos muito grandes podem ser reduzidas automaticamente para caber na memória do aparelho, e o processamento é mais lento do que em um computador com placa de vídeo."
+        },
+        {
+          "q": "Que tipo de imagem funciona melhor?",
+          "a": "Fotos com um objeto principal bem definido: pessoas, animais, produtos, carros. Cabelo e pelos ficam bons. Objetos transparentes, assinaturas e cenas muito carregadas são mais difíceis e podem pedir uma nova tentativa com uma foto mais limpa."
+        }
+      ],
+      "gallery": {
+        "title": "Veja o que dá para fazer",
+        "intro": "Fotos reais, recortadas pela mesma IA que roda no seu navegador.",
+        "tabs": {
+          "people": "Pessoas",
+          "products": "Produtos",
+          "animals": "Animais",
+          "cars": "Carros",
+          "graphics": "Gráficos"
+        },
+        "stages": {
+          "original": "Original",
+          "cutout": "Transparente",
+          "background": "Novo fundo",
+          "variant": "Variação"
+        },
+        "alt": "{tab}: {stage}"
+      },
+      "usesTitle": "Feito para o seu trabalho"
+    },
+    "es": {
+      "path": "/es/",
+      "title": "Quitar Fondo de Imagen Gratis — Sin Subir Nada | Cutova",
+      "description": "Quita el fondo de cualquier foto en segundos, gratis y a resolución completa. Cutova funciona en tu navegador: sin cuenta, sin subir archivos, PNG transparente, WebP o JPG.",
+      "howTitle": "Cómo funciona",
+      "how": [
+        {
+          "title": "Añade una foto",
+          "text": "Elige un archivo, arrástralo o pégalo con Ctrl+V. PNG, JPEG, WebP, AVIF y GIF de hasta 50 MB."
+        },
+        {
+          "title": "La IA detecta el sujeto",
+          "text": "Un modelo de segmentación de código abierto se ejecuta en tu dispositivo y usa la tarjeta gráfica si está disponible. No se envía nada a ningún servidor."
+        },
+        {
+          "title": "Descarga el recorte",
+          "text": "Deja el fondo transparente o elige blanco o cualquier color, y descarga un PNG, WebP o JPG a resolución completa."
+        }
+      ],
+      "whyTitle": "Por qué Cutova",
+      "why": [
+        {
+          "title": "Gratis",
+          "text": "Quitar el fondo y descargar a tamaño completo no cuesta nada. No hay créditos que comprar ni marca de agua."
+        },
+        {
+          "title": "Resolución completa",
+          "text": "Obtienes el tamaño de tu foto original, hasta unos 50 megapíxeles en ordenador, no una vista previa pequeña."
+        },
+        {
+          "title": "Nada se sube",
+          "text": "Tus imágenes se procesan en tu navegador. Nunca se envían, ni se guardan, ni se usan para entrenar nada."
+        },
+        {
+          "title": "Sin cuenta",
+          "text": "Abre la página y empieza. Sin registro y sin correo electrónico."
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Cutova es gratis de verdad?",
+          "a": "Sí. Quitar el fondo y descargar a resolución completa es gratis y no requiere cuenta. El procesamiento ocurre en tu propio dispositivo, así que no hay un coste de servidor por imagen que repercutirte."
+        },
+        {
+          "q": "¿Se suben mis fotos a algún sitio?",
+          "a": "No. El modelo de IA se descarga una vez en tu navegador y se ejecuta ahí. Tus imágenes nunca salen de tu dispositivo. La página está hecha de forma que no puede enviar datos de imagen a otro sitio."
+        },
+        {
+          "q": "¿Qué formatos de archivo puedo usar?",
+          "a": "Puedes añadir archivos PNG, JPEG, WebP, AVIF y GIF de hasta 50 MB. Puedes descargar el resultado como PNG transparente, WebP o JPG (el JPG no admite transparencia, así que se usa un fondo blanco o de color)."
+        },
+        {
+          "q": "¿Por qué la primera imagen tarda más?",
+          "a": "La primera vez, tu navegador descarga el modelo de IA (entre 110 y 220 MB según el dispositivo) y lo prepara. Después queda guardado en el almacenamiento del navegador y las siguientes imágenes empiezan mucho más rápido."
+        },
+        {
+          "q": "¿Funciona en el móvil?",
+          "a": "Sí, en un navegador móvil reciente. Las fotos muy grandes pueden reducirse automáticamente para caber en la memoria del dispositivo, y el proceso es más lento que en un ordenador con tarjeta gráfica."
+        },
+        {
+          "q": "¿Con qué tipo de imágenes funciona mejor?",
+          "a": "Con fotos que tienen un sujeto principal claro: personas, animales, productos, coches. El pelo y el pelaje salen bien. Los objetos transparentes, las firmas y las escenas muy recargadas son más difíciles y pueden necesitar otro intento con una foto más limpia."
+        }
+      ],
+      "gallery": {
+        "title": "Mira lo que puedes crear",
+        "intro": "Fotos reales, recortadas por la misma IA que se ejecuta en tu navegador.",
+        "tabs": {
+          "people": "Personas",
+          "products": "Productos",
+          "animals": "Animales",
+          "cars": "Coches",
+          "graphics": "Gráficos"
+        },
+        "stages": {
+          "original": "Original",
+          "cutout": "Transparente",
+          "background": "Fondo nuevo",
+          "variant": "Variante"
+        },
+        "alt": "{tab}: {stage}"
+      },
+      "usesTitle": "Pensado para tu trabajo"
+    },
+    "id": {
+      "path": "/id/",
+      "title": "Hapus Background Foto Gratis — Tanpa Upload | Cutova",
+      "description": "Hapus background foto apa pun dalam hitungan detik, gratis dan dalam resolusi penuh. Cutova berjalan di browser Anda: tanpa akun, tanpa upload, hasil PNG transparan, WebP, atau JPG.",
+      "howTitle": "Cara kerja",
+      "how": [
+        {
+          "title": "Tambahkan foto",
+          "text": "Pilih file, seret dan lepas, atau tempel dengan Ctrl+V. PNG, JPEG, WebP, AVIF, dan GIF hingga 50 MB."
+        },
+        {
+          "title": "AI menemukan objek utama",
+          "text": "Model segmentasi open source berjalan di perangkat Anda dan memakai kartu grafis jika tersedia. Tidak ada yang dikirim ke server."
+        },
+        {
+          "title": "Unduh hasil potongan",
+          "text": "Biarkan background transparan atau pilih putih atau warna lain, lalu unduh PNG, WebP, atau JPG dalam resolusi penuh."
+        }
+      ],
+      "whyTitle": "Kenapa Cutova",
+      "why": [
+        {
+          "title": "Gratis",
+          "text": "Menghapus background dan mengunduh dalam ukuran penuh tidak dipungut biaya. Tidak ada kredit yang harus dibeli dan tidak ada watermark."
+        },
+        {
+          "title": "Resolusi penuh",
+          "text": "Anda mendapatkan ukuran foto asli, hingga sekitar 50 megapiksel di komputer, bukan pratinjau kecil."
+        },
+        {
+          "title": "Tanpa upload",
+          "text": "Gambar Anda diproses di browser. Gambar tidak pernah dikirim, disimpan, atau dipakai untuk melatih apa pun."
+        },
+        {
+          "title": "Tanpa akun",
+          "text": "Buka halaman dan langsung mulai. Tidak perlu daftar atau alamat email."
+        }
+      ],
+      "faq": [
+        {
+          "q": "Apakah Cutova benar-benar gratis?",
+          "a": "Ya. Menghapus background dan mengunduh dalam resolusi penuh gratis dan tidak memerlukan akun. Proses berlangsung di perangkat Anda sendiri, jadi tidak ada biaya server per gambar yang dibebankan kepada Anda."
+        },
+        {
+          "q": "Apakah foto saya diunggah ke suatu tempat?",
+          "a": "Tidak. Model AI diunduh sekali ke browser Anda dan berjalan di sana. Gambar Anda tidak pernah keluar dari perangkat. Halaman ini dibuat sehingga tidak bisa mengirim data gambar ke situs lain."
+        },
+        {
+          "q": "Format file apa saja yang bisa dipakai?",
+          "a": "Anda bisa menambahkan file PNG, JPEG, WebP, AVIF, dan GIF hingga 50 MB. Hasilnya bisa diunduh sebagai PNG transparan, WebP, atau JPG (JPG tidak mendukung transparansi, jadi dipakai background putih atau berwarna)."
+        },
+        {
+          "q": "Kenapa gambar pertama lebih lambat?",
+          "a": "Pertama kali, browser mengunduh model AI (sekitar 110 sampai 220 MB tergantung perangkat) lalu menyiapkannya. Setelah itu model disimpan di penyimpanan browser, jadi gambar berikutnya mulai jauh lebih cepat."
+        },
+        {
+          "q": "Apakah bisa dipakai di HP?",
+          "a": "Bisa, di browser HP versi terbaru. Foto yang sangat besar bisa diperkecil otomatis agar muat di memori perangkat, dan prosesnya lebih lambat dibanding komputer dengan kartu grafis."
+        },
+        {
+          "q": "Gambar seperti apa yang hasilnya paling bagus?",
+          "a": "Foto dengan objek utama yang jelas: orang, hewan, produk, mobil. Rambut dan bulu hewan terpotong dengan baik. Benda transparan, tanda tangan, dan pemandangan yang sangat ramai lebih sulit dan mungkin perlu dicoba lagi dengan foto yang lebih bersih."
+        }
+      ],
+      "gallery": {
+        "title": "Lihat apa yang bisa Anda buat",
+        "intro": "Foto asli, dipotong oleh AI yang sama yang berjalan di browser Anda.",
+        "tabs": {
+          "people": "Orang",
+          "products": "Produk",
+          "animals": "Hewan",
+          "cars": "Mobil",
+          "graphics": "Grafis"
+        },
+        "stages": {
+          "original": "Asli",
+          "cutout": "Transparan",
+          "background": "Background baru",
+          "variant": "Variasi"
+        },
+        "alt": "{tab}: {stage}"
+      },
+      "usesTitle": "Dibuat untuk pekerjaan Anda"
     }
   }
 }

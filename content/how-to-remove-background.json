@@ -12,11 +12,26 @@
       ],
       "totalTime": "PT1M",
       "steps": [
-        { "name": "Open Cutova", "text": "Go to the Cutova home page. There is nothing to install." },
-        { "name": "Add your photo", "text": "Click \"Choose an image\", drag the file onto the page, or paste it with Ctrl+V (Cmd+V on a Mac)." },
-        { "name": "Wait a few seconds", "text": "The AI finds the main subject and removes everything else. The first time, the model is downloaded once to your browser." },
-        { "name": "Check the result", "text": "Drag the before/after slider over the image to compare the cutout with the original." },
-        { "name": "Download", "text": "Pick PNG to keep the transparent background, then click Download. The file has the same resolution as your original." }
+        {
+          "name": "Open Cutova",
+          "text": "Go to the Cutova home page. There is nothing to install."
+        },
+        {
+          "name": "Add your photo",
+          "text": "Click \"Choose an image\", drag the file onto the page, or paste it with Ctrl+V (Cmd+V on a Mac)."
+        },
+        {
+          "name": "Wait a few seconds",
+          "text": "The AI finds the main subject and removes everything else. The first time, the model is downloaded once to your browser."
+        },
+        {
+          "name": "Check the result",
+          "text": "Drag the before/after slider over the image to compare the cutout with the original."
+        },
+        {
+          "name": "Download",
+          "text": "Pick PNG to keep the transparent background, then click Download. The file has the same resolution as your original."
+        }
       ],
       "sections": [
         {
@@ -30,8 +45,14 @@
         }
       ],
       "faq": [
-        { "q": "Does removing the background reduce the quality?", "a": "No. The cutout is built at the resolution of your original photo, and PNG export is lossless." },
-        { "q": "Can I remove the background of several photos?", "a": "Yes, one after the other: click \"New image\" after each download. Batch processing is planned." }
+        {
+          "q": "Does removing the background reduce the quality?",
+          "a": "No. The cutout is built at the resolution of your original photo, and PNG export is lossless."
+        },
+        {
+          "q": "Can I remove the background of several photos?",
+          "a": "Yes. Add several images at once: they are processed one after the other, and you can download them all in a single ZIP."
+        }
       ]
     },
     "fr": {
@@ -44,11 +65,26 @@
       ],
       "totalTime": "PT1M",
       "steps": [
-        { "name": "Ouvrez Cutova", "text": "Allez sur la page d'accueil de Cutova. Rien à installer." },
-        { "name": "Ajoutez votre photo", "text": "Cliquez sur « Choisir une image », glissez le fichier sur la page ou collez-le avec Ctrl+V (Cmd+V sur Mac)." },
-        { "name": "Patientez quelques secondes", "text": "L'IA trouve le sujet principal et retire tout le reste. La première fois, le modèle est téléchargé une seule fois dans votre navigateur." },
-        { "name": "Vérifiez le résultat", "text": "Faites glisser le curseur avant/après sur l'image pour comparer le détourage à l'original." },
-        { "name": "Téléchargez", "text": "Choisissez PNG pour garder le fond transparent, puis cliquez sur Télécharger. Le fichier a la même résolution que l'original." }
+        {
+          "name": "Ouvrez Cutova",
+          "text": "Allez sur la page d'accueil de Cutova. Rien à installer."
+        },
+        {
+          "name": "Ajoutez votre photo",
+          "text": "Cliquez sur « Choisir une image », glissez le fichier sur la page ou collez-le avec Ctrl+V (Cmd+V sur Mac)."
+        },
+        {
+          "name": "Patientez quelques secondes",
+          "text": "L'IA trouve le sujet principal et retire tout le reste. La première fois, le modèle est téléchargé une seule fois dans votre navigateur."
+        },
+        {
+          "name": "Vérifiez le résultat",
+          "text": "Faites glisser le curseur avant/après sur l'image pour comparer le détourage à l'original."
+        },
+        {
+          "name": "Téléchargez",
+          "text": "Choisissez PNG pour garder le fond transparent, puis cliquez sur Télécharger. Le fichier a la même résolution que l'original."
+        }
       ],
       "sections": [
         {
@@ -62,8 +98,173 @@
         }
       ],
       "faq": [
-        { "q": "Supprimer l'arrière-plan réduit-il la qualité ?", "a": "Non. Le détourage est construit à la résolution de votre photo d'origine, et l'export PNG est sans perte." },
-        { "q": "Puis-je détourer plusieurs photos ?", "a": "Oui, l'une après l'autre : cliquez sur « Nouvelle image » après chaque téléchargement. Le traitement par lot est prévu." }
+        {
+          "q": "Supprimer l'arrière-plan réduit-il la qualité ?",
+          "a": "Non. Le détourage est construit à la résolution de votre photo d'origine, et l'export PNG est sans perte."
+        },
+        {
+          "q": "Puis-je détourer plusieurs photos ?",
+          "a": "Oui. Ajoutez plusieurs images d'un coup : elles sont traitées l'une après l'autre, et vous pouvez toutes les télécharger dans un seul ZIP."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/tutoriais/remover-fundo-de-foto/",
+      "title": "Como Remover o Fundo de uma Foto (Grátis, Sem Upload) | Cutova",
+      "description": "Remova o fundo de uma foto em poucos passos, de graça e sem fazer upload. Um guia simples com dicas para cabelo, bichos de estimação e produtos.",
+      "h1": "Como remover o fundo de uma foto",
+      "intro": [
+        "Você não precisa de Photoshop nem de cadastro para recortar uma pessoa ou um objeto. Com o Cutova, tudo leva poucos passos e acontece no navegador, então a foto nunca sai do seu aparelho."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Abra o Cutova",
+          "text": "Entre na página inicial do Cutova. Não há nada para instalar."
+        },
+        {
+          "name": "Adicione sua foto",
+          "text": "Clique em \"Escolher uma imagem\", arraste o arquivo para a página ou cole com Ctrl+V (Cmd+V no Mac)."
+        },
+        {
+          "name": "Espere alguns segundos",
+          "text": "A IA encontra o objeto principal e remove todo o resto. Na primeira vez, o modelo é baixado uma única vez no navegador."
+        },
+        {
+          "name": "Confira o resultado",
+          "text": "Arraste o controle antes/depois sobre a imagem para comparar o recorte com o original."
+        },
+        {
+          "name": "Baixe",
+          "text": "Escolha PNG para manter o fundo transparente e clique em Baixar. O arquivo tem a mesma resolução da foto original."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Dicas para um recorte limpo",
+          "list": [
+            "Use uma foto em que o objeto esteja nítido e bem separado do fundo.",
+            "Cabelo e pelos funcionam bem; evite fotos tremidas nas bordas.",
+            "Para produtos, não é preciso ter fundo liso, mas uma boa iluminação ajuda.",
+            "Se faltar algum pedaço, use a ferramenta Restaurar, ou recorte a foto mais perto do objeto antes de adicioná-la."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Remover o fundo diminui a qualidade?",
+          "a": "Não. O recorte é feito na resolução da foto original, e a exportação em PNG não tem perda."
+        },
+        {
+          "q": "Posso remover o fundo de várias fotos?",
+          "a": "Sim. Adicione várias imagens de uma vez: elas são processadas uma após a outra, e você pode baixar todas em um único ZIP."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/guias/quitar-fondo-de-una-foto/",
+      "title": "Cómo Quitar el Fondo de una Foto (Gratis, Sin Subirla) | Cutova",
+      "description": "Quita el fondo de una foto en pocos pasos, gratis y sin subirla a internet. Una guía sencilla con consejos para pelo, mascotas y productos.",
+      "h1": "Cómo quitar el fondo de una foto",
+      "intro": [
+        "No necesitas Photoshop ni una cuenta para recortar a una persona o un objeto. Con Cutova, el proceso lleva pocos pasos y ocurre en tu navegador, así que la foto nunca sale de tu dispositivo."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Abre Cutova",
+          "text": "Ve a la página de inicio de Cutova. No hay nada que instalar."
+        },
+        {
+          "name": "Añade tu foto",
+          "text": "Haz clic en \"Elegir una imagen\", arrastra el archivo a la página o pégalo con Ctrl+V (Cmd+V en Mac)."
+        },
+        {
+          "name": "Espera unos segundos",
+          "text": "La IA detecta el sujeto principal y quita todo lo demás. La primera vez, el modelo se descarga una sola vez en tu navegador."
+        },
+        {
+          "name": "Revisa el resultado",
+          "text": "Desliza el control antes/después sobre la imagen para comparar el recorte con el original."
+        },
+        {
+          "name": "Descarga",
+          "text": "Elige PNG para mantener el fondo transparente y haz clic en Descargar. El archivo tiene la misma resolución que tu original."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Consejos para un recorte limpio",
+          "list": [
+            "Usa una foto en la que el sujeto esté nítido y bien separado del fondo.",
+            "El pelo y el pelaje salen bien; evita fotos movidas en los bordes.",
+            "Para productos no hace falta un fondo liso, pero una buena luz ayuda.",
+            "Si falta alguna parte, usa la herramienta Restaurar o recorta la foto más cerca del sujeto antes de añadirla."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Quitar el fondo reduce la calidad?",
+          "a": "No. El recorte se crea a la resolución de tu foto original y la exportación en PNG no tiene pérdida."
+        },
+        {
+          "q": "¿Puedo quitar el fondo de varias fotos?",
+          "a": "Sí. Añade varias imágenes a la vez: se procesan una tras otra y puedes descargarlas todas en un único ZIP."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/panduan/cara-hapus-background-foto/",
+      "title": "Cara Menghapus Background Foto (Gratis, Tanpa Upload) | Cutova",
+      "description": "Hapus background foto dalam beberapa langkah, gratis dan tanpa upload. Panduan sederhana dengan tips untuk rambut, hewan peliharaan, dan foto produk.",
+      "h1": "Cara menghapus background foto",
+      "intro": [
+        "Anda tidak butuh Photoshop atau akun untuk memotong objek dari foto. Dengan Cutova, prosesnya hanya beberapa langkah dan berlangsung di browser, jadi foto tidak pernah keluar dari perangkat Anda."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Buka Cutova",
+          "text": "Buka halaman utama Cutova. Tidak ada yang perlu dipasang."
+        },
+        {
+          "name": "Tambahkan foto",
+          "text": "Klik \"Pilih gambar\", seret file ke halaman, atau tempel dengan Ctrl+V (Cmd+V di Mac)."
+        },
+        {
+          "name": "Tunggu beberapa detik",
+          "text": "AI menemukan objek utama dan menghapus sisanya. Pada pemakaian pertama, model diunduh satu kali ke browser Anda."
+        },
+        {
+          "name": "Periksa hasilnya",
+          "text": "Geser penggeser sebelum/sesudah di atas gambar untuk membandingkan hasil potongan dengan foto asli."
+        },
+        {
+          "name": "Unduh",
+          "text": "Pilih PNG agar background tetap transparan, lalu klik Unduh. Resolusi file sama dengan foto asli."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Tips agar hasil potongan rapi",
+          "list": [
+            "Gunakan foto dengan objek yang tajam dan terpisah jelas dari background.",
+            "Rambut dan bulu hewan bisa terpotong dengan baik; hindari foto yang buram karena gerakan di bagian tepi.",
+            "Untuk foto produk, background polos tidak wajib, tetapi pencahayaan yang baik sangat membantu.",
+            "Kalau ada bagian yang hilang, pakai alat Pulihkan, atau potong foto lebih dekat ke objek sebelum menambahkannya."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Apakah menghapus background menurunkan kualitas?",
+          "a": "Tidak. Hasil potongan dibuat dengan resolusi foto asli, dan ekspor PNG tidak mengurangi kualitas."
+        },
+        {
+          "q": "Bisakah menghapus background beberapa foto sekaligus?",
+          "a": "Bisa. Tambahkan beberapa gambar sekaligus: gambar diproses satu per satu, dan Anda bisa mengunduh semuanya dalam satu file ZIP."
+        }
       ]
     }
   }
