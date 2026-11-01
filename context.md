@@ -562,6 +562,26 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   Lighthouse : `/` 97–98/100/100/100, `/fr/` 98/100/100/100, `/for/ecommerce/` et `/privacy/` 100 partout
   (`docs/review/lighthouse-step2.json`).
 
+- **(Étape 3) Recette** : `tests/e2e/qa.spec.ts` (parcours complet par les 4 voies d'ajout, chaque outil,
+  chaque export relu, ZIP, zéro requête externe ; robustesse ; en-têtes) exécuté par les projets
+  `qa-desktop-light`, `qa-desktop-dark`, `qa-iphone` (émulé, Chromium), `qa-android-360` (émulé) et, avec
+  `QA_ALL_BROWSERS=1`, `qa-firefox` et `qa-webkit` (navigateurs + dépendances système installés dans le bac
+  à sable par `npx playwright install firefox webkit` / `install-deps`). Rapport : `docs/QA.md`.
+- **(Étape 3) Dimensions lues dans l'en-tête** (PNG, GIF, WebP, JPEG, AVIF ;
+  `src/core/validate-image/header-dimensions.ts`) avant tout décodage : bombe de décompression refusée
+  sans allouer de mémoire ; image au-delà du budget acceptée sans décodage pleine taille. Nouveau message
+  "fichier vide". Messages d'erreur partagés (`src/ui/home/error-messages.ts`) par la carte d'envoi et le
+  "+" de l'éditeur.
+- **(Étape 3) Contrôles** : `npm run check:licenses` (échec si GPL/AGPL ; LGPL de libvips signalée, scripts
+  Node seulement) et `npm run check:audit` (`npm audit --audit-level=high`). Benchmarks :
+  `scripts/bench/browser-bench.mjs` (Chromium, p50 3,7 s / p95 7,9 s à chaud) et banc Node 4 threads
+  (p50 4,0 s / p95 4,3 s).
+- **(Étape 3) Limite Firefox (tests seulement)** : un `ClipboardEvent` synthétique n'y transporte pas de
+  fichier ; le test le détecte et l'annote (un vrai Ctrl+V fonctionne).
+- **(Étape 4, préparé) IndexNow** : `INDEXNOW_KEY` au build → fichier-clé `/<clé>.txt` ;
+  `scripts/indexnow-ping.mjs` (lancé par l'éditeur après mise en ligne). Le build signale les champs
+  `[À COMPLÉTER]` restants.
+
 ## Prochaine étape
 Revérifier sur le vrai Mac (build preview) : ligne `[cutova] GPU limits`, WASM direct, temps affiché.
 Puis : essayer ormbg sur WebGPU quand BiRefNet ne passe pas (plus rapide que WASM si ses shaders

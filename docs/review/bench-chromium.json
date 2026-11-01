@@ -1,0 +1,189 @@
+{
+  "date": "2026-11-01T00:55:22.537Z",
+  "env": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "cores": 4,
+    "crossOriginIsolated": true
+  },
+  "first": {
+    "photo": "busy-9816.jpg",
+    "state": "done",
+    "engine": "wasm",
+    "inferenceMs": 3763,
+    "refineMs": 272,
+    "totalMs": 6605
+  },
+  "warm": {
+    "count": 19,
+    "p50": 3730,
+    "p95": 7947,
+    "min": 3403,
+    "max": 7947
+  },
+  "refine": {
+    "p50": 500,
+    "p95": 689
+  },
+  "runs": [
+    {
+      "photo": "busy-9816.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3763,
+      "refineMs": 272,
+      "totalMs": 6605
+    },
+    {
+      "photo": "car-4314.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 7947,
+      "refineMs": 597,
+      "totalMs": 8870
+    },
+    {
+      "photo": "car-7406.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3642,
+      "refineMs": 693,
+      "totalMs": 4660
+    },
+    {
+      "photo": "fur-12162.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3961,
+      "refineMs": 493,
+      "totalMs": 4689
+    },
+    {
+      "photo": "fur-17767.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3464,
+      "refineMs": 471,
+      "totalMs": 4227
+    },
+    {
+      "photo": "fur-17773.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3724,
+      "refineMs": 536,
+      "totalMs": 4564
+    },
+    {
+      "photo": "fur-6235.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 7420,
+      "refineMs": 433,
+      "totalMs": 8114
+    },
+    {
+      "photo": "glass-1484.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3403,
+      "refineMs": 496,
+      "totalMs": 4156
+    },
+    {
+      "photo": "glass-3584.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3531,
+      "refineMs": 471,
+      "totalMs": 4236
+    },
+    {
+      "photo": "glass-5568.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3689,
+      "refineMs": 537,
+      "totalMs": 4479
+    },
+    {
+      "photo": "hair-157915.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3730,
+      "refineMs": 447,
+      "totalMs": 4463
+    },
+    {
+      "photo": "hair-157920.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3705,
+      "refineMs": 676,
+      "totalMs": 4776
+    },
+    {
+      "photo": "hair-35537.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3766,
+      "refineMs": 551,
+      "totalMs": 4583
+    },
+    {
+      "photo": "hair-53000.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3810,
+      "refineMs": 637,
+      "totalMs": 4740
+    },
+    {
+      "photo": "logo-109998.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3603,
+      "refineMs": 598,
+      "totalMs": 4455
+    },
+    {
+      "photo": "product-1591.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3827,
+      "refineMs": 446,
+      "totalMs": 4535
+    },
+    {
+      "photo": "product-5670.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3629,
+      "refineMs": 612,
+      "totalMs": 4530
+    },
+    {
+      "photo": "product-6346.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3750,
+      "refineMs": 500,
+      "totalMs": 4534
+    },
+    {
+      "photo": "signature-175045.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 4140,
+      "refineMs": 689,
+      "totalMs": 5102
+    },
+    {
+      "photo": "signature-51159.jpg",
+      "state": "done",
+      "engine": "wasm",
+      "inferenceMs": 3961,
+      "refineMs": 494,
+      "totalMs": 4731
+    }
+  ]
+}

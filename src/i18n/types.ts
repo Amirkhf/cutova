@@ -37,6 +37,7 @@ export interface Dictionary {
     fileTooLarge: (maxMb: number) => string;
     dimensionsTooLarge: (maxMegapixels: number) => string;
     generic: string;
+    emptyFile: string;
   };
   result: {
     title: string;

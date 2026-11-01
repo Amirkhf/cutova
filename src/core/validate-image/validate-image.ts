@@ -9,6 +9,7 @@ import {
   getMaxDecodedPixels,
   type Dimensions,
 } from "../limits/device-limits.ts";
+import { dimensionsFromHeader, HEADER_SCAN_BYTES } from "./header-dimensions.ts";
 
 export type ImageFormat = "png" | "jpeg" | "webp" | "avif" | "gif";
 export type DetectedFormat = ImageFormat | "heic" | "unknown";
@@ -20,7 +21,8 @@ export type ValidationError =
   | { code: "unsupported-format"; format: DetectedFormat }
   | { code: "file-too-large"; sizeBytes: number }
   | { code: "dimensions-too-large"; width: number; height: number }
-  | { code: "unreadable" };
+  | { code: "unreadable" }
+  | { code: "empty" };
 
 export type ValidationResult =
   | { ok: true; format: ImageFormat; resizeTo?: Dimensions }
@@ -92,6 +94,7 @@ export async function checkDimensions(file: Blob): Promise<{ width: number; heig
 }
 
 export async function validateImage(file: File | Blob): Promise<ValidationResult> {
+  if (file.size === 0) return { ok: false, error: { code: "empty" } };
   const format = await detectFormat(file);
   if (format === "unknown" || format === "heic") {
     return { ok: false, error: { code: "unsupported-format", format } };
@@ -101,6 +104,18 @@ export async function validateImage(file: File | Blob): Promise<ValidationResult
     return { ok: false, error: { code: "file-too-large", sizeBytes: file.size } };
   }
 
+  // 1. Dimensions lues dans l'en-tête, SANS décoder : une bombe de décompression est refusée ici,
+  //    avant que le navigateur ne tente d'allouer des gigaoctets.
+  const header = dimensionsFromHeader(format, new Uint8Array(await file.slice(0, HEADER_SCAN_BYTES).arrayBuffer()));
+  if (header && header.width * header.height > ABSOLUTE_MAX_DECODE_PIXELS) {
+    return { ok: false, error: { code: "dimensions-too-large", width: header.width, height: header.height } };
+  }
+  // Au-delà du budget de l'appareil : pas de décodage pleine taille ici (il sera fait réduit).
+  if (header && header.width * header.height > getMaxDecodedPixels()) {
+    return { ok: true, format, resizeTo: fitWithinPixelBudget(header, getMaxDecodedPixels()) };
+  }
+
+  // 2. Décodage réel : détecte les fichiers abîmés (en-tête valide, données corrompues).
   let dimensions: { width: number; height: number } | null;
   try {
     dimensions = await checkDimensions(file);

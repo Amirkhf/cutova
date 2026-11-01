@@ -1,7 +1,7 @@
 import type { Dictionary } from "../../i18n/index.ts";
-import { MAX_FILE_SIZE_BYTES, validateImage, type ValidationError } from "../../core/validate-image/validate-image.ts";
-import { ABSOLUTE_MAX_DECODE_PIXELS } from "../../core/limits/device-limits.ts";
+import { validateImage } from "../../core/validate-image/validate-image.ts";
 import { emitImageSelected, type ImageSource } from "./events.ts";
+import { messageForError } from "./error-messages.ts";
 import { inferenceEngine } from "../../core/inference/engine-client.ts";
 import { uploadArrowIconMarkup } from "./visuals.ts";
 
@@ -12,18 +12,6 @@ const ACCEPTED_MIME =
 const EXAMPLES = ["person", "product", "animal", "car"] as const;
 type ExampleId = (typeof EXAMPLES)[number];
 
-function messageForError(error: ValidationError, dict: Dictionary): string {
-  switch (error.code) {
-    case "unsupported-format":
-      return dict.errors.unsupportedFormat(error.format);
-    case "file-too-large":
-      return dict.errors.fileTooLarge(Math.round(MAX_FILE_SIZE_BYTES / (1024 * 1024)));
-    case "dimensions-too-large":
-      return dict.errors.dimensionsTooLarge(Math.round(ABSOLUTE_MAX_DECODE_PIXELS / 1_000_000));
-    case "unreadable":
-      return dict.errors.generic;
-  }
-}
 
 /** Télécharge la photo d'exemple (même origine) et la transforme en File, comme un envoi normal. */
 async function exampleToFile(id: ExampleId): Promise<File> {

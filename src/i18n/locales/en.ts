@@ -42,6 +42,7 @@ export const en: Dictionary = {
     dimensionsTooLarge: (maxMegapixels) =>
       `This image is too large to process safely. Please use one under ${maxMegapixels} megapixels.`,
     generic: "Something went wrong reading this file. Please try another one.",
+    emptyFile: "This file is empty (0 bytes). Please choose another image.",
   },
   result: {
     title: "Your result",

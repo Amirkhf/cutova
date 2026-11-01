@@ -10,6 +10,8 @@
     "test": "vitest run --reporter=dot",
     "test:e2e": "playwright test",
     "test:e2e:remote": "playwright test -c playwright.remote.config.ts",
+    "check:licenses": "node scripts/check-licenses.mjs",
+    "check:audit": "npm audit --audit-level=high",
     "screenshots": "node tests/screenshots.mjs"
   },
   "devDependencies": {

@@ -8,7 +8,7 @@
  *    Échec du build si c'est le cas sur Cloudflare (`CF_PAGES=1`) ou avec `STRICT_DEPLOY=1` ;
  *    simple avertissement en local (où les modèles restent servis par le site).
  */
-import { readdir, rm, stat, writeFile } from "node:fs/promises";
+import { readdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { cloudflareHeadersFile, originOf } from "../security-headers.mjs";
@@ -26,6 +26,17 @@ async function* walk(dir) {
 }
 
 const modelBase = process.env.VITE_MODEL_BASE_URL || null;
+
+// IndexNow (Bing, Yandex…) : fichier-clé public à la racine, si une clé est fournie (voir DEPLOY.md).
+const indexNowKey = process.env.INDEXNOW_KEY?.trim();
+if (indexNowKey) {
+  if (!/^[a-zA-Z0-9-]{8,128}$/.test(indexNowKey)) {
+    console.error("[postbuild] INDEXNOW_KEY invalide (8 à 128 caractères : lettres, chiffres, tirets).");
+    process.exit(1);
+  }
+  await writeFile(path.join(DIST, `${indexNowKey}.txt`), indexNowKey);
+  console.log(`[postbuild] fichier-clé IndexNow écrit : /${indexNowKey}.txt`);
+}
 await writeFile(path.join(DIST, "_headers"), cloudflareHeadersFile(originOf(modelBase)));
 
 if (modelBase) {
@@ -40,6 +51,13 @@ if (modelBase) {
   await Promise.all(unused.map((f) => rm(path.join(assets, f))));
   console.log(`[postbuild] modèles et binaires ONNX Runtime servis depuis ${modelBase} : dist/models/ et ${unused.length} binaires .wasm bundlés retirés.`);
 }
+
+// Champs légaux à remplir par l'éditeur (pages /legal/, /privacy/, /terms/ et équivalents FR).
+let toComplete = 0;
+for await (const file of walk(DIST)) {
+  if (file.endsWith(".html")) toComplete += ((await readFile(file, "utf8")).match(/\[À COMPLÉTER\]/g) ?? []).length;
+}
+if (toComplete) console.warn(`[postbuild] ${toComplete} champ(s) [À COMPLÉTER] dans les pages légales : à remplir avant la mise en ligne (DEPLOY.md).`);
 
 const tooBig = [];
 for await (const file of walk(DIST)) {

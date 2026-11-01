@@ -20,6 +20,7 @@ import { exportCanvas, exportFileName, type ExportFormat } from "../../core/expo
 import { createZip, uniqueNames } from "../../core/export/zip.ts";
 import { validateImage } from "../../core/validate-image/validate-image.ts";
 import { IMAGE_SELECTED_EVENT, type ImageSelectedDetail } from "../home/events.ts";
+import { messageForError } from "../home/error-messages.ts";
 import { createCompareSlider } from "../result/compare-slider.ts";
 import { EditorDoc } from "./doc.ts";
 import { button, checkboxField, colorField, fieldset, radioGroup, rangeField, setRange } from "./controls.ts";
@@ -866,7 +867,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
     for (const file of files) {
       const result = await validateImage(file);
       if (!result.ok) {
-        status.textContent = r.error;
+        status.textContent = messageForError(result.error, dict);
         continue;
       }
       addDoc(file, result.resizeTo);
