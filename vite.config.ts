@@ -4,6 +4,8 @@ import { createReadStream, readFileSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { aggregate, PERIODS, type Period } from "./edge/stats.ts";
+import { generateDemoRows } from "./edge/demo.ts";
 import { DEV_STYLE_NONCE, MODEL_CACHE_CONTROL, originOf, securityHeaders } from "./security-headers.mjs";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -60,6 +62,32 @@ function modelFilesMiddleware(modelsDir: string): Connect.NextHandleFunction {
 }
 
 /**
+ * Serveur de DÉVELOPPEMENT uniquement (jamais preview ni build) : `/api/stats` répond avec des données
+ * de démonstration générées, `/api/event` accepte et ignore les événements. En production, ce sont
+ * les Pages Functions (functions/api/*) qui répondent.
+ */
+function devApiMiddleware(): Connect.NextHandleFunction {
+  const rows = generateDemoRows();
+  return (req, res, next) => {
+    const url = new URL(req.url ?? "/", "http://localhost");
+    if (url.pathname === "/api/event" && req.method === "POST") {
+      res.statusCode = 204;
+      return res.end();
+    }
+    if (url.pathname !== "/api/stats") return next();
+    const period = url.searchParams.get("period") ?? "7";
+    res.setHeader("Content-Type", "application/json; charset=utf-8");
+    res.setHeader("Cache-Control", "no-store");
+    if (!(period in PERIODS)) {
+      res.statusCode = 400;
+      return res.end('{"error":"period"}');
+    }
+    res.setHeader("X-Cutova-Demo", "1");
+    res.end(JSON.stringify({ ...aggregate(rows, period as Period, Date.now()), demo: true }));
+  };
+}
+
+/**
  * En-têtes de sécurité (absents par défaut du serveur dev/preview de Vite) + service des modèles.
  * Les binaires onnxruntime-web (`?url` dans src/core/inference/worker.ts) passent par le pipeline
  * d'assets natif de Vite : même-origine, zéro requête externe.
@@ -70,6 +98,7 @@ function securityHeadersPlugin(): Plugin {
     configureServer(server) {
       server.middlewares.use(securityHeadersMiddleware(DEV_SECURITY_HEADERS));
       server.middlewares.use(modelFilesMiddleware(path.join(ROOT, "public/models")));
+      server.middlewares.use(devApiMiddleware());
     },
     configurePreviewServer(server) {
       server.middlewares.use(securityHeadersMiddleware(SECURITY_HEADERS));
@@ -92,6 +121,7 @@ export default defineConfig(({ command }) => ({
       input: {
         main: "index.html",
         seo: "src/seo/seo-page.ts",
+        stats: "stats/index.html",
       },
     },
   },

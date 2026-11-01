@@ -12,6 +12,7 @@
     "test:e2e:remote": "playwright test -c playwright.remote.config.ts",
     "check:licenses": "node scripts/check-licenses.mjs",
     "dev:edge": "wrangler d1 migrations apply cutova-stats --local && wrangler pages dev dist --port 8788",
+    "seed:demo": "node scripts/seed-demo-stats.mjs",
     "check:audit": "npm audit --audit-level=high",
     "screenshots": "node tests/screenshots.mjs"
   },

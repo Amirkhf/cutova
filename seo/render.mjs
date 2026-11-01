@@ -301,13 +301,15 @@ export const AI_CRAWLERS = [
   "MistralAI-User",
 ];
 
+const PRIVATE = "Disallow: /stats/\nDisallow: /api/\n";
+
 export function robotsTxt(siteUrl) {
-  const ai = AI_CRAWLERS.map((bot) => `User-agent: ${bot}\nAllow: /\n`).join("\n");
-  return `# Cutova — tout est public. Les poids des modèles (/models/) ne sont pas des pages.
+  const ai = AI_CRAWLERS.map((bot) => `User-agent: ${bot}\nAllow: /\n${PRIVATE}`).join("\n");
+  return `# Cutova — tout est public, sauf le tableau de bord privé et l'API. Les poids des modèles ne sont pas des pages.
 User-agent: *
 Allow: /
 Disallow: /models/
-
+${PRIVATE}
 ${ai}
 Sitemap: ${absoluteUrl(siteUrl, "/sitemap.xml")}
 `;

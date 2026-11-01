@@ -76,5 +76,9 @@ ${lines(securityHeaders(modelOrigin))}
 /api/*
   Cache-Control: no-store
   X-Robots-Tag: noindex
+
+/stats/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex, nofollow
 `;
 }

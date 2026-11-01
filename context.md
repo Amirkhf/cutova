@@ -176,6 +176,11 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   validé par la liste blanche `src/core/analytics/schema.ts` (corps ≤ 512 o, type et champs connus,
   valeurs dans des listes fermées), limité à 60/min par adresse (en mémoire), upsert dans D1 → 204 ;
   400 si rejeté, 413 trop gros, 429 trop fréquent, 503 sans D1.
+- `GET /api/stats?period=today|7|30|90` (`functions/api/stats.ts` → `edge/stats.ts`) : agrégats de la
+  période + période précédente (cartes, séries par jour, tops, temps par moteur). Accès : jeton Cloudflare
+  Access `Cf-Access-Jwt-Assertion` vérifié (RS256, clés de l'équipe, AUD, émetteur, dates) avec
+  `ACCESS_TEAM_DOMAIN` + `ACCESS_AUD` ; variables absentes → 403. `STATS_DEV_OPEN=1` (`.dev.vars`, local).
+  En `vite` dev seulement : réponse de démonstration (`X-Cutova-Demo: 1`, `edge/demo.ts`).
 
 ## Parité remove.bg vs nous
 
@@ -602,6 +607,13 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   seules les routes `/api/*` exécutent des fonctions (le reste reste statique et gratuit). wrangler en
   dépendance de développement ; `npm run dev:edge` = D1 local + `wrangler pages dev` (testé : deux
   événements identiques → une ligne `count = 2`, champ inconnu → 400).
+
+- **(N2) Tableau de bord `/stats`** : page Vite séparée (`stats/index.html`, `src/stats/`), interface en
+  français (usage interne), graphiques SVG maison (aucune bibliothèque, aucun CDN), chaque graphique a sa
+  table de données dans `<details>`. noindex (meta + `X-Robots-Tag`), `no-store`, `Disallow: /stats/` et
+  `/api/` dans robots.txt (aussi pour les robots d'IA), hors sitemap. Données de démo : serveur `vite` dev
+  et `npm run seed:demo` (D1 LOCAL, refuse `--remote`) ; jamais dans le bundle ni en production.
+- **(N2) Jours en UTC** pour l'agrégation (compteurs D1 par jour UTC) : simple et identique partout.
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` (champs légaux, domaine, R2, Pages, Search Console, Bing,
