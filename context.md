@@ -1,30 +1,25 @@
 # Cutova — context.md
 
 ## État actuel
-**Version prête à mettre en ligne (2026-11-01)** — 100 % navigateur : pas de compte, pas de base de
-données, pas de back-end. Reste à faire par l'éditeur : `DEPLOY.md` (domaine, champs légaux, R2,
-Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
-- **Moteur IA** : Web Worker, un modèle par moteur (`src/core/model/models.json`) — WebGPU →
-  BiRefNet_lite (seulement si l'adaptateur offre ≥ 11 storage buffers par shader ; Chrome/Mac et SwiftShader
-  plafonnent à 10 → WASM direct), WASM → ormbg (Apache-2.0). Repli WebGPU → WASM dans un worker neuf. Cache
-  OPFS, WASM multithread (crossOriginIsolated), zéro requête externe.
-- **Accueil** (direction C, TypeScript sans framework) : carte d'envoi (sélecteur multi-fichiers,
-  glisser-déposer, collage, 4 vraies photos d'exemple), démo avant/après réelle, puis sections statiques :
-  comment ça marche, galerie à onglets (calculée par notre modèle), pourquoi Cutova, usages par métier,
-  FAQ, pied de page en colonnes.
-- **Éditeur** (écran de résultat) : lot d'images (miniatures, "+", file d'attente), onglets Découper
-  (gomme/restaurer) / Arrière-plan (transparent, couleurs, 6 photos libres, flou) / Effets (ombre,
-  contour autocollant) / Ajuster (luminosité, contraste, saturation, température) / Formats (recadrage
-  sujet, 9 formats prêts), comparer avant/après, annuler/rétablir, téléchargement PNG/WebP/JPG en taille
-  d'origine ou réduite, ZIP, préférences locales, feuille du bas sur mobile.
-- **SEO** : 32 pages statiques EN + FR (accueils, alternative remove.bg avec date de fermeture sourcée,
-  3 tutoriels, 8 usages `/for/`, 3 pages légales `[À COMPLÉTER]`), hreflang, sitemap, robots.txt (robots
-  d'IA autorisés), llms.txt, JSON-LD. Lighthouse 97–100.
-- **Déploiement** : Cloudflare Pages + R2 (`_headers` généré, modèles et `.wasm` sur
-  `VITE_MODEL_BASE_URL`, contrôle 25 Mio, IndexNow).
-- **Qualité** : 131 tests unitaires, 74 e2e Chromium (dont recette ordinateur clair/sombre, iPhone et
-  Android émulés), recette Firefox + WebKit verte, `npm audit` 0 faille, licences sans GPL/AGPL.
-  Rapport : `docs/QA.md` ; captures : `docs/review/`.
+**Prêt pour la production (2026-11-01)** — détourage 100 % navigateur ; seul code serveur : deux Pages
+Functions (`/api/event` compteurs anonymes agrégés dans D1, `/api/stats` protégé par Cloudflare Access).
+Reste à faire par l'éditeur : `DEPLOY.md` (domaine, champs légaux, R2, Pages, D1, Access, Search Console,
+Bing, IndexNow) et tests sur matériel réel.
+- **Moteur IA** : Web Worker, WebGPU → BiRefNet_lite (si ≥ 11 storage buffers par shader), WASM → ormbg
+  (Apache-2.0), repli WebGPU → WASM dans un worker neuf, cache OPFS, WASM multithread, zéro requête externe.
+- **Accueil + éditeur** : lot d'images, gomme/restaurer, fonds (transparent, couleurs, 6 photos libres,
+  flou), ombre, contour, réglages, recadrage et 9 formats, annuler/rétablir, PNG/WebP/JPG pleine taille, ZIP.
+  Fond présélectionné par l'URL (`?bg=white`, `?bg=photo`).
+- **Langues** : en, fr, pt-br, es, id (interface + toutes les pages).
+- **SEO** : 90 pages statiques (18 contenus × 5 langues, URL traduites) dont `/white-background/` et
+  `/photo-background/`, hreflang réciproques + x-default, un sitemap par langue + index, robots.txt
+  (robots d'IA autorisés, `/stats/` et `/api/` exclus), llms.txt, JSON-LD. `SITE_URL` obligatoire et vérifié
+  au build de production. Lighthouse mobile 97–100 sur 10 pages des 5 langues.
+- **Mesure anonyme** (N1) : 7 événements, liste blanche, `sendBeacon`, rien si DNT/GPC, D1 agrégé par jour.
+- **Tableau de bord `/stats`** (N2) : noindex, Cloudflare Access + vérification du jeton, périodes et
+  comparaison, graphiques SVG maison ; données de démo en dev uniquement.
+- **Qualité** : 165 tests unitaires, 144 e2e Chromium + recette Firefox/WebKit (150 au total), `npm audit`
+  0 faille, licences sans GPL/AGPL. Rapport : `docs/QA.md` ; captures : `docs/review/`.
 
 ## Modules
 - `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
@@ -230,6 +225,10 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
 | Extension Chrome | ❌ | — | à faire | P2 |
 
 ## Mesures
+- **Lighthouse 12.8.2 (N5, 2026-11-01, mobile, `vite preview` local ; `docs/review/lighthouse-n5.json`)** —
+  Performance / Accessibilité / Bonnes pratiques / SEO : `/`, `/fr/`, `/pt-br/`, `/es/`, `/id/` 97/100/100/100
+  (LCP ≈ 2,4 s, CLS 0) ; `/white-background/` et `/id/background-putih/` 100/100/100/100 ; `/fr/fond-photo/`,
+  `/pt-br/tutoriais/remover-fundo-de-foto/`, `/es/para/tiendas-online/` 99/100/100/100.
 - **Lighthouse 12.8.2** (mobile, Chromium headless, `vite preview` local, 2026-10-31 ;
   `docs/review/lighthouse-phase3.json`) — Performance / Accessibilité / Bonnes pratiques / SEO :
   `/` 99/100/100/100 (LCP 1,7 s, CLS 0, TBT 0 ; 83 en performance au tout premier passage à froid) ;
@@ -634,9 +633,20 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   autre valeur ignorée ; le réglage s'applique à chaque image ajoutée pendant la visite. Pas de nouvelle
   donnée envoyée (la page vue compte seulement le chemin, sans la requête).
 
+- **(N5) Build de production** = `CF_PAGES=1` (posé par Cloudflare Pages, aperçus compris) ou
+  `CUTOVA_PRODUCTION=1` : `SITE_URL` obligatoire, https, origine seule, ni localhost ni domaine local
+  (`seo/site-url.mjs`, testé) ; `dist/.vite/` retiré. Le générateur SEO garde un gabarit vierge de
+  l'accueil (`dist/.vite/app-shell.html`) : relancé sur le même `dist/`, il donne le même résultat.
+- **(N5) Preview local** : `POST /api/event` → 204 ignoré (évitait une erreur 404 en console, comptée par
+  Lighthouse) ; `/api/stats` n'y existe pas (jamais de démo hors `vite` dev).
+- **(N5) Cloudflare Access** : DEPLOY.md écrit « ton adresse e-mail » au lieu de l'adresse réelle, pour ne
+  pas publier une donnée personnelle dans le dépôt ; une seule règle *Allow → Emails*. `ACCESS_*` en
+  secrets (pas dans `wrangler.toml`, qui est la source de vérité de Pages pour les autres champs).
+- **(N5) IndexNow** : le script suit l'index des sitemaps (un sitemap par langue).
+
 ## Prochaine étape
-1. Éditeur du site : suivre `DEPLOY.md` (champs légaux, domaine, R2, Pages, Search Console, Bing,
-   IndexNow) et tester sur matériel réel (GPU récent, iPhone, Android d'entrée de gamme).
-2. Ensuite : essayer ormbg sur WebGPU quand BiRefNet ne passe pas ; fonds personnalisés (photo de
-   l'utilisateur) ; pt-br / es / id ; P1 restants du tableau de parité (voitures/logos, formats
-   marketplaces détaillés, PWA hors ligne).
+1. Éditeur du site : suivre `DEPLOY.md` dans l'ordre (champs légaux, domaine, R2, Pages + `SITE_URL`, D1,
+   Cloudflare Access, Search Console, Bing, IndexNow) et tester sur matériel réel (GPU récent, iPhone,
+   Android d'entrée de gamme).
+2. Ensuite : fond personnalisé (photo de l'utilisateur), ormbg sur WebGPU quand BiRefNet ne passe pas, API,
+   PWA hors ligne, P1 restants du tableau de parité.

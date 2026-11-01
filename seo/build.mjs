@@ -9,8 +9,8 @@
  *   dist/index.html (en) et dist/fr/index.html (fr).
  * - dist/sitemap.xml (avec hreflang), dist/robots.txt (robots d'IA autorisés), dist/llms.txt.
  *
- * URL absolue du site : variable d'environnement SITE_URL (ex. https://cutova.app). Sans elle, on
- * utilise http://localhost:4173 (preview local) et on l'annonce clairement : à définir au déploiement.
+ * URL absolue du site : SITE_URL (seo/site-url.mjs) — obligatoire et vérifiée en production (CF_PAGES=1
+ * ou CUTOVA_PRODUCTION=1) ; sinon http://localhost:4173 (preview local), annoncé clairement.
  */
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import sharp from "sharp";
@@ -21,6 +21,7 @@ import { fr } from "../src/i18n/locales/fr.ts";
 import { es } from "../src/i18n/locales/es.ts";
 import { ptBr } from "../src/i18n/locales/pt-br.ts";
 import { id } from "../src/i18n/locales/id.ts";
+import { resolveSiteUrl } from "./site-url.mjs";
 import {
   absoluteUrl,
   breadcrumbLd,
@@ -45,9 +46,14 @@ const CONTENT = path.join(ROOT, "content");
 const DICTS = { en, fr, "pt-br": ptBr, es, id };
 const DEFAULT_LOCALE = "en";
 
-const SITE_URL = process.env.SITE_URL || "http://localhost:4173";
-if (!process.env.SITE_URL) {
-  console.warn(`[seo] SITE_URL non défini : URLs absolues générées pour ${SITE_URL} (définir SITE_URL au déploiement).`);
+let SITE_URL;
+try {
+  const resolved = resolveSiteUrl(process.env);
+  SITE_URL = resolved.url;
+  if (resolved.warning) console.warn(`[seo] ${resolved.warning}`);
+} catch (error) {
+  console.error(`[seo] ${error instanceof Error ? error.message : error}`);
+  process.exit(1);
 }
 
 const readJson = async (file) => JSON.parse(await readFile(file, "utf8"));
@@ -159,7 +165,14 @@ async function main() {
   }
 
   // Accueil : l'application construite par Vite, enrichie par locale.
-  const appHtml = await readFile(path.join(DIST, "index.html"), "utf8");
+  // Gabarit vierge de l'application, gardé à part : relancer ce script sur le même dist/ donne le même
+  // résultat (dist/index.html est réécrit plus bas avec la page d'accueil anglaise).
+  const shell = path.join(DIST, ".vite/app-shell.html");
+  const appHtml = await readFile(shell, "utf8").catch(async () => {
+    const html = await readFile(path.join(DIST, "index.html"), "utf8");
+    await writeFile(shell, html);
+    return html;
+  });
   for (const locale of locales) {
     const content = home.locales[locale];
     const chrome = site.locales[locale];

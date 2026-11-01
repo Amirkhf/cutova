@@ -13,8 +13,9 @@ if (!site || !key) {
   console.error("Définir SITE_URL et INDEXNOW_KEY (voir DEPLOY.md).");
   process.exit(1);
 }
-const sitemap = await (await fetch(`${site}/sitemap.xml`)).text();
-const urlList = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+const locsOf = async (url) => [...(await (await fetch(url)).text()).matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+// sitemap.xml est un index (un sitemap par langue) : on suit chaque sitemap listé.
+const urlList = (await Promise.all((await locsOf(`${site}/sitemap.xml`)).map(locsOf))).flat();
 const keyCheck = await fetch(`${site}/${key}.txt`);
 if (!keyCheck.ok || (await keyCheck.text()).trim() !== key) {
   console.error(`Le fichier-clé ${site}/${key}.txt est absent ou différent : redéployer avec INDEXNOW_KEY.`);

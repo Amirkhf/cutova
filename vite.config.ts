@@ -66,6 +66,15 @@ function modelFilesMiddleware(modelsDir: string): Connect.NextHandleFunction {
  * de démonstration générées, `/api/event` accepte et ignore les événements. En production, ce sont
  * les Pages Functions (functions/api/*) qui répondent.
  */
+/** Preview local : les événements anonymes sont acceptés puis ignorés (pas de D1 ici, jamais de démo). */
+function previewEventMiddleware(): Connect.NextHandleFunction {
+  return (req, res, next) => {
+    if (req.url?.split("?")[0] !== "/api/event" || req.method !== "POST") return next();
+    res.statusCode = 204;
+    res.end();
+  };
+}
+
 function devApiMiddleware(): Connect.NextHandleFunction {
   const rows = generateDemoRows();
   return (req, res, next) => {
@@ -103,6 +112,7 @@ function securityHeadersPlugin(): Plugin {
     configurePreviewServer(server) {
       server.middlewares.use(securityHeadersMiddleware(SECURITY_HEADERS));
       server.middlewares.use(modelFilesMiddleware(path.join(ROOT, "dist/models")));
+      server.middlewares.use(previewEventMiddleware());
     },
   };
 }

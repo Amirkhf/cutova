@@ -7,13 +7,13 @@ Build de production servi par `vite preview` (mêmes en-têtes que le `_headers`
 
 | Domaine | Résultat |
 |---|---|
-| Tests unitaires (vitest) | **131 / 131** |
-| Tests e2e (Chromium ordinateur + 4 profils de recette) | **74 / 74** (éditeur, SEO, accueil, inférence, dev = build, WebGPU/repli, recette) |
-| Recette `tests/e2e/qa.spec.ts` | **18 / 18** : Chromium ordinateur clair, Chromium ordinateur sombre, iPhone émulé, Android 360 px émulé, **Firefox**, **WebKit** (3 tests × 6 profils) |
+| Tests unitaires (vitest) | **165 / 165** (dont statistiques anonymes, jeton Cloudflare Access, agrégats `/stats`, présélection du fond, SITE_URL) |
+| Tests e2e (Chromium ordinateur + 4 profils de recette) | **144 / 144** (éditeur, SEO 90 pages × 5 langues, accueils, pages fond blanc / fond photo, statistiques anonymes, tableau de bord `/stats`, inférence, dev = build, WebGPU/repli, recette) |
+| Recette `tests/e2e/qa.spec.ts` | **18 / 18** : Chromium ordinateur clair, Chromium ordinateur sombre, iPhone émulé, Android 360 px émulé, **Firefox**, **WebKit** (3 tests × 6 profils) — total avec Firefox et WebKit : **150 / 150** |
 | Mode "modèles sur stockage externe" (faux R2, autre origine) | **2 / 2** |
-| Confidentialité | **0 requête externe**, aucune donnée d'image envoyée, sur tout le parcours |
-| Sécurité | en-têtes vérifiés sur le build ; `npm audit` : **0 vulnérabilité** ; licences : **0 GPL/AGPL** |
-| Lighthouse (mobile) | `/` 97–98 / 100 / 100 / 100 ; `/fr/` 98 / 100 / 100 / 100 ; pages de guides et légales 100 partout |
+| Confidentialité | **0 requête externe**, aucune donnée d'image envoyée ; événements anonymes vérifiés champ par champ (liste blanche), rien si Do Not Track / GPC |
+| Sécurité | en-têtes vérifiés sur le build ; `/stats` et `/api/*` noindex + no-store ; `/api/stats` : 403 sans jeton Access valide ; `npm audit` : **0 vulnérabilité** ; licences : **0 GPL/AGPL** |
+| Lighthouse (mobile, 10 pages, 5 langues) | accueils `/`, `/fr/`, `/pt-br/`, `/es/`, `/id/` : **97 / 100 / 100 / 100** ; pages guides et outils : **99–100 / 100 / 100 / 100** (`docs/review/lighthouse-n5.json`) |
 
 ## Ce qui est testé
 
@@ -47,13 +47,30 @@ horizontal, animations réduites respectées.
 Les dimensions sont lues dans l'en-tête du fichier (PNG, GIF, WebP, JPEG, AVIF) avant tout décodage
 (`src/core/validate-image/header-dimensions.ts`, testé sur de vrais fichiers de chaque format).
 
+### Langues et pages (tests/e2e/seo.spec.ts, background-pages.spec.ts)
+- 90 pages statiques (18 contenus × en, fr, pt-br, es, id) : langue, titre, description, canonical,
+  hreflang **réciproques sur les 5 langues + x-default**, JSON-LD valide, un seul h1, 0 requête externe.
+- Un sitemap par langue + index ; chaque page présente une seule fois ; robots.txt exclut `/stats/` et `/api/`.
+- Accueils pt-br / es / id : l'application démarre dans la langue ; sélecteur de langue des pages statiques
+  (sans JavaScript) : 5 liens, page courante marquée.
+- `/white-background/` et `/photo-background/` (5 langues) : réponse directe sous le h1, HowTo + FAQ ;
+  `/?bg=white` → export PNG au coin blanc pur opaque ; `/fr/?bg=photo` → onglet Arrière-plan, photo choisie.
+
+### Statistiques anonymes et tableau de bord
+- Chaque événement ne contient que les champs autorisés ; aucun octet d'image ; Do Not Track / GPC → rien.
+- `/api/stats` : 403 sans `ACCESS_TEAM_DOMAIN` / `ACCESS_AUD`, 403 jeton invalide (audience, émetteur,
+  expiration, clé, signature), 200 avec jeton valide ; testé aussi avec `wrangler pages dev` + D1 local.
+- `/stats` : données de démonstration en dev seulement (jamais en preview/production), périodes,
+  axe 0 violation clair et sombre, mobile 375 px sans défilement horizontal
+  (captures `docs/review/stats-*.png`).
+
 ### Sécurité
 - Sur le build : `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Embedder-Policy: require-corp`,
   CSP `default-src 'self'` sans `unsafe-inline`, `X-Content-Type-Options: nosniff` ; `dist/_headers`
   contient les mêmes règles (+ `frame-ancestors 'none'`).
 - `npm audit --audit-level=high` : 0 vulnérabilité (`npm run check:audit`).
-- `npm run check:licenses` : 93 paquets ; MIT 52, Apache-2.0 14, BSD-3-Clause 12, MPL-2.0 5, ISC 3,
-  OFL-1.1 2, autres permissives ; **aucune GPL/AGPL**. 3 paquets LGPL (`libvips` via `sharp`) : utilisés
+- `npm run check:licenses` : 120 paquets (wrangler compris) ; MIT 73, Apache-2.0 16, BSD-3-Clause 12, MPL-2.0 5,
+  ISC 3, OFL-1.1 2, autres permissives ; **aucune GPL/AGPL**. 3 paquets LGPL (`libvips` via `sharp`) : utilisés
   seulement par les scripts Node (images de l'accueil, tests), **jamais envoyés au navigateur**.
 
 ## Benchmark (20 photos de `tests/images/`, modèle WASM ormbg)

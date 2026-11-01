@@ -1,0 +1,108 @@
+{
+  "tool": "Lighthouse 12.8.2",
+  "formFactor": "mobile (default throttling)",
+  "server": "vite preview (local)",
+  "date": "2026-11-01",
+  "pages": [
+    {
+      "url": "/",
+      "performance": 97,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 2459,
+      "cls": 0,
+      "tbtMs": 21
+    },
+    {
+      "url": "/fr/",
+      "performance": 97,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 2502,
+      "cls": 0,
+      "tbtMs": 6
+    },
+    {
+      "url": "/pt-br/",
+      "performance": 97,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 2389,
+      "cls": 0,
+      "tbtMs": 0
+    },
+    {
+      "url": "/es/",
+      "performance": 97,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 2411,
+      "cls": 0,
+      "tbtMs": 56
+    },
+    {
+      "url": "/id/",
+      "performance": 97,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 2414,
+      "cls": 0,
+      "tbtMs": 35
+    },
+    {
+      "url": "/white-background/",
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1506,
+      "cls": 0,
+      "tbtMs": 0
+    },
+    {
+      "url": "/fr/fond-photo/",
+      "performance": 99,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1655,
+      "cls": 0,
+      "tbtMs": 0
+    },
+    {
+      "url": "/pt-br/tutoriais/remover-fundo-de-foto/",
+      "performance": 99,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1654,
+      "cls": 0,
+      "tbtMs": 0
+    },
+    {
+      "url": "/es/para/tiendas-online/",
+      "performance": 99,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1656,
+      "cls": 0,
+      "tbtMs": 0
+    },
+    {
+      "url": "/id/background-putih/",
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "lcpMs": 1505,
+      "cls": 0,
+      "tbtMs": 0
+    }
+  ]
+}

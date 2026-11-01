@@ -111,17 +111,117 @@ fichier), puis commite. Le build affiche le nombre de champs restants (`[postbui
 - [ ] *Workers & Pages* → *Create* → *Pages* → *Connect to Git* → **`Amirkhf/cutova`**, branche **`main`**.
 - [ ] Build : *Framework preset* **None**, *Build command* **`npm run build`**, *Build output directory*
       **`dist`**.
-- [ ] Variables d'environnement (*Settings* → *Variables and Secrets*, Production **et** Preview) :
+- [ ] Variables publiques : le dépôt contient un `wrangler.toml` (base D1, voir 5 bis), que Cloudflare
+      Pages prend comme **source de vérité** (les champs qu'il définit ne sont plus modifiables dans le
+      tableau de bord). Dans `wrangler.toml`, décommenter le bloc `[vars]` et remplir :
   - `NODE_VERSION` = **`22`**
-  - `SITE_URL` = **`https://exemple.com`** (canonical, hreflang, sitemap, robots.txt, llms.txt)
+  - `SITE_URL` = **`https://exemple.com`** (canonical, hreflang, sitemaps, robots.txt, llms.txt) —
+    **obligatoire** : sur Cloudflare Pages (`CF_PAGES=1`), le build **échoue** si `SITE_URL` manque, n'est
+    pas en https, contient un chemin ou vise localhost / une adresse locale (`seo/site-url.mjs`).
   - `VITE_MODEL_BASE_URL` = **`https://models.exemple.com`** (modèles + `.wasm` sur R2 ; ajouté à la CSP)
   - `INDEXNOW_KEY` = **la clé générée** (publie `/<clé>.txt`)
-- [ ] *Save and Deploy* (échec volontaire avec message clair si un fichier dépasse 25 Mio).
+
+  Si le premier build affiche « SITE_URL est obligatoire… », c'est que la variable n'est pas vue au
+  moment du build : l'ajouter aussi dans *Settings* → *Variables and Secrets* (type *Text*), puis relancer.
+- [ ] *Save and Deploy* (échec volontaire avec message clair si un fichier dépasse 25 Mio ou si
+      `SITE_URL` est absent/invalide).
 - [ ] *Custom domains* → **`exemple.com`** (et `www.exemple.com` avec redirection vers `exemple.com` :
       *Rules* → *Redirect Rules*).
 
 `dist/_headers` (généré depuis `security-headers.mjs`) applique COOP/COEP, la CSP stricte et le cache :
 rien à configurer à la main.
+
+## 5 bis. Statistiques anonymes (base D1)
+
+Compteurs agrégés par jour (aucune donnée personnelle, voir la politique de confidentialité). Offre
+gratuite D1 : 100 000 lignes écrites par jour (≈ 100 000 événements) — au-delà, les événements en trop
+sont simplement perdus (le site continue de marcher) ; plan Workers payant seulement si un jour ça ne suffit
+plus.
+
+- [ ] Se connecter à Cloudflare depuis le dossier du projet :
+
+  ```bash
+  npx wrangler login
+  ```
+
+- [ ] Créer la base :
+
+  ```bash
+  npx wrangler d1 create cutova-stats
+  ```
+
+- [ ] Copier le `database_id` affiché dans `wrangler.toml` (remplace `00000000-0000-0000-0000-000000000000`),
+      commit, push.
+- [ ] Créer la table (migration `migrations/0001_daily_events.sql`) sur la base distante :
+
+  ```bash
+  npx wrangler d1 migrations apply cutova-stats --remote
+  ```
+
+- [ ] Liaison : grâce à `wrangler.toml`, Pages lie automatiquement la base sous le nom **`DB`** (Production
+      et Preview) au prochain déploiement. Vérifier dans *Workers & Pages* → *cutova* → *Settings* →
+      *Bindings* : `DB` → `cutova-stats`.
+- [ ] Après déploiement, vérifier qu'un événement est compté :
+
+  ```bash
+  curl -s -o /dev/null -w "%{http_code}\n" -X POST -H "Content-Type: application/json" --data '{"type":"page_view","page":"/","lang":"en"}' https://exemple.com/api/event
+  ```
+
+  Attendu : `204`. Puis :
+
+  ```bash
+  npx wrangler d1 execute cutova-stats --remote --command "SELECT day, type, count FROM daily_events ORDER BY day DESC LIMIT 5"
+  ```
+
+  Ne **jamais** lancer `npm run seed:demo` contre la base distante (le script refuse `--remote`).
+
+## 5 ter. Protéger `/stats` et `/api/stats` (Cloudflare Access)
+
+Double protection : Cloudflare Access bloque `/stats` et `/api/stats` avant le site, **et** `/api/stats`
+vérifie lui-même le jeton Access (signature, audience, émetteur, dates). Sans `ACCESS_TEAM_DOMAIN` et
+`ACCESS_AUD`, `/api/stats` répond **403** à tout le monde (fermé par défaut).
+
+- [ ] Ouvrir **Zero Trust** : https://one.dash.cloudflare.com → choisir un *team name* (ex. `cutova`) →
+      plan **Free** (0 €, jusqu'à 50 utilisateurs ; Cloudflare peut demander une carte bancaire pour
+      activer le plan, sans prélèvement). Ton domaine d'équipe sera `cutova.cloudflareaccess.com`.
+- [ ] *Settings* → *Authentication* → *Login methods* : vérifier que **One-time PIN** est activé (code
+      reçu par e-mail ; rien d'autre à configurer).
+- [ ] *Access* → *Applications* → *Add an application* → **Self-hosted** :
+  - *Application name* : `Cutova stats` ; *Session duration* : `24 hours`.
+  - *Public hostname* n° 1 : domaine **`exemple.com`**, chemin **`stats`**.
+  - *+ Add public hostname* n° 2 : domaine **`exemple.com`**, chemin **`api/stats`**.
+  - (Optionnel, recommandé) n° 3 et 4 : les mêmes chemins sur **`cutova.pages.dev`** — sans cela, la page
+    `/stats` y reste visible, mais vide : `/api/stats` répond 403 sans jeton.
+- [ ] *Policies* → *Add a policy* : nom `Moi seulement`, *Action* **Allow**, *Include* → **Emails** →
+      **ton adresse e-mail** (une seule ligne, une seule adresse). Aucune autre règle. *Save*.
+- [ ] Ouvrir l'application créée → *Overview* (ou *Basic information*) → copier
+      **Application Audience (AUD) Tag**.
+- [ ] Ajouter les deux valeurs comme **secrets** du projet Pages (Production) — tableau de bord
+      *Workers & Pages* → *cutova* → *Settings* → *Variables and Secrets* → *Add* → type **Secret**, ou :
+
+  ```bash
+  npx wrangler pages secret put ACCESS_TEAM_DOMAIN --project-name cutova
+  ```
+
+  (valeur : `cutova.cloudflareaccess.com`, sans `https://`)
+
+  ```bash
+  npx wrangler pages secret put ACCESS_AUD --project-name cutova
+  ```
+
+  (valeur : le tag AUD copié)
+- [ ] Redéployer (*Deployments* → *Retry deployment*) pour que les secrets soient pris en compte.
+- [ ] Vérifier, dans une fenêtre de navigation privée :
+  - `https://exemple.com/stats/` → page de connexion Cloudflare Access → code reçu par e-mail → le tableau
+    de bord s'affiche avec les vrais chiffres (pas de badge « Données de démonstration »).
+  - Sans connexion, l'API est refusée :
+
+    ```bash
+    curl -s -o /dev/null -w "%{http_code}\n" https://cutova.pages.dev/api/stats?period=7
+    ```
+
+    Attendu : `403` (ou `302` vers la connexion Access si tu as protégé aussi `cutova.pages.dev`).
+  - Une autre adresse e-mail que la tienne ne reçoit **pas** de code.
 
 ## 6. Vérifier en production
 
@@ -137,9 +237,10 @@ rien à configurer à la main.
       `[cutova] GPU limits: …` s'affiche.
 - [ ] Cliquer une image d'exemple → détourage, puis télécharger PNG / WebP / JPG et un ZIP. Onglet
       *Réseau* : seulement `exemple.com` et `models.exemple.com`.
-- [ ] Ouvrir `/fr/`, `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/<clé IndexNow>.txt` : URL en
-      `https://exemple.com`.
-- [ ] Lighthouse (Chrome → F12 → *Lighthouse*, mobile) sur `/` et `/fr/` : ≥ 95 partout.
+- [ ] Ouvrir `/fr/`, `/pt-br/`, `/es/`, `/id/`, `/sitemap.xml` (index) et `/sitemap-fr.xml`, `/robots.txt`,
+      `/llms.txt`, `/<clé IndexNow>.txt` : URL en `https://exemple.com`.
+- [ ] Lighthouse (Chrome → F12 → *Lighthouse*, mobile) sur `/`, `/es/`, `/white-background/` : ≥ 95
+      partout (en local : 97–100, `docs/review/lighthouse-n5.json`).
 - [ ] **Matériel réel** (jamais testé jusqu'ici) : un ordinateur avec carte graphique récente (noter la
       ligne `GPU limits` et le moteur affiché), un iPhone (Safari) et un Android d'entrée de gamme. Noter
       les temps dans `context.md` > Mesures.
@@ -148,7 +249,7 @@ rien à configurer à la main.
 
 - [ ] **Google Search Console** : https://search.google.com/search-console → propriété *Domaine*
       `exemple.com` (validation DNS automatique si le domaine est chez Cloudflare) → *Sitemaps* →
-      `https://exemple.com/sitemap.xml`.
+      `https://exemple.com/sitemap.xml` (index : les 5 sitemaps par langue sont découverts automatiquement).
 - [ ] **Bing Webmaster Tools** : https://www.bing.com/webmasters → *Import from Google Search Console*.
 - [ ] **IndexNow** (Bing, Yandex…), après chaque mise en ligne importante :
 

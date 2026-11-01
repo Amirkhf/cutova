@@ -38,6 +38,10 @@ if (indexNowKey) {
   console.log(`[postbuild] fichier-clé IndexNow écrit : /${indexNowKey}.txt`);
 }
 await writeFile(path.join(DIST, "_headers"), cloudflareHeadersFile(originOf(modelBase)));
+// Build de production : les fichiers internes de Vite (manifeste, gabarit de l'accueil) ne sont pas publiés.
+if (process.env.CF_PAGES === "1" || process.env.CUTOVA_PRODUCTION === "1") {
+  await rm(path.join(DIST, ".vite"), { recursive: true, force: true });
+}
 // Cloudflare Pages Functions : seules les routes /api/* exécutent du code (le reste est statique).
 await writeFile(path.join(DIST, "_routes.json"), JSON.stringify({ version: 1, include: ["/api/*"], exclude: [] }, null, 2) + "\n");
 

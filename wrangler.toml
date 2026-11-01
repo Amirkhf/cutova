@@ -10,3 +10,14 @@ binding = "DB"
 database_name = "cutova-stats"
 database_id = "00000000-0000-0000-0000-000000000000"
 migrations_dir = "migrations"
+
+# Variables publiques (pas des secrets). Avec ce fichier, Cloudflare Pages le prend comme source de vérité :
+# décommenter et remplacer exemple.com au moment du déploiement (DEPLOY.md, section 5).
+# [vars]
+# NODE_VERSION = "22"
+# SITE_URL = "https://exemple.com"
+# VITE_MODEL_BASE_URL = "https://models.exemple.com"
+# INDEXNOW_KEY = "<clé IndexNow>"
+#
+# ACCESS_TEAM_DOMAIN et ACCESS_AUD : à créer comme SECRETS (tableau de bord ou `wrangler pages secret put`),
+# jamais ici. Voir DEPLOY.md, section 5 ter.
