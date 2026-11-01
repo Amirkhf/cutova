@@ -3,7 +3,7 @@ import { renderHeader } from "./header.ts";
 import { renderHero } from "./hero.ts";
 import { renderBeforeAfterDemo } from "./before-after-demo.ts";
 import { renderUploadCard, type UploadCardHandle } from "./upload-card.ts";
-import { renderResultPanel, type ResultPanelHandle } from "../result/render-result.ts";
+import { renderEditor, type EditorHandle } from "../editor/editor.ts";
 
 /** Pages d'accueil publiées par langue (seo/build.mjs, content/site.json). */
 const LOCALE_HOME_PATHS: Partial<Record<Locale, string>> = { en: "/", fr: "/fr/" };
@@ -12,7 +12,7 @@ export function renderHome(root: HTMLElement, initialLocale: Locale): void {
   let locale = initialLocale;
   let selectedFile: File | null = null;
   let uploadCard: UploadCardHandle | null = null;
-  let resultPanel: ResultPanelHandle | null = null;
+  let resultPanel: EditorHandle | null = null;
 
   function build(): void {
     uploadCard?.destroy();
@@ -58,7 +58,7 @@ export function renderHome(root: HTMLElement, initialLocale: Locale): void {
     copy.className = "home-copy";
     copy.append(renderHero(dict), renderBeforeAfterDemo(dict));
 
-    resultPanel = renderResultPanel({
+    resultPanel = renderEditor({
       dict,
       onNewImage: () => {
         // Retour à l'accueil : carte d'envoi vide, focus sur le bouton principal.

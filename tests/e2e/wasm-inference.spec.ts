@@ -82,7 +82,7 @@ test("WASM : 3 vraies photos → masques proches de la référence, PNG transpar
   const measures: Record<string, unknown>[] = [];
   for (const [i, photo] of PHOTOS.entries()) {
     const started = Date.now();
-    await page.setInputFiles('input[type="file"]', path.join(ROOT, "tests/images", `${photo}.jpg`));
+    await page.setInputFiles('.upload-card input[type="file"]', path.join(ROOT, "tests/images", `${photo}.jpg`));
     const { engine, elapsedMs } = await waitForResult(page, i + 1);
     const totalMs = Date.now() - started;
     expect(engine).toBe("wasm");

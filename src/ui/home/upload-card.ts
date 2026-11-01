@@ -107,6 +107,7 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
   fileInput.type = "file";
   fileInput.className = "sr-only";
   fileInput.accept = ACCEPTED_MIME;
+  fileInput.multiple = true;
   fileInput.tabIndex = -1;
   fileInput.setAttribute("aria-hidden", "true");
 
@@ -193,9 +194,14 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
     fileInput.value = "";
     showIdle();
   });
+  // Plusieurs fichiers possibles : chacun devient une image du lot (éditeur, bande de miniatures).
+  const handleAll = async (files: File[], source: ImageSource) => {
+    for (const file of files) await handleCandidate(file, source);
+  };
   fileInput.addEventListener("change", () => {
-    const file = fileInput.files?.[0];
-    if (file) void handleCandidate(file, "picker");
+    const files = Array.from(fileInput.files ?? []);
+    fileInput.value = "";
+    void handleAll(files, "picker");
   });
 
   for (const [index, spec] of EXAMPLES.entries()) {
@@ -238,21 +244,19 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
     dragDepth = 0;
     document.body.classList.remove("is-drag-active");
     dropHint.textContent = dict.upload.dropHint;
-    const file = event.dataTransfer?.files?.[0];
-    if (file) void handleCandidate(file, "drop");
+    void handleAll(Array.from(event.dataTransfer?.files ?? []), "drop");
   };
   const onPaste = (event: ClipboardEvent) => {
     const items = event.clipboardData?.items;
     if (!items) return;
+    const files: File[] = [];
     for (const item of items) {
       if (item.kind === "file" && item.type.startsWith("image/")) {
         const file = item.getAsFile();
-        if (file) {
-          void handleCandidate(file, "paste");
-          break;
-        }
+        if (file) files.push(file);
       }
     }
+    void handleAll(files, "paste");
   };
 
   window.addEventListener("dragenter", onDragEnter);

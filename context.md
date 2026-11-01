@@ -39,10 +39,12 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   file d'attente, événements de progression), `protocol.ts` (messages typés worker ↔ page).
 - `src/core/limits/device-limits.ts` — limite de pixels décodés adaptée à l'appareil (remplace
   l'ancienne limite fixe de 8000 px/côté) + réduction proportionnelle (`fitWithinPixelBudget`).
-- `src/ui/result/` — `render-result.ts` (écran de résultat : décode l'image complète, lance l'inférence,
-  construit le détourage pleine résolution, aperçu ≤ 1600 px, fonds, exports, "Nouvelle image" ; s'abonne
-  lui-même à `image:selected`, attributs `data-*` pour les tests), `compare-slider.ts` (curseur avant/après
-  générique, clavier + pointeur), `result.css`.
+- `src/ui/editor/` — éditeur (écran de résultat) : `editor.ts` (lot d'images, file de traitement,
+  onglets d'outils, rendu, téléchargement, ZIP ; attributs `data-*` lus par les tests), `doc.ts` (une
+  image : réglages, masque, historique), `controls.ts` (champs accessibles), `editor.css`.
+- `src/core/editor/` — `settings.ts` (réglages, formats prédéfinis), `render.ts` (rendu aperçu/export),
+  `geometry.ts` (cadrage/sortie), `adjust.ts`, `history.ts`, `prefs.ts` ; `src/core/export/zip.ts`.
+- `src/ui/result/` — `compare-slider.ts` (curseur avant/après générique), `result.css`.
 - `scripts/model-manifest.mjs` / `scripts/fetch-model.mjs` — téléchargement des poids + config de tous
   les modèles utilisés par un moteur dans `public/models/<repoId>/` (gitignoré), vérification SHA-256,
   révision HF figée (`--model=`, `--only=`, `MODEL_BASE_URL`).
@@ -511,6 +513,31 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   `dist/models`) avec `Content-Length`, `Content-Encoding: identity` et `no-store, no-transform`. Testé
   (`inference.spec.ts`, et faux R2 dans `tests/e2e-remote/`). R2 : `no-transform` posé à l'envoi +
   vérification `curl` dans DEPLOY.md (règle de compression à désactiver si besoin).
+
+- **(Étape 1) Éditeur complet** (`src/ui/editor/`, remplace `render-result.ts`) : onglets Découper /
+  Arrière-plan / Effets / Ajuster / Formats (`role="tablist"`, flèches, Début/Fin), annuler/rétablir
+  (boutons + Ctrl+Z / Ctrl+Maj+Z ; historique par image = réglages + instantané du masque, 30 pas),
+  menu de téléchargement (PNG / WebP / JPG fond blanc ; taille d'origine ou réduite), ZIP de toutes les
+  images, bande de miniatures + "+", révélation animée (désactivée si `prefers-reduced-motion`),
+  feuille du bas sur mobile (< 720 px). Rendu unique `src/core/editor/render.ts` pour l'aperçu ET
+  l'export (aperçu = fichier téléchargé).
+- **(Étape 1) Ajustements calculés en JavaScript** (`adjust.ts`, tables par canal) et **flou par
+  réduction/agrandissement** plutôt que `ctx.filter` (absent de certains navigateurs) : rendu identique
+  partout. Ombre portée = `shadowBlur` du canvas (universel) ; contour = silhouette décalée sur 16 à 48
+  directions puis teintée. Valeurs d'effets exprimées "pour 1000 px" du sujet → aperçu = export.
+- **(Étape 1) ZIP maison sans compression** (`src/core/export/zip.ts`, CRC32, noms UTF-8, ~120 lignes,
+  testé) : aucune dépendance ; les images sont déjà compressées.
+- **(Étape 1) Préférences locales** (`prefs.ts`) : couleurs récentes, format d'export, formats favoris,
+  dans `localStorage` sous `cutova.prefs.v1`, validées à la lecture, toute erreur ignorée.
+- **(Étape 1) Formats prêts à l'emploi** (`settings.ts` > `FORMAT_PRESETS`) : noms de plateformes
+  seulement descriptifs, avec la mention "vérifiez les règles actuelles" ; fond blanc proposé d'office
+  pour les formats "boutique en ligne". Le choix de format reste toujours actif (il bascule le cadrage).
+- **(Étape 1) 6 photos de fond libres** (Pexels, `public/backgrounds/`, ≤ 104 Ko, sources dans
+  `public/backgrounds/SOURCES.md`).
+- **(Étape 1) `data-state="done"` posé après le premier rendu de l'aperçu** (et non à la fin de
+  l'inférence) : un lecteur du canevas ne voit jamais l'original encore affiché.
+- **(Étape 1) Bug corrigé** : barre d'onglets écrasée à 1 px dans la feuille du bas (flex + overflow) →
+  `flex-shrink: 0`.
 
 ## Prochaine étape
 Revérifier sur le vrai Mac (build preview) : ligne `[cutova] GPU limits`, WASM direct, temps affiché.

@@ -1,0 +1,377 @@
+/* Éditeur (src/ui/editor/editor.ts) — complète src/ui/result/result.css (curseur avant/après). */
+
+.editor-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.editor-head .result-status {
+  flex: 1 1 12rem;
+}
+
+.editor-history {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.editor-history .btn {
+  min-height: 44px;
+  padding-inline: var(--space-4);
+}
+
+.editor-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (min-width: 900px) {
+  .editor-body {
+    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr);
+  }
+}
+
+.editor-stage {
+  min-width: 0;
+}
+
+/* Onglets d'outils */
+.editor-tools {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+/* Aucun bloc des outils ne doit rétrécir (sinon la barre d'onglets, en overflow, tombe à 0 px). */
+.editor-tools > * {
+  flex-shrink: 0;
+}
+
+.editor-tabs {
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.editor-tab {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: none;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-weight: var(--weight-body-medium);
+  cursor: pointer;
+}
+
+.editor-tab[aria-selected="true"] {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+
+.editor-tab:focus-visible,
+.editor-panel:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-focus-ring);
+  outline-offset: 2px;
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.editor-panel[hidden] {
+  display: none;
+}
+
+.editor-fieldset {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.editor-fieldset legend {
+  padding: 0 var(--space-1);
+  font-weight: var(--weight-body-medium);
+  font-size: var(--text-sm);
+}
+
+.editor-fieldset:disabled {
+  opacity: 0.6;
+}
+
+.editor-options,
+.editor-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+}
+
+.editor-option,
+.editor-check,
+.editor-color {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.editor-option input,
+.editor-check input {
+  accent-color: var(--color-accent);
+  width: 18px;
+  height: 18px;
+}
+
+.editor-color input {
+  width: 44px;
+  height: 44px;
+  padding: 2px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.editor-range {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.editor-range output {
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-range input {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-height: 36px;
+  accent-color: var(--color-accent);
+}
+
+.editor-select {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.editor-select select {
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.editor-note {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.editor-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.editor-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--color-border-strong);
+  cursor: pointer;
+  font-size: 0;
+}
+
+.editor-swatch-white {
+  background: #ffffff;
+}
+
+.editor-photos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--space-2);
+}
+
+.editor-photo {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface);
+  cursor: pointer;
+  aspect-ratio: 8 / 5;
+}
+
+.editor-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.editor-photo[aria-pressed="true"] {
+  border-color: var(--color-accent);
+}
+
+/* Téléchargement */
+.editor-download {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.editor-download-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.editor-download-menu[hidden] {
+  display: none;
+}
+
+/* Bande de miniatures */
+.editor-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding: var(--space-2) 0;
+}
+
+.editor-strip-list {
+  display: flex;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.editor-thumb {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.editor-thumb-open {
+  display: block;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  border: 2px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.editor-thumb-open img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.editor-thumb.is-current .editor-thumb-open {
+  border-color: var(--color-accent);
+}
+
+.editor-thumb[data-status="queued"] img,
+.editor-thumb[data-status="processing"] img {
+  opacity: 0.55;
+}
+
+.editor-thumb[data-status="error"] .editor-thumb-open {
+  border-color: var(--color-error);
+}
+
+.editor-thumb-remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.editor-add {
+  flex: 0 0 auto;
+  width: 64px;
+  height: 64px;
+  border: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.editor-shortcuts {
+  margin-top: calc(-1 * var(--space-2));
+}
+
+/* Mobile : outils en feuille du bas, au-dessus de la page, défilable. */
+@media (max-width: 719px) {
+  .editor-tools {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    max-height: 55vh;
+    overflow-y: auto;
+    margin-inline: calc(-1 * var(--space-4));
+    padding: var(--space-3) var(--space-4) var(--space-4);
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    box-shadow: 0 -8px 24px rgba(20, 22, 26, 0.12);
+  }
+
+  .editor-tabs {
+    position: sticky;
+    top: calc(-1 * var(--space-3));
+    background: var(--color-surface);
+    z-index: 1;
+  }
+
+  .editor-shortcuts {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editor-tab,
+  .editor-photo {
+    transition: none;
+  }
+}

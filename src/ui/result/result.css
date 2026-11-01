@@ -1,4 +1,4 @@
-/* Écran de résultat (src/ui/result/render-result.ts) */
+/* Écran de résultat : curseur avant/après générique (compare-slider.ts) + styles communs de l’éditeur (src/ui/editor/). */
 .result-panel {
   grid-column: 1 / -1;
   display: flex;

@@ -71,6 +71,7 @@ test("clic sur un exemple : le pipeline aboutit et le masque est composité dans
   const status = page.locator(".result-status");
   await expect(status).toContainText(SETTLED_STATUS, { timeout: 150_000 });
   await expect(status).toContainText(SUCCESS_STATUS);
+  await expect(page.locator(".result-panel")).toHaveAttribute("data-state", "done");
   const canvas = page.locator(".result-canvas");
   await expect(canvas).toBeVisible();
   const transparentShare = await canvas.evaluate((el) => {
