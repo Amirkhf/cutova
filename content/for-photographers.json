@@ -1,0 +1,86 @@
+{
+  "id": "for-photographers",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/photographers/",
+      "title": "Background Remover for Photographers — Full Resolution | Cutova",
+      "description": "Quick, private cutouts for portraits and product shoots, at the full resolution of your files. No upload of client photos.",
+      "h1": "Fast cutouts for photographers",
+      "card": {
+        "title": "Photographers",
+        "text": "Quick cutouts for portraits and client previews, at full resolution."
+      },
+      "intro": [
+        "When a client asks for a portrait on a different background, you rarely need a full retouching session. Cutova gives you a clean first cutout at full resolution, ready to refine."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Portraits and headshots on studio colors",
+            "Client previews of background options",
+            "Composites and social media visuals",
+            "Product shots for small brands"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "Client photos are never uploaded, which helps when you work under confidentiality. Hair is handled well; check fine details and use the erase and restore brushes for the last touches."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Does Cutova keep the original resolution?",
+          "a": "Yes. Exports use the size of your file (up to about 50 megapixels on a computer)."
+        },
+        {
+          "q": "Can I export without compression?",
+          "a": "Yes, PNG export is lossless."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/photographes/",
+      "title": "Détourage pour photographes — pleine résolution | Cutova",
+      "description": "Des détourages rapides et confidentiels pour vos portraits et photos produits, à la résolution de vos fichiers. Aucune photo client envoyée.",
+      "h1": "Des détourages rapides pour les photographes",
+      "card": {
+        "title": "Photographes",
+        "text": "Détourages rapides de portraits et aperçus clients, en pleine résolution."
+      },
+      "intro": [
+        "Quand un client demande un portrait sur un autre fond, il ne faut pas toujours une séance de retouche complète. Cutova donne un premier détourage propre en pleine résolution, prêt à être affiné."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Portraits sur couleurs de studio",
+            "Aperçus de fonds à montrer au client",
+            "Montages et visuels pour les réseaux",
+            "Photos produits pour de petites marques"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Les photos de vos clients ne sont jamais envoyées, ce qui aide quand vous travaillez sous confidentialité. Les cheveux sont bien gérés ; vérifiez les détails fins et finissez avec la gomme et la restauration."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Cutova garde-t-il la résolution d'origine ?",
+          "a": "Oui. Les exports gardent la taille de votre fichier (jusqu'à environ 50 mégapixels sur ordinateur)."
+        },
+        {
+          "q": "Puis-je exporter sans compression ?",
+          "a": "Oui, l'export PNG est sans perte."
+        }
+      ]
+    }
+  }
+}

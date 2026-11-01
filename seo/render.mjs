@@ -140,12 +140,28 @@ export function headerHtml({ brand, chrome, homePath, otherLanguage }) {
 </header>`;
 }
 
-export function footerHtml({ chrome, guides, otherLanguage }) {
-  const links = guides.map((g) => `<li><a href="${esc(g.path)}">${esc(g.label)}</a></li>`).join("");
+/**
+ * Pied de page en colonnes (outils, guides, usages, aide, légal) + choix de langue.
+ * `columns` = [{ title, links: [{ path, label }] }] calculées par seo/build.mjs pour chaque langue.
+ */
+export function footerHtml({ chrome, brand, columns, otherLanguage }) {
+  const cols = columns
+    .filter((c) => c.links.length)
+    .map(
+      (c) =>
+        `<div class="seo-footer-col"><h2 class="seo-footer-title">${esc(c.title)}</h2><ul class="seo-footer-links">${c.links
+          .map((l) => `<li><a href="${esc(l.path)}">${esc(l.label)}</a></li>`)
+          .join("")}</ul></div>`,
+    )
+    .join("\n  ");
+  const lang = otherLanguage
+    ? `<p class="seo-footer-lang"><span>${esc(chrome.footerLanguageTitle)} :</span> <a href="${esc(otherLanguage.href)}" hreflang="${esc(otherLanguage.hreflang)}" lang="${esc(otherLanguage.hreflang)}">${esc(otherLanguage.label)}</a></p>`
+    : "";
   return `<footer class="seo-footer">
-  <p>${esc(chrome.footerPrivacy)}</p>
-  <nav aria-label="${esc(chrome.footerGuides)}"><h2 class="seo-footer-title">${esc(chrome.footerGuides)}</h2><ul class="seo-footer-links">${links}</ul></nav>
-  ${otherLanguage ? `<p><a href="${esc(otherLanguage.href)}" hreflang="${esc(otherLanguage.hreflang)}" lang="${esc(otherLanguage.hreflang)}">${esc(chrome.footerLanguage)}</a></p>` : ""}
+  <div class="seo-footer-brand"><p class="seo-footer-name">${esc(brand)}</p><p>${esc(chrome.footerTagline)}</p><p>${esc(chrome.footerPrivacy)}</p>${lang}</div>
+  <nav class="seo-footer-cols" aria-label="${esc(chrome.footerNav)}">
+  ${cols}
+  </nav>
 </footer>`;
 }
 
@@ -153,7 +169,7 @@ export function footerHtml({ chrome, guides, otherLanguage }) {
  * Page statique complète (article / tutoriel). `assets` = { css: [href], js: [href] } venant du
  * manifeste Vite (même CSS que l'application : jetons, polices, boutons).
  */
-export function renderArticlePage({ lang, head, brand, chrome, homePath, page, breadcrumb, guides, otherLanguage, assets }) {
+export function renderArticlePage({ lang, head, brand, chrome, homePath, page, breadcrumb, columns, otherLanguage, assets }) {
   const crumbs = breadcrumb
     .map((c, i) => (i < breadcrumb.length - 1 ? `<li><a href="${esc(c.path)}">${esc(c.name)}</a></li>` : `<li aria-current="page">${esc(c.name)}</li>`))
     .join("");
@@ -161,12 +177,12 @@ export function renderArticlePage({ lang, head, brand, chrome, homePath, page, b
     `<nav class="seo-breadcrumb" aria-label="${esc(chrome.breadcrumbLabel)}"><ol>${crumbs}</ol></nav>`,
     `<h1>${esc(page.h1)}</h1>`,
     ...page.intro.map((p) => `<p class="seo-lead">${esc(p)}</p>`),
-    ctaHtml(chrome, homePath),
+    page.noCta ? "" : ctaHtml(chrome, homePath),
     page.table ? tableHtml(page.table) : "",
     page.steps ? stepsHtml(chrome.stepsTitle, page.steps) : "",
     ...(page.sections ?? []).map(sectionHtml),
     page.faq?.length ? faqHtml(chrome.faqTitle, page.faq) : "",
-    ctaHtml(chrome, homePath),
+    page.noCta ? "" : ctaHtml(chrome, homePath),
     page.trademark ? `<p class="seo-note">${esc(chrome.trademarkNote)}</p>` : "",
   ].filter(Boolean);
   return `<!doctype html>
@@ -184,26 +200,64 @@ export function renderArticlePage({ lang, head, brand, chrome, homePath, page, b
     <main id="main" class="seo-main">
 ${parts.join("\n")}
     </main>
-    ${footerHtml({ chrome, guides, otherLanguage })}
+    ${footerHtml({ chrome, brand, columns, otherLanguage })}
   </body>
 </html>
 `;
 }
 
+/**
+ * Galerie à onglets (Personnes, Produits…) : original → transparent → nouveau fond → variante.
+ * HTML complet et accessible sans JavaScript (premier onglet visible) ; src/ui/home/gallery.ts ajoute
+ * le changement d'onglet (clic, flèches). Images en chargement différé, dimensions fixées (pas de CLS).
+ * `items` = [{ id, sizes: { original: {width,height}, ... } }].
+ */
+export function galleryHtml(gallery, items) {
+  const stages = ["original", "cutout", "background", "variant"];
+  const tabs = items
+    .map(
+      (it, i) =>
+        `<button type="button" role="tab" class="gallery-tab" id="gallery-tab-${esc(it.id)}" aria-controls="gallery-panel-${esc(it.id)}" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${esc(gallery.tabs[it.id])}</button>`,
+    )
+    .join("");
+  const panels = items
+    .map((it, i) => {
+      const figures = stages
+        .map((stage) => {
+          const size = it.sizes[stage];
+          const alt = gallery.alt.replace("{tab}", gallery.tabs[it.id]).replace("{stage}", gallery.stages[stage]);
+          return `<figure class="gallery-step${stage === "cutout" ? " checkerboard" : ""}"><img src="/showcase/${esc(it.id)}-${stage}.webp" alt="${esc(alt)}" width="${size.width}" height="${size.height}" loading="lazy" decoding="async" /><figcaption>${esc(gallery.stages[stage])}</figcaption></figure>`;
+        })
+        .join("");
+      return `<div role="tabpanel" class="gallery-panel" id="gallery-panel-${esc(it.id)}" aria-labelledby="gallery-tab-${esc(it.id)}" tabindex="0"${i === 0 ? "" : " hidden"}>${figures}</div>`;
+    })
+    .join("\n");
+  return `<section class="seo-section gallery" aria-labelledby="gallery-title"><h2 id="gallery-title">${esc(gallery.title)}</h2><p class="seo-lead">${esc(gallery.intro)}</p>
+<div role="tablist" class="gallery-tabs" aria-label="${esc(gallery.title)}">${tabs}</div>
+${panels}
+</section>`;
+}
+
 /** Sections statiques de l'accueil, sous l'application (lisibles sans JavaScript). */
-export function homeSectionsHtml({ chrome, home, guides }) {
-  const cards = (title, items) =>
-    `<section class="seo-section"><h2>${esc(title)}</h2><div class="seo-cards">${items
+export function homeSectionsHtml({ chrome, home, uses, galleryItems }) {
+  const cards = (id, title, items) =>
+    `<section class="seo-section" id="${id}" aria-labelledby="${id}-title"><h2 id="${id}-title">${esc(title)}</h2><div class="seo-cards">${items
       .map((it) => `<div class="seo-card"><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p></div>`)
       .join("")}</div></section>`;
-  const links = guides.map((g) => `<li><a href="${esc(g.path)}">${esc(g.label)}</a></li>`).join("");
-  return `<section class="seo-home" aria-label="${esc(home.howTitle)}">
-${cards(home.howTitle, home.how)}
-${cards(home.whyTitle, home.why)}
+  const steps = `<section class="seo-section" id="how" aria-labelledby="how-title"><h2 id="how-title">${esc(home.howTitle)}</h2><ol class="seo-steps">${home.how
+    .map((it, i) => `<li id="how-step-${i + 1}"><h3>${esc(it.title)}</h3><p>${esc(it.text)}</p></li>`)
+    .join("")}</ol></section>`;
+  const usesHtml = `<section class="seo-section" id="uses" aria-labelledby="uses-title"><h2 id="uses-title">${esc(home.usesTitle)}</h2><ul class="seo-cards seo-uses">${uses
+    .map((u) => `<li class="seo-card"><h3><a href="${esc(u.path)}">${esc(u.title)}</a></h3><p>${esc(u.text)}</p></li>`)
+    .join("")}</ul></section>`;
+  // Chaque sous-section est une région nommée : l'enveloppe n'est qu'un conteneur de mise en page.
+  return `<div class="seo-home">
+${steps}
+${galleryItems.length ? galleryHtml(home.gallery, galleryItems) : ""}
+${cards("why", home.whyTitle, home.why)}
+${usesHtml}
 ${faqHtml(chrome.faqTitle, home.faq)}
-<nav class="seo-section" aria-label="${esc(chrome.footerGuides)}"><h2>${esc(chrome.footerGuides)}</h2><ul class="seo-footer-links">${links}</ul></nav>
-<p class="seo-note">${esc(chrome.footerPrivacy)}</p>
-</section>`;
+</div>`;
 }
 
 // --- Fichiers racine -------------------------------------------------------------------------

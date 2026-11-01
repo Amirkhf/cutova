@@ -1,0 +1,86 @@
+{
+  "id": "for-car-dealerships",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/car-dealerships/",
+      "title": "Background Remover for Car Photos | Cutova",
+      "description": "Give vehicle photos a clean, consistent background for listings and showrooms. Free, private, in your browser.",
+      "h1": "Cleaner vehicle photos for your listings",
+      "card": {
+        "title": "Car dealers",
+        "text": "Consistent vehicle photos on clean backgrounds."
+      },
+      "intro": [
+        "Cars photographed on a busy lot look better on a clean, consistent background. Cutova helps you get there quickly for each photo of a vehicle."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Listing photos on a neutral or branded background",
+            "Consistent look across a whole stock",
+            "Blurred-background versions that keep context",
+            "Social media posts for new arrivals"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "Process a full series of photos in one go, apply the same background to each, and export everything as a ZIP. Reflections and transparent windows are hard for any automatic tool: check each result."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can it remove the background behind car windows?",
+          "a": "Glass is difficult for automatic background removal; use the erase brush to fix what remains."
+        },
+        {
+          "q": "Can I use our showroom photo as a background?",
+          "a": "Not yet: you can choose a color, one of our free photos or a blur of the original. Custom background images are planned."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/concessionnaires-auto/",
+      "title": "Détourage de photos de voitures | Cutova",
+      "description": "Donnez à vos photos de véhicules un fond propre et homogène pour vos annonces. Gratuit, confidentiel, dans votre navigateur.",
+      "h1": "Des photos de véhicules plus nettes pour vos annonces",
+      "card": {
+        "title": "Concessionnaires auto",
+        "text": "Des photos de véhicules homogènes sur fond propre."
+      },
+      "intro": [
+        "Une voiture photographiée sur un parking chargé rend mieux sur un fond propre et homogène. Cutova vous y amène rapidement, photo par photo."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Photos d'annonces sur fond neutre ou aux couleurs de la marque",
+            "Rendu homogène sur tout un stock",
+            "Versions à fond flou qui gardent le contexte",
+            "Publications pour les nouveaux arrivages"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Traitez toute une série de photos d'un coup, appliquez le même fond à chacune et exportez le tout en ZIP. Les reflets et les vitres sont difficiles pour tout outil automatique : vérifiez chaque résultat."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Peut-il retirer le fond derrière les vitres ?",
+          "a": "Le verre est difficile pour le détourage automatique ; utilisez la gomme pour corriger ce qui reste."
+        },
+        {
+          "q": "Puis-je utiliser la photo de notre showroom comme fond ?",
+          "a": "Pas encore : vous pouvez choisir une couleur, une de nos photos libres ou un flou de l'original. Les fonds personnalisés sont prévus."
+        }
+      ]
+    }
+  }
+}

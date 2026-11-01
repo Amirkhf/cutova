@@ -18,7 +18,18 @@
       "faqTitle": "Frequently asked questions",
       "stepsTitle": "Step by step",
       "trademarkNote": "remove.bg is a trademark of its owner. Cutova is an independent product and is not affiliated with it.",
-      "breadcrumbLabel": "Breadcrumb"
+      "breadcrumbLabel": "Breadcrumb",
+      "footerTools": "Tools",
+      "footerToolRemove": "Remove background",
+      "footerUses": "Use cases",
+      "footerHelp": "Help",
+      "footerFaq": "Frequently asked questions",
+      "footerHow": "How it works",
+      "footerLegal": "Legal",
+      "footerTagline": "Free background removal that stays on your device.",
+      "footerLanguageTitle": "Language",
+      "otherLangHome": "Français",
+      "footerNav": "Site map"
     },
     "fr": {
       "home": "/fr/",
@@ -36,7 +47,18 @@
       "faqTitle": "Questions fréquentes",
       "stepsTitle": "Étape par étape",
       "trademarkNote": "remove.bg est une marque de son propriétaire. Cutova est un produit indépendant, sans lien avec elle.",
-      "breadcrumbLabel": "Fil d'Ariane"
+      "breadcrumbLabel": "Fil d'Ariane",
+      "footerTools": "Outils",
+      "footerToolRemove": "Supprimer l'arrière-plan",
+      "footerUses": "Usages",
+      "footerHelp": "Aide",
+      "footerFaq": "Questions fréquentes",
+      "footerHow": "Comment ça marche",
+      "footerLegal": "Légal",
+      "footerTagline": "Le détourage gratuit qui reste sur votre appareil.",
+      "footerLanguageTitle": "Langue",
+      "otherLangHome": "English",
+      "footerNav": "Plan du site"
     }
   }
 }

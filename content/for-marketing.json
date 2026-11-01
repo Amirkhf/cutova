@@ -1,0 +1,86 @@
+{
+  "id": "for-marketing",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/marketing/",
+      "title": "Background Remover for Marketing Visuals | Cutova",
+      "description": "Make social media posts, ads and slides with clean cutouts in your brand colors, at the right size. Free and private.",
+      "h1": "Clean cutouts for marketing visuals",
+      "card": {
+        "title": "Marketing teams",
+        "text": "Visuals for social media, ads and presentations in brand colors."
+      },
+      "intro": [
+        "Social posts, banners and slides all need the same thing: a subject without its background, in the right format. Cutova does both in one place."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Social media posts and stories in ready-made sizes",
+            "Product and team photos on brand colors",
+            "Slides and one-pagers",
+            "Quick ad mock-ups"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "Pick a background color once: it stays in your recent colors. Choose a ready-made size (square post, portrait, story, link preview) and download, or export a whole series as a ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can I match our brand color exactly?",
+          "a": "Yes, enter any color with the color picker; it is remembered in your browser."
+        },
+        {
+          "q": "Are the platform sizes always up to date?",
+          "a": "Platforms change their rules: check the current ones before publishing."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/marketing/",
+      "title": "Détourage pour visuels marketing | Cutova",
+      "description": "Créez des publications, des publicités et des présentations avec des détourages propres, aux couleurs de votre marque et au bon format. Gratuit et confidentiel.",
+      "h1": "Des détourages propres pour vos visuels marketing",
+      "card": {
+        "title": "Équipes marketing",
+        "text": "Visuels pour réseaux sociaux, publicités et présentations aux couleurs de la marque."
+      },
+      "intro": [
+        "Publications, bannières et présentations demandent la même chose : un sujet sans son fond, au bon format. Cutova fait les deux au même endroit."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Publications et stories aux tailles prêtes à l'emploi",
+            "Photos produits et d'équipe sur les couleurs de la marque",
+            "Présentations et fiches",
+            "Maquettes rapides de publicités"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Choisissez une couleur de fond une fois : elle reste dans vos couleurs récentes. Choisissez une taille prête à l'emploi (publication carrée, portrait, story, aperçu de lien) et téléchargez, ou exportez toute une série en ZIP."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Puis-je reprendre exactement la couleur de notre marque ?",
+          "a": "Oui, saisissez n'importe quelle couleur avec le sélecteur ; elle est mémorisée dans votre navigateur."
+        },
+        {
+          "q": "Les tailles des plateformes sont-elles toujours à jour ?",
+          "a": "Les plateformes changent leurs règles : vérifiez les règles actuelles avant de publier."
+        }
+      ]
+    }
+  }
+}

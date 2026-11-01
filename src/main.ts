@@ -5,6 +5,7 @@ import "./ui/editor/editor.css";
 import "./seo/seo.css";
 import { resolveLocale } from "./i18n/index.ts";
 import { renderHome } from "./ui/home/render-home.ts";
+import { initGallery } from "./ui/home/gallery.ts";
 
 const app = document.querySelector<HTMLElement>("#app");
 if (!app) {
@@ -14,3 +15,4 @@ if (!app) {
 // Les pages statiques fixent la langue (`/` = en, `/fr/` = fr, voir seo/build.mjs) ; en dev, la
 // langue du navigateur.
 renderHome(app, resolveLocale(document.documentElement.dataset.locale ?? navigator.language));
+initGallery();

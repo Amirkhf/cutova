@@ -186,7 +186,7 @@
 
 .home-demo-frame {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 2 / 3;
   max-width: 320px;
   margin-top: var(--space-4);
   border-radius: var(--radius-lg);
@@ -201,9 +201,12 @@
   inset: 0;
 }
 
-.home-demo-layer svg {
+.home-demo-layer svg,
+.home-demo-layer img {
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .home-demo-after {
@@ -391,3 +394,12 @@
   border-color: var(--color-accent);
 }
 
+
+/* Vignettes d'exemple (vraies photos) : remplissent le bouton sans déformation. */
+.upload-example picture,
+.upload-example img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -157,7 +157,11 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   - `/how-to/remove-background-from-photo/` ↔ `/fr/tutoriels/supprimer-arriere-plan-photo/`
   - `/how-to/make-transparent-png/` ↔ `/fr/tutoriels/creer-png-transparent/`
   - `/how-to/change-photo-background-color/` ↔ `/fr/tutoriels/changer-couleur-fond-photo/`
-- À faire : pt-br / es / id ; pages `/for/{segment}`.
+- **Étape 2 (faite)** : 8 pages `/for/{segment}` (↔ `/fr/pour/{segment}`) — individuals/particuliers,
+  photographers, marketing, developers, ecommerce, media, car-dealerships, enterprise ; 3 pages légales
+  (`/legal/` ↔ `/fr/mentions-legales/`, `/privacy/` ↔ `/fr/confidentialite/`, `/terms/` ↔ `/fr/conditions/`)
+  avec champs `[À COMPLÉTER]`. Total : 32 pages, sitemap à jour.
+- À faire : pt-br / es / id.
 - Pages SEO `/for/{segment}` prévues (textes 100 % originaux) : individuals, photographers,
   marketing, developers, ecommerce, media, car-dealerships, enterprise.
 
@@ -538,6 +542,25 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   l'inférence) : un lecteur du canevas ne voit jamais l'original encore affiché.
 - **(Étape 1) Bug corrigé** : barre d'onglets écrasée à 1 px dans la feuille du bas (flex + overflow) →
   `flex-shrink: 0`.
+
+- **(Étape 2) Vraies photos partout sur l'accueil** : 4 exemples (Pexels, `public/examples/`, WebP
+  ≤ 130 Ko + vignettes AVIF/WebP), démo avant/après et galerie à 5 onglets (Personnes, Produits, Animaux,
+  Voitures, Graphiques : original → transparent → nouveau fond → variante) **calculées par notre modèle**
+  (`scripts/build-showcase.mjs`, BiRefNet_lite, reproductible). Sources : `public/examples/SOURCES.md`.
+  Les anciennes silhouettes SVG sont supprimées.
+- **(Étape 2) Galerie = HTML statique** (seo/build.mjs, dimensions réelles lues avec sharp → pas de
+  décalage), onglets ARIA rendus actifs par `src/ui/home/gallery.ts` (sans JS : premier onglet visible).
+- **(Étape 2) Pied de page en colonnes** (Outils, Guides, Usages, Aide, Légal + langue) sur toutes les
+  pages, dans un seul `<nav>` "Plan du site" (sinon axe : landmark-unique avec le menu "Tools").
+- **(Étape 2) Pages légales factuelles** : pas de compte, pas de base, pas de back-end, pas de cookie de
+  suivi ; hébergeur Cloudflare nommé ; tout ce qui dépend de l'éditeur est marqué `[À COMPLÉTER]`
+  (liste dans DEPLOY.md). Pas de bouton d'appel à l'action sur ces pages.
+- **(Étape 2) Pages "usages" honnêtes** : pas d'API ni d'offre entreprise promises (dit "prévu" ou "pas à
+  ce stade"), règles des plateformes à vérifier par l'utilisateur.
+- **(Étape 2) CLS de l'accueil** : le repli statique de `#app` fait au moins un écran (`100svh`) pour que
+  les sections statiques ne sautent pas dans la vue au démarrage de l'application (CLS 0,4 → 0).
+  Lighthouse : `/` 97–98/100/100/100, `/fr/` 98/100/100/100, `/for/ecommerce/` et `/privacy/` 100 partout
+  (`docs/review/lighthouse-step2.json`).
 
 ## Prochaine étape
 Revérifier sur le vrai Mac (build preview) : ligne `[cutova] GPU limits`, WASM direct, temps affiché.

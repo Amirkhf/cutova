@@ -1,0 +1,93 @@
+{
+  "id": "terms",
+  "type": "legal",
+  "$comment": "Conditions d'utilisation simples d'un outil gratuit sans compte. Champs [À COMPLÉTER] listés dans DEPLOY.md.",
+  "locales": {
+    "en": {
+      "path": "/terms/",
+      "title": "Terms of use | Cutova",
+      "description": "The terms that apply when you use Cutova, the free background remover that runs entirely in your browser.",
+      "h1": "Terms of use",
+      "intro": [
+        "By using Cutova you accept these terms. They are short because the service is simple: a free tool that runs in your browser."
+      ],
+      "sections": [
+        {
+          "h2": "The service",
+          "paragraphs": [
+            "Cutova removes the background of images directly in your web browser. It is free, needs no account, and is provided as is, without any guarantee of results or availability."
+          ]
+        },
+        {
+          "h2": "Your content",
+          "paragraphs": [
+            "You keep all rights to the images you process and to the results. You are responsible for having the right to use the images you add (for example, photos of other people or protected works)."
+          ]
+        },
+        {
+          "h2": "Acceptable use",
+          "paragraphs": [
+            "Do not use Cutova to create content that is illegal, misleading or that infringes other people's rights. Do not try to disrupt the website or its hosting."
+          ]
+        },
+        {
+          "h2": "Liability",
+          "paragraphs": [
+            "Automatic background removal can make mistakes. Check your results before using them. To the extent permitted by law, the publisher is not liable for damages resulting from the use of the service."
+          ]
+        },
+        {
+          "h2": "Applicable law and contact",
+          "paragraphs": [
+            "Applicable law and competent courts: [À COMPLÉTER]",
+            "Contact: [À COMPLÉTER]",
+            "Last update: [À COMPLÉTER]"
+          ]
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/conditions/",
+      "title": "Conditions d'utilisation | Cutova",
+      "description": "Les conditions qui s'appliquent quand vous utilisez Cutova, l'outil gratuit de détourage qui fonctionne entièrement dans votre navigateur.",
+      "h1": "Conditions d'utilisation",
+      "intro": [
+        "En utilisant Cutova, vous acceptez ces conditions. Elles sont courtes parce que le service est simple : un outil gratuit qui fonctionne dans votre navigateur."
+      ],
+      "sections": [
+        {
+          "h2": "Le service",
+          "paragraphs": [
+            "Cutova supprime l'arrière-plan des images directement dans votre navigateur. Il est gratuit, sans compte, et fourni tel quel, sans garantie de résultat ni de disponibilité."
+          ]
+        },
+        {
+          "h2": "Vos contenus",
+          "paragraphs": [
+            "Vous gardez tous les droits sur les images que vous traitez et sur les résultats. Vous êtes responsable d'avoir le droit d'utiliser les images que vous ajoutez (par exemple les photos d'autres personnes ou les œuvres protégées)."
+          ]
+        },
+        {
+          "h2": "Utilisation acceptable",
+          "paragraphs": [
+            "N'utilisez pas Cutova pour créer des contenus illégaux, trompeurs ou qui portent atteinte aux droits d'autrui. N'essayez pas de perturber le site ou son hébergement."
+          ]
+        },
+        {
+          "h2": "Responsabilité",
+          "paragraphs": [
+            "Le détourage automatique peut se tromper. Vérifiez vos résultats avant de les utiliser. Dans les limites permises par la loi, l'éditeur n'est pas responsable des dommages résultant de l'utilisation du service."
+          ]
+        },
+        {
+          "h2": "Droit applicable et contact",
+          "paragraphs": [
+            "Droit applicable et tribunaux compétents : [À COMPLÉTER]",
+            "Contact : [À COMPLÉTER]",
+            "Dernière mise à jour : [À COMPLÉTER]"
+          ]
+        }
+      ]
+    }
+  }
+}

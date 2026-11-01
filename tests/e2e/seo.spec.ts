@@ -1,19 +1,17 @@
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-/** Pages statiques générées par seo/build.mjs (après `npm run build`). */
-const PAGES = [
-  { path: "/", lang: "en" },
-  { path: "/fr/", lang: "fr" },
-  { path: "/remove-bg-alternative/", lang: "en" },
-  { path: "/fr/alternative-remove-bg/", lang: "fr" },
-  { path: "/how-to/remove-background-from-photo/", lang: "en" },
-  { path: "/how-to/make-transparent-png/", lang: "en" },
-  { path: "/how-to/change-photo-background-color/", lang: "en" },
-  { path: "/fr/tutoriels/supprimer-arriere-plan-photo/", lang: "fr" },
-  { path: "/fr/tutoriels/creer-png-transparent/", lang: "fr" },
-  { path: "/fr/tutoriels/changer-couleur-fond-photo/", lang: "fr" },
-];
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
+
+/** Pages statiques générées par seo/build.mjs (après `npm run build`), lues depuis content/. */
+const CONTENT = path.resolve(import.meta.dirname, "../../content");
+const PAGES = readdirSync(CONTENT)
+  .filter((f) => f.endsWith(".json") && f !== "site.json")
+  .flatMap((f) => {
+    const doc = JSON.parse(readFileSync(path.join(CONTENT, f), "utf8")) as { type?: string; locales: Record<string, { path: string }> };
+    return Object.entries(doc.locales).map(([lang, page]) => ({ path: page.path, lang, legal: doc.type === "legal" }));
+  });
 
 async function hreflangs(page: Page): Promise<Record<string, string>> {
   return page.$$eval('link[rel="alternate"][hreflang]', (links) =>
@@ -21,7 +19,7 @@ async function hreflangs(page: Page): Promise<Record<string, string>> {
   );
 }
 
-for (const { path, lang } of PAGES) {
+for (const { path, lang, legal } of PAGES) {
   test(`SEO ${path} : langue, titre, description, canonical, hreflang réciproques, JSON-LD, h1`, async ({ page, request }) => {
     const external: string[] = [];
     page.on("request", (r) => {
@@ -53,7 +51,8 @@ for (const { path, lang } of PAGES) {
     const blocks = await page.$$eval('script[type="application/ld+json"]', (els) => els.map((e) => e.textContent ?? ""));
     expect(blocks.length).toBeGreaterThan(0);
     for (const block of blocks) expect(() => JSON.parse(block)).not.toThrow();
-    expect(blocks.some((b) => b.includes('"FAQPage"'))).toBe(true);
+    // FAQ sur toutes les pages sauf légales (fil d'Ariane pour celles-ci).
+    expect(blocks.some((b) => b.includes(legal ? '"BreadcrumbList"' : '"FAQPage"'))).toBe(true);
 
     expect(external).toEqual([]);
   });
@@ -72,7 +71,7 @@ test("/remove-bg-alternative : date de fermeture de remove.bg avec sa source off
   }
 });
 
-test("fichiers racine : robots.txt (robots IA autorisés), sitemap.xml (10 URL), llms.txt", async ({ request }) => {
+test("fichiers racine : robots.txt (robots IA autorisés), sitemap.xml (toutes les pages), llms.txt", async ({ request }) => {
   const robots = await (await request.get("/robots.txt")).text();
   expect(robots).toContain("User-agent: GPTBot\nAllow: /");
   expect(robots).toContain("User-agent: ClaudeBot\nAllow: /");
@@ -85,10 +84,10 @@ test("fichiers racine : robots.txt (robots IA autorisés), sitemap.xml (10 URL),
 });
 
 test("pages guides : aucune violation axe (EN et FR)", async ({ page }) => {
-  for (const path of ["/remove-bg-alternative/", "/fr/tutoriels/creer-png-transparent/", "/fr/"]) {
-    await page.goto(path);
+  for (const url of ["/", "/remove-bg-alternative/", "/fr/tutoriels/creer-png-transparent/", "/fr/", "/for/ecommerce/", "/fr/confidentialite/"]) {
+    await page.goto(url);
     const results = await new AxeBuilder({ page }).analyze();
-    expect(results.violations.map((v) => `${path}: ${v.id}`)).toEqual([]);
+    expect(results.violations.map((v) => `${url}: ${v.id}`)).toEqual([]);
   }
 });
 
@@ -98,4 +97,49 @@ test("accueil /fr/ : l'application démarre en français et le sélecteur mène 
   await page.getByLabel("Langue").selectOption("en");
   await page.waitForURL((url) => url.pathname === "/");
   await expect(page.getByRole("button", { name: "Choose an image" })).toBeVisible();
+});
+
+test("accueil : galerie à onglets (clic, flèches), images chargées, pied de page et liens vers les usages", async ({ page }) => {
+  await page.goto("/");
+  const tabs = page.locator(".gallery-tabs [role=tab]");
+  await expect(tabs).toHaveCount(5);
+  await page.getByRole("tab", { name: "Cars" }).click();
+  await expect(page.locator("#gallery-panel-cars")).toBeVisible();
+  await expect(page.locator("#gallery-panel-people")).toBeHidden();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByRole("tab", { name: "Graphics" })).toBeFocused();
+  await expect(page.locator("#gallery-panel-graphics")).toBeVisible();
+  const imgs = page.locator("#gallery-panel-graphics img");
+  await expect(imgs).toHaveCount(4);
+  for (const img of await imgs.all()) {
+    await img.scrollIntoViewIfNeeded();
+    await expect.poll(() => img.evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  }
+  for (const href of ["/for/ecommerce/", "/legal/", "/privacy/", "/terms/"]) {
+    await expect(page.locator(`footer a[href="${href}"]`).first()).toBeVisible();
+  }
+  await expect(page.locator('#uses a[href="/for/photographers/"]')).toBeVisible();
+});
+
+test("exemples et démo : vraies photos optimisées (≤ 150 Ko) avec leurs sources", async ({ page, request }) => {
+  await page.goto("/");
+  const thumbs = page.locator(".upload-example img");
+  await expect(thumbs).toHaveCount(4);
+  for (const t of await thumbs.all()) await expect.poll(() => t.evaluate((el) => (el as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
+  for (const file of ["/examples/person.webp", "/examples/car.webp", "/showcase/demo-before.webp", "/showcase/demo-after.webp"]) {
+    const res = await request.get(file);
+    expect(res.status()).toBe(200);
+    expect((await res.body()).length).toBeLessThanOrEqual(150 * 1024);
+  }
+  expect((await request.get("/examples/SOURCES.md")).status()).toBe(200);
+  await expect(page.locator(".home-demo img").first()).toHaveAttribute("src", "/showcase/demo-before.webp");
+});
+
+test("pages légales : champs à compléter visibles, liées depuis toutes les pages", async ({ page }) => {
+  for (const url of ["/legal/", "/fr/mentions-legales/", "/privacy/", "/fr/conditions/"]) {
+    await page.goto(url);
+    await expect(page.locator("main")).toContainText("[À COMPLÉTER]");
+  }
+  await page.goto("/how-to/make-transparent-png/");
+  await expect(page.locator('footer a[href="/privacy/"]')).toBeVisible();
 });

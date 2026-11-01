@@ -17,6 +17,8 @@ export interface Dictionary {
     beforeLabel: string;
     afterLabel: string;
     sliderLabel: string;
+    beforeAlt: string;
+    afterAlt: string;
   };
   upload: {
     cardTitle: string;

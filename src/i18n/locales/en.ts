@@ -17,6 +17,8 @@ export const en: Dictionary = {
     beforeLabel: "Before",
     afterLabel: "After",
     sliderLabel: "Compare before and after",
+    beforeAlt: "Portrait photo of a woman with long hair, original background",
+    afterAlt: "The same portrait with the background removed by Cutova",
   },
   upload: {
     cardTitle: "Add your image",

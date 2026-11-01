@@ -18,6 +18,8 @@ export const fr: Dictionary = {
     beforeLabel: "Avant",
     afterLabel: "Après",
     sliderLabel: "Comparer avant et après",
+    beforeAlt: "Portrait d'une femme aux cheveux longs, fond d'origine",
+    afterAlt: "Le même portrait, fond retiré par Cutova",
   },
   upload: {
     cardTitle: "Ajoutez votre image",

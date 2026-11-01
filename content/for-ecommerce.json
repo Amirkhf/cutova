@@ -1,0 +1,86 @@
+{
+  "id": "for-ecommerce",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/ecommerce/",
+      "title": "White Background Product Photos for Online Stores | Cutova",
+      "description": "Put product photos on a pure white background in store-ready sizes, one by one or in batches. Free, no upload.",
+      "h1": "Product photos on white, ready for your store",
+      "card": {
+        "title": "Online sellers",
+        "text": "White-background product photos in store-ready sizes."
+      },
+      "intro": [
+        "Most online stores and marketplaces want product photos on a clean background. With Cutova you get them in seconds, at full resolution, without sending your catalog anywhere."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Main product images on pure white (#FFFFFF)",
+            "Square and landscape sizes for listings",
+            "Batch processing of a product series with a ZIP export",
+            "Drop shadows for a natural look"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "Choose a store format: the background switches to white automatically and the product is centered with a margin you control. Add several photos and download them all at once."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Which size should I use for my marketplace?",
+          "a": "Each platform has its own rules and they change: check the current requirements, then pick the closest ready-made size or set your own width."
+        },
+        {
+          "q": "Can I add a shadow under the product?",
+          "a": "Yes, in Effects → Drop shadow."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/e-commerce/",
+      "title": "Photos produits sur fond blanc pour boutiques en ligne | Cutova",
+      "description": "Mettez vos photos produits sur fond blanc pur, aux tailles des boutiques en ligne, une par une ou par lot. Gratuit, sans envoi.",
+      "h1": "Des photos produits sur fond blanc, prêtes pour votre boutique",
+      "card": {
+        "title": "Vendeurs en ligne",
+        "text": "Photos produits sur fond blanc, aux tailles des boutiques."
+      },
+      "intro": [
+        "La plupart des boutiques et places de marché veulent des photos produits sur fond propre. Avec Cutova, vous les obtenez en quelques secondes, en pleine résolution, sans envoyer votre catalogue."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Images principales sur blanc pur (#FFFFFF)",
+            "Formats carré et paysage pour les annonces",
+            "Traitement par lot d'une série de produits, export ZIP",
+            "Ombre portée pour un rendu naturel"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Choisissez un format boutique : le fond passe en blanc tout seul et le produit est centré avec une marge réglable. Ajoutez plusieurs photos et téléchargez-les d'un coup."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Quelle taille utiliser pour ma place de marché ?",
+          "a": "Chaque plateforme a ses règles et elles évoluent : vérifiez les exigences actuelles, puis choisissez le format le plus proche ou réglez votre propre largeur."
+        },
+        {
+          "q": "Puis-je ajouter une ombre sous le produit ?",
+          "a": "Oui, dans Effets → Ombre portée."
+        }
+      ]
+    }
+  }
+}

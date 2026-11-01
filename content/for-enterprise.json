@@ -1,0 +1,86 @@
+{
+  "id": "for-enterprise",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/enterprise/",
+      "title": "Private Background Removal for Companies | Cutova",
+      "description": "Remove backgrounds without sending company images to any server. Useful for confidential products, staff photos and internal documents.",
+      "h1": "Background removal that keeps company images in-house",
+      "card": {
+        "title": "Companies",
+        "text": "Image editing that never sends files outside your devices."
+      },
+      "intro": [
+        "Sending confidential images to an online service can be a problem for many companies. With Cutova, processing happens on the employee's device and nothing is uploaded."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Staff photos for directories and badges",
+            "Unreleased product images",
+            "Internal presentations and documents",
+            "Teams with strict data rules"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "No account, no database, no back-end in this version: the website only delivers the app and the AI model. Your security team can check this with the browser's network tools."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is there a paid plan or support contract?",
+          "a": "Not at this stage. Cutova is a free tool."
+        },
+        {
+          "q": "Can we check that nothing is uploaded?",
+          "a": "Yes: open the network tab of your browser while you process an image. Only the page and model files are downloaded."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/entreprises/",
+      "title": "Détourage confidentiel pour les entreprises | Cutova",
+      "description": "Retirez l'arrière-plan sans envoyer les images de l'entreprise à un serveur. Utile pour les produits confidentiels, les photos du personnel et les documents internes.",
+      "h1": "Le détourage qui garde les images de l'entreprise en interne",
+      "card": {
+        "title": "Entreprises",
+        "text": "La retouche d'images qui n'envoie jamais de fichier hors de vos appareils."
+      },
+      "intro": [
+        "Envoyer des images confidentielles à un service en ligne pose problème à beaucoup d'entreprises. Avec Cutova, le traitement se fait sur l'appareil du salarié et rien n'est envoyé."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Photos du personnel pour annuaires et badges",
+            "Images de produits pas encore sortis",
+            "Présentations et documents internes",
+            "Équipes soumises à des règles strictes sur les données"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Pas de compte, pas de base de données, pas de serveur applicatif dans cette version : le site ne fait que livrer l'application et le modèle d'IA. Votre équipe sécurité peut le vérifier avec les outils réseau du navigateur."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Y a-t-il une offre payante ou un contrat de support ?",
+          "a": "Pas à ce stade. Cutova est un outil gratuit."
+        },
+        {
+          "q": "Pouvons-nous vérifier que rien n'est envoyé ?",
+          "a": "Oui : ouvrez l'onglet réseau de votre navigateur pendant le traitement d'une image. Seuls la page et les fichiers du modèle sont téléchargés."
+        }
+      ]
+    }
+  }
+}

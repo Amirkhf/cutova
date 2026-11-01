@@ -13,6 +13,7 @@
  * utilise http://localhost:4173 (preview local) et on l'annonce clairement : à définir au déploiement.
  */
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import sharp from "sharp";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { en } from "../src/i18n/locales/en.ts";
@@ -23,6 +24,7 @@ import {
   esc,
   faqPageLd,
   headTags,
+  footerHtml,
   homeSectionsHtml,
   howToLd,
   llmsTxt,
@@ -74,7 +76,38 @@ async function main() {
     const other = locales.find((l) => l !== locale && doc.locales[l]);
     return other ? { href: doc.locales[other].path, hreflang: site.locales[other].hreflang, label: site.locales[other].languageName } : null;
   };
-  const guidesFor = (locale) => pages.filter((p) => p.locales[locale]).map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].h1 }));
+  const linksOf = (locale, types) =>
+    pages.filter((p) => types.includes(p.type ?? "article") && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].h1 }));
+  /** Colonnes du pied de page (mêmes sur toutes les pages d'une langue). */
+  const columnsFor = (locale) => {
+    const chrome = site.locales[locale];
+    return [
+      { title: chrome.footerTools, links: [{ path: chrome.home, label: chrome.footerToolRemove }, ...linksOf(locale, ["article"])] },
+      { title: chrome.footerGuides, links: linksOf(locale, ["howto"]) },
+      { title: chrome.footerUses, links: pages.filter((p) => p.type === "segment" && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, label: p.locales[locale].card.title })) },
+      { title: chrome.footerHelp, links: [{ path: `${chrome.home}#how`, label: chrome.footerHow }, { path: `${chrome.home}#faq-title`, label: chrome.footerFaq }] },
+      { title: chrome.footerLegal, links: linksOf(locale, ["legal"]) },
+    ];
+  };
+  const homeOtherLanguage = (locale) => {
+    const other = locales.find((l) => l !== locale);
+    return other ? { href: home.locales[other].path, hreflang: site.locales[other].hreflang, label: site.locales[other].languageName } : null;
+  };
+  // Galerie : dimensions réelles des images (attributs width/height → pas de décalage de mise en page).
+  const GALLERY_IDS = ["people", "products", "animals", "cars", "graphics"];
+  const galleryItems = [];
+  for (const id of GALLERY_IDS) {
+    const sizes = {};
+    try {
+      for (const stage of ["original", "cutout", "background", "variant"]) {
+        const meta = await sharp(path.join(ROOT, "public/showcase", `${id}-${stage}.webp`)).metadata();
+        sizes[stage] = { width: meta.width, height: meta.height };
+      }
+      galleryItems.push({ id, sizes });
+    } catch {
+      console.warn(`[seo] images de galerie manquantes pour ${id} (node scripts/build-showcase.mjs)`);
+    }
+  }
   const sitemap = [];
   const homeEntries = [];
 
@@ -111,9 +144,9 @@ async function main() {
         brand: site.brand,
         chrome,
         homePath: chrome.home,
-        page: { ...page, trademark: doc.id === "remove-bg-alternative" },
+        page: { ...page, trademark: doc.id === "remove-bg-alternative", noCta: doc.type === "legal" },
         breadcrumb,
-        guides: guidesFor(locale),
+        columns: columnsFor(locale),
         otherLanguage: otherLanguageOf(doc, locale),
         assets,
       });
@@ -149,7 +182,15 @@ async function main() {
     let html = appHtml
       .replace(/<html lang="[^"]*">/, `<html lang="${esc(locale)}" data-locale="${esc(locale)}">`)
       .replace(/<title>[^<]*<\/title>/, head)
-      .replace('<div id="app"></div>', `<div id="app">${fallback}</div>\n    ${homeSectionsHtml({ chrome, home: content, guides: guidesFor(locale) })}`);
+      .replace(
+        '<div id="app"></div>',
+        `<div id="app">${fallback}</div>\n    ${homeSectionsHtml({
+          chrome,
+          home: content,
+          uses: pages.filter((p) => p.type === "segment" && p.locales[locale]).map((p) => ({ path: p.locales[locale].path, ...p.locales[locale].card })),
+          galleryItems,
+        })}\n    ${footerHtml({ chrome, brand: site.brand, columns: columnsFor(locale), otherLanguage: homeOtherLanguage(locale) })}`,
+      );
     if (!html.includes('data-locale=') || !html.includes('rel="canonical"') || !html.includes("seo-home")) {
       throw new Error("[seo] dist/index.html n'a pas la structure attendue (html lang / title / #app).");
     }
@@ -177,10 +218,18 @@ async function main() {
             { label: "Cutova — supprimer l'arrière-plan (français)", path: home.locales.fr.path, description: home.locales.fr.description },
           ],
         },
-        ...locales.map((locale) => ({
-          title: locale === "en" ? "Guides (English)" : "Guides (français)",
-          links: pages.filter((p) => p.locales[locale]).map((p) => ({ label: p.locales[locale].h1, path: p.locales[locale].path, description: p.locales[locale].description })),
-        })),
+        ...locales.flatMap((locale) =>
+          [
+            [["article", "howto"], { en: "Guides (English)", fr: "Guides (français)" }],
+            [["segment"], { en: "Use cases (English)", fr: "Usages par métier (français)" }],
+            [["legal"], { en: "Legal (English)", fr: "Légal (français)" }],
+          ].map(([types, titles]) => ({
+            title: titles[locale],
+            links: pages
+              .filter((p) => types.includes(p.type ?? "article") && p.locales[locale])
+              .map((p) => ({ label: p.locales[locale].h1, path: p.locales[locale].path, description: p.locales[locale].description })),
+          })),
+        ),
       ],
     }),
   );
