@@ -1,29 +1,30 @@
 # Cutova — context.md
 
 ## État actuel
-Design system posé (tokens, polices, base CSS, styleguide de contrôle, test de contraste WCAG).
-Écran d'accueil (direction C) implémenté en TypeScript vanilla, sans framework : UI complète
-(en-tête, accroche, démo avant/après, carte d'envoi avec bouton/glisser-déposer/collage/exemples),
-i18n EN/FR, validation de fichiers par signature binaire, accessibilité clavier + axe (0 violation).
-Moteur IA branché (étape 4) : Web Worker d'inférence, un modèle par moteur (`src/core/model/models.json`) :
-**WebGPU → BiRefNet_lite** (fp16/fp32), **WASM (CPU) → ormbg** (fp32, Apache-2.0, tient sous la limite
-mémoire wasm32). Chargés via transformers.js (`AutoModel`/`AutoProcessor`), cache OPFS, WASM multithread
-(crossOriginIsolated), en-têtes COOP/COEP/CSP en dev et preview, zéro requête externe (test réseau).
-**Phase 1 faite** : un vrai masque est produit en Chromium headless (WASM) et vérifié par e2e
-(`tests/e2e/wasm-inference.spec.ts` : masque ni vide ni plein, IoU vs référence ≥ 0,90 sur 3 vraies photos,
-PNG transparents dans `tests/screenshots/`, copies compressées dans `docs/review/`).
-**Phase 2 faite** : écran de résultat définitif — détourage pleine résolution (masque agrandi + bords
-affinés par filtre guidé), curseur avant/après, fond transparent/blanc/couleur, export PNG/WebP/JPG à la
-résolution d'origine, bouton "Nouvelle image". tsc, vitest (73), build et Playwright (16/16, y compris
-`webgpu.spec.ts`) passent.
-**Phase 3 faite** : SEO V1 EN + /fr/ — générateur statique (`seo/`), 10 pages (2 accueils + alternative
-remove.bg + 3 tutoriels, en EN et FR), hreflang réciproques, sitemap.xml, robots.txt (robots d'IA
-autorisés), llms.txt, JSON-LD (WebSite, WebApplication, FAQPage, BreadcrumbList, HowTo), FAQ visibles.
-Lighthouse : 99–100 partout (voir Mesures). Playwright 29/29.
-**Phase 4 faite** : prêt à déployer sur Cloudflare Pages + R2 — `_headers` généré (COOP/COEP/CSP,
-cache), modèles et binaires `.wasm` sur un stockage externe configurable (`VITE_MODEL_BASE_URL`),
-vérifié de bout en bout par `npm run test:e2e:remote` (faux R2 sur une autre origine). `DEPLOY.md` =
-liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérifications, Search Console).
+**Version prête à mettre en ligne (2026-11-01)** — 100 % navigateur : pas de compte, pas de base de
+données, pas de back-end. Reste à faire par l'éditeur : `DEPLOY.md` (domaine, champs légaux, R2,
+Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
+- **Moteur IA** : Web Worker, un modèle par moteur (`src/core/model/models.json`) — WebGPU →
+  BiRefNet_lite (seulement si l'adaptateur offre ≥ 11 storage buffers par shader ; Chrome/Mac et SwiftShader
+  plafonnent à 10 → WASM direct), WASM → ormbg (Apache-2.0). Repli WebGPU → WASM dans un worker neuf. Cache
+  OPFS, WASM multithread (crossOriginIsolated), zéro requête externe.
+- **Accueil** (direction C, TypeScript sans framework) : carte d'envoi (sélecteur multi-fichiers,
+  glisser-déposer, collage, 4 vraies photos d'exemple), démo avant/après réelle, puis sections statiques :
+  comment ça marche, galerie à onglets (calculée par notre modèle), pourquoi Cutova, usages par métier,
+  FAQ, pied de page en colonnes.
+- **Éditeur** (écran de résultat) : lot d'images (miniatures, "+", file d'attente), onglets Découper
+  (gomme/restaurer) / Arrière-plan (transparent, couleurs, 6 photos libres, flou) / Effets (ombre,
+  contour autocollant) / Ajuster (luminosité, contraste, saturation, température) / Formats (recadrage
+  sujet, 9 formats prêts), comparer avant/après, annuler/rétablir, téléchargement PNG/WebP/JPG en taille
+  d'origine ou réduite, ZIP, préférences locales, feuille du bas sur mobile.
+- **SEO** : 32 pages statiques EN + FR (accueils, alternative remove.bg avec date de fermeture sourcée,
+  3 tutoriels, 8 usages `/for/`, 3 pages légales `[À COMPLÉTER]`), hreflang, sitemap, robots.txt (robots
+  d'IA autorisés), llms.txt, JSON-LD. Lighthouse 97–100.
+- **Déploiement** : Cloudflare Pages + R2 (`_headers` généré, modèles et `.wasm` sur
+  `VITE_MODEL_BASE_URL`, contrôle 25 Mio, IndexNow).
+- **Qualité** : 131 tests unitaires, 74 e2e Chromium (dont recette ordinateur clair/sombre, iPhone et
+  Android émulés), recette Firefox + WebKit verte, `npm audit` 0 faille, licences sans GPL/AGPL.
+  Rapport : `docs/QA.md` ; captures : `docs/review/`.
 
 ## Modules
 - `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
@@ -181,13 +182,13 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 | Détourage auto (voitures) | ✅ | — | à faire | P1 |
 | Détourage auto (logos) | ✅ | — | à faire | P1 |
 | Fond couleur | ✅ | blanc ou couleur au choix (aperçu + export) | fait (phase 2) | P0 |
-| Fond image | ✅ | — | à faire | P1 |
-| Fond flou | ✅ | — | à faire | P1 |
+| Fond image | ✅ | 6 photos de fond libres (photo de l'utilisateur : pas encore) | partiel | P1 |
+| Fond flou | ✅ | flou de la photo d'origine, intensité réglable | fait | P1 |
 | Pinceau magique (effacer/restaurer) = notre gomme / restauration | ✅ | gomme + restauration au pinceau, taille réglable, annuler, réinitialiser ; appliqué à l'export pleine résolution | fait | P0 |
 | Recadrage / redimensionnement | ✅ | recadrage sur le sujet (+ marge) et largeur de sortie (rapport conservé, sans agrandissement) | fait | P0 |
-| Formats réseaux sociaux | ✅ | — | à faire | P1 |
-| Formats marketplaces (Amazon, eBay, Etsy, Vinted, Shopify) | ✅ | — | à faire | P1 |
-| Lot + export ZIP | ✅ | — | à faire | P1 |
+| Formats réseaux sociaux | ✅ | carré, portrait, story, aperçu de lien, miniature vidéo | fait | P1 |
+| Formats marketplaces (Amazon, eBay, Etsy, Vinted, Shopify) | ✅ | 3 formats "boutique" génériques, fond blanc proposé | partiel | P1 |
+| Lot + export ZIP | ✅ | bande de miniatures, réglages par image, ZIP | fait | P1 |
 | Téléchargement HD | ✅ | PNG/WebP/JPG à la résolution d'origine, gratuit | fait (phase 2) | P0 |
 | Limites fichier/résolution | 22 Mo/fichier, 50 MP max en sortie, aperçu gratuit 0,25 MP | 50 Mo/fichier, pleine résolution gratuite, budget 50 MP sur ordinateur (iOS : 16,7 MP), réduction automatique signalée au-delà | fait (50 MP à vérifier sur matériel réel) | P0 |
 | Coller une image par URL | ✅ | — | à faire | P1 (ouvre `connect-src`/`img-src` — à décider) |
@@ -199,10 +200,10 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
 | API (phase 2) | ✅ | — | à faire | P2 |
 | Pleine résolution gratuite sans compte | ❌ | oui (budget de pixels selon l'appareil) | fait (phase 2) | P0 |
 | Zéro upload (100 % navigateur) | ❌ | oui, vérifié par test réseau | fait | P0 |
-| Ombre portée | ❌ | — | à faire | P2 |
-| Contour / sticker | ❌ | — | à faire | P2 |
+| Ombre portée | ❌ | douceur, distance, opacité | fait | P2 |
+| Contour / sticker | ❌ | épaisseur et couleur réglables | fait | P2 |
 | Recadrage auto avec marge | ❌ | "Recadrer sur le sujet" + marge 0–30 % | fait (avec le P0 recadrage) | P1 |
-| Annuler / rétablir | ❌ | — | à faire | P1 |
+| Annuler / rétablir | ❌ | boutons + Ctrl+Z / Ctrl+Maj+Z, par image | fait | P1 |
 | Curseur avant/après | ❌ | sur l'écran de résultat (clavier + pointeur) | fait (phase 2) | P1 |
 | Collage presse-papiers | ❌ | Ctrl+V sur l'accueil | fait (étape 3) | P1 |
 | Glisser-déposer | ❌ | page entière | fait (étape 3) | P1 |
@@ -583,6 +584,8 @@ liste ordonnée de ce que l'utilisateur doit faire (domaine, R2, Pages, vérific
   `[À COMPLÉTER]` restants.
 
 ## Prochaine étape
-Revérifier sur le vrai Mac (build preview) : ligne `[cutova] GPU limits`, WASM direct, temps affiché.
-Puis : essayer ormbg sur WebGPU quand BiRefNet ne passe pas (plus rapide que WASM si ses shaders
-tiennent sous 10) ; P1 du tableau de parité ; WASM sur iPhone ; déploiement réel (`DEPLOY.md`).
+1. Éditeur du site : suivre `DEPLOY.md` (champs légaux, domaine, R2, Pages, Search Console, Bing,
+   IndexNow) et tester sur matériel réel (GPU récent, iPhone, Android d'entrée de gamme).
+2. Ensuite : essayer ormbg sur WebGPU quand BiRefNet ne passe pas ; fonds personnalisés (photo de
+   l'utilisateur) ; pt-br / es / id ; P1 restants du tableau de parité (voitures/logos, formats
+   marketplaces détaillés, PWA hors ligne).
