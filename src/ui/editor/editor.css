@@ -36,6 +36,86 @@
 
 .editor-stage {
   min-width: 0;
+  position: relative;
+}
+
+/* Indicateur de progression du détourage, posé sur l'image */
+.editor-progress {
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 3;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+.editor-progress[hidden] {
+  display: none;
+}
+.editor-progress-step,
+.editor-progress-batch {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-body-medium);
+  color: var(--color-text);
+}
+.editor-progress-batch {
+  color: var(--color-text-secondary);
+}
+.editor-progress-bar {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-subtle);
+  overflow: hidden;
+}
+.editor-progress-bar[hidden] {
+  display: none;
+}
+.editor-progress-fill {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  border-radius: inherit;
+  background: var(--color-accent);
+  transition: width var(--duration-slow) var(--ease-standard);
+}
+.editor-progress-bar-global .editor-progress-fill {
+  background: var(--color-success);
+}
+
+/* Balayage lumineux sur l'image pendant le traitement (aucun si "réduire les animations") */
+.editor-stage[data-busy] .compare-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+  background-size: 250% 100%;
+  animation: editor-sweep 1.6s var(--ease-standard) infinite;
+}
+@keyframes editor-sweep {
+  from {
+    background-position: 120% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .editor-stage[data-busy] .compare-frame::after {
+    animation: none;
+    background: none;
+  }
+  .editor-progress-fill {
+    transition: none;
+  }
 }
 
 /* Onglets d'outils */

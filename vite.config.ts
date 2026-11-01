@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { aggregate, PERIODS, type Period } from "./edge/stats.ts";
 import { generateDemoRows } from "./edge/demo.ts";
+import { loadContent, navScriptTag } from "./seo/nav.mjs";
 import { DEV_STYLE_NONCE, MODEL_CACHE_CONTROL, originOf, securityHeaders } from "./security-headers.mjs";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
@@ -117,8 +118,17 @@ function securityHeadersPlugin(): Plugin {
   };
 }
 
+/** Dev uniquement : données des menus (Outils, langues) dans index.html ; au build, seo/build.mjs les injecte. */
+function devNavPlugin(): Plugin {
+  return {
+    name: "cutova-dev-nav",
+    apply: "serve",
+    transformIndexHtml: (html) => html.replace("</head>", `  ${navScriptTag(loadContent(path.join(ROOT, "content")))}\n  </head>`),
+  };
+}
+
 export default defineConfig(({ command }) => ({
-  plugins: [securityHeadersPlugin()],
+  plugins: [securityHeadersPlugin(), devNavPlugin()],
   // Dev uniquement : nonce posé par Vite sur les <style>/<script> qu'il injecte (jamais au build).
   html: command === "serve" ? { cspNonce: DEV_STYLE_NONCE } : undefined,
   define: {

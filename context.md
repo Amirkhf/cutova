@@ -11,6 +11,9 @@ Bing, IndexNow) et tests sur matériel réel.
   flou), ombre, contour, réglages, recadrage et 9 formats, annuler/rétablir, PNG/WebP/JPG pleine taille, ZIP.
   Fond présélectionné par l'URL (`?bg=white`, `?bg=photo`).
 - **Langues** : en, fr, pt-br, es, id (interface + toutes les pages).
+- **Menus** (en-tête de l'application ET des pages statiques, un seul composant `src/ui/menu/dropdown.ts`) :
+  langue (5 langues écrites dans leur langue, même page dans l'autre langue) et Outils (pages outils +
+  guides ; bouton « menu » sur mobile). Progression du détourage affichée sur l'image (étapes nommées).
 - **SEO** : 90 pages statiques (18 contenus × 5 langues, URL traduites) dont `/white-background/` et
   `/photo-background/`, hreflang réciproques + x-default, un sitemap par langue + index, robots.txt
   (robots d'IA autorisés, `/stats/` et `/api/` exclus), llms.txt, JSON-LD. `SITE_URL` obligatoire et vérifié
@@ -18,7 +21,7 @@ Bing, IndexNow) et tests sur matériel réel.
 - **Mesure anonyme** (N1) : 7 événements, liste blanche, `sendBeacon`, rien si DNT/GPC, D1 agrégé par jour.
 - **Tableau de bord `/stats`** (N2) : noindex, Cloudflare Access + vérification du jeton, périodes et
   comparaison, graphiques SVG maison ; données de démo en dev uniquement.
-- **Qualité** : 165 tests unitaires, 144 e2e Chromium + recette Firefox/WebKit (150 au total), `npm audit`
+- **Qualité** : 165 tests unitaires, 152 e2e Chromium (dont chaque URL du sitemap vérifiée stylée) + recette Firefox/WebKit, `npm audit`
   0 faille, licences sans GPL/AGPL. Rapport : `docs/QA.md` ; captures : `docs/review/`.
 
 ## Modules
@@ -647,6 +650,25 @@ Bing, IndexNow) et tests sur matériel réel.
 - **(2026-11-01) Site blanc pour tout le monde** (demande de l'éditeur) : le mode sombre automatique
   (`prefers-color-scheme`) est retiré de `tokens.css` et `stats.css`, `color-scheme: light` ; le thème
   sombre ne reste accessible que via `[data-theme="dark"]` (inutilisé). Testé avec un système en mode sombre.
+
+- **(UI, 2026-11-01) Pages statiques sans style — cause** : `seo.css` est importé à la fois par l'application
+  et par l'entrée des pages statiques ; Vite le range alors dans un chunk CSS partagé (`analytics-*.css`),
+  absent de `manifest["src/seo/seo-page.ts"].css` lu par le générateur. Correction (gabarit unique,
+  `seo/build.mjs > seoAssets`) : CSS de l'entrée puis CSS des chunks importés, récursivement ; ordre
+  base.css → seo.css (sinon `.btn` annule le masquage mobile du bouton d'en-tête). Test : chaque URL des
+  sitemaps → police Inter, fond des jetons, en-tête flex, 0 CSS/JS en 404 ; 0 débordement à 360 px.
+- **(UI) Menus** : modèle « disclosure » (bouton aria-expanded/aria-controls + liens), ↓/↑/Début/Fin, Échap
+  rend le focus au bouton, clic ou focus en dehors ferme, un seul ouvert. Balisage par une fonction pure
+  (`dropdownHtml`) utilisée côté Node (seo/render.mjs) et navigateur ; données des menus dans
+  `seo/nav.mjs` (libellés courts `navLabel` dans content/*.json), injectées en JSON (`#cutova-nav`) dans
+  les accueils (build) et dans index.html (dev, plugin Vite). Sur ≤ 560 px, panneaux placés par rapport à
+  l'en-tête (jamais hors écran). L'ancien `<select>` et le `<details>` sont remplacés (CSS `.home-tools*`,
+  `.home-lang*`, `.seo-lang*` devenu inutilisé, laissé en place).
+- **(UI) Progression du détourage** : le worker envoie `stage` (`prepare`, puis `analyze` après le
+  pré-traitement), le thread principal pose `refine` (affinage des bords) et `done`. Barre + nom d'étape
+  (`aria-live="polite"`) sur l'image, balayage animé (aucun si animations réduites), lot : « Image k / n »
+  + barre globale. Le téléchargement du modèle reste un état distinct (ligne de statut `progress`).
+- **(UI) Test analytics instable** : `addInitScript` n'était pas attendu (course avec la navigation) → attendu.
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` dans l'ordre (champs légaux, domaine, R2, Pages + `SITE_URL`, D1,

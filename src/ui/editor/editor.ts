@@ -15,6 +15,7 @@ import { brushRadius, containedRect, paintStroke, type BrushMode } from "../../c
 import { computeGeometry, scaleGeometry, type OutputGeometry } from "../../core/editor/geometry.ts";
 import { renderComposite } from "../../core/editor/render.ts";
 import { FORMAT_PRESETS, findPreset, safeColor, type BackgroundSetting, type FormatPreset } from "../../core/editor/settings.ts";
+import type { PipelineStage } from "../../core/inference/protocol.ts";
 import { backgroundFromQuery } from "../../core/editor/url-preset.ts";
 import { loadPreferences, rememberColor, rememberPreset, savePreferences } from "../../core/editor/prefs.ts";
 import { exportCanvas, exportFileName, type ExportFormat } from "../../core/export/export.ts";
@@ -114,6 +115,90 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   const stage = document.createElement("div");
   stage.className = "editor-stage";
   stage.append(compare.element);
+
+  // ---------- Indicateur de progression du détourage (sur l'image) ----------
+  // Étapes envoyées par le worker (prepare, analyze) puis par ce thread (refine, done). Le téléchargement
+  // du modèle reste un état à part (ligne de statut, événements `progress`), jamais mélangé à cette barre.
+  const STAGE_PERCENT: Record<PipelineStage, number> = { prepare: 12, analyze: 50, refine: 85, done: 100 };
+  const STAGE_LABEL: Record<PipelineStage, string> = { prepare: r.stagePrepare, analyze: r.stageAnalyze, refine: r.stageRefine, done: r.stageDone };
+  const progress = document.createElement("div");
+  progress.className = "editor-progress";
+  progress.hidden = true;
+  const progressStep = document.createElement("p");
+  progressStep.className = "editor-progress-step";
+  progressStep.setAttribute("aria-live", "polite");
+  const makeBar = (label: string) => {
+    const bar = document.createElement("div");
+    bar.className = "editor-progress-bar";
+    bar.setAttribute("role", "progressbar");
+    bar.setAttribute("aria-label", label);
+    bar.setAttribute("aria-valuemin", "0");
+    bar.setAttribute("aria-valuemax", "100");
+    const fill = document.createElement("span");
+    fill.className = "editor-progress-fill";
+    bar.append(fill);
+    return {
+      bar,
+      set(percent: number) {
+        const value = Math.max(0, Math.min(100, Math.round(percent)));
+        bar.setAttribute("aria-valuenow", String(value));
+        fill.style.setProperty("--progress", `${value}%`);
+      },
+    };
+  };
+  const stageBar = makeBar(r.progressLabel);
+  const batchLine = document.createElement("p");
+  batchLine.className = "editor-progress-batch";
+  const batchBar = makeBar(r.progressLabel);
+  batchBar.bar.classList.add("editor-progress-bar-global");
+  progress.append(progressStep, stageBar.bar, batchLine, batchBar.bar);
+  stage.append(progress);
+  let progressHideTimer = 0;
+
+  /**
+   * L'indicateur suit l'image EN COURS de traitement (une à la fois), affiché sur l'image visible tant
+   * que celle-ci n'est pas déjà terminée (on ne couvre pas une image que l'utilisateur retouche).
+   */
+  function renderProgress(): void {
+    window.clearTimeout(progressHideTimer);
+    const active = docs.find((d) => d.status === "processing" && d.stage !== null) ?? docs.find((d) => d.status === "done" && d.stage === "done");
+    const coversFinished = current !== null && current !== active && current.status === "done";
+    if (!active || coversFinished) {
+      progress.hidden = true;
+      delete stage.dataset.busy;
+      return;
+    }
+    const stageNow = active.stage!;
+    const justDone = active.status === "done";
+    progress.hidden = false;
+    if (!justDone) stage.dataset.busy = "true";
+    else delete stage.dataset.busy;
+    progress.dataset.stage = stageNow;
+    progressStep.textContent = STAGE_LABEL[stageNow];
+    stageBar.set(STAGE_PERCENT[stageNow]);
+    const total = docs.length;
+    const finished = docs.filter((d) => d !== active && (d.status === "done" || d.status === "error")).length;
+    const multiple = total > 1;
+    batchLine.hidden = !multiple;
+    batchBar.bar.hidden = !multiple;
+    if (multiple) {
+      batchLine.textContent = r.batchProgress(Math.min(finished + 1, total), total);
+      batchBar.set(((finished + STAGE_PERCENT[stageNow] / 100) / total) * 100);
+    }
+    if (justDone) {
+      // « Terminé » reste visible un court instant, puis l'indicateur passe à l'image suivante ou disparaît.
+      progressHideTimer = window.setTimeout(() => {
+        active.stage = null;
+        renderProgress();
+      }, 700);
+    }
+  }
+
+  function setStage(doc: EditorDoc, value: PipelineStage): void {
+    if (value === "prepare") for (const other of docs) if (other !== doc && other.stage === "done") other.stage = null;
+    doc.stage = value;
+    renderProgress();
+  }
 
   // ---------- Onglets d'outils ----------
   const tools = document.createElement("div");
@@ -867,6 +952,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
       status.textContent = doc.status === "error" ? doc.errorMessage || r.error : doc.status === "queued" ? r.queued : r.running;
       void showOriginal(doc);
     }
+    renderProgress();
     updateHistoryButtons();
     renderStrip();
   }
@@ -945,6 +1031,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
 
   async function processDoc(doc: EditorDoc): Promise<void> {
     doc.status = "processing";
+    setStage(doc, "prepare");
     if (doc === current) show(doc);
     let image: ImageBitmap | null = null;
     try {
@@ -955,7 +1042,8 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
       ]);
       image = full;
       if (doc === current) status.textContent = r.running;
-      const result = await inferenceEngine.run(input);
+      const result = await inferenceEngine.run(input, (value) => setStage(doc, value));
+      setStage(doc, "refine");
       if (doc === current) status.textContent = r.finishing;
       await new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
       const built = buildCutout(full, result.mask, result.width, result.height);
@@ -966,6 +1054,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
       doc.elapsedMs = result.elapsedMs;
       doc.refineMs = built.refineMs;
       doc.status = "done";
+      doc.stage = "done";
       const family = result.engine.startsWith("webgpu") ? "webgpu" : "wasm";
       track({
         type: "cutout_done",
@@ -977,15 +1066,20 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
       if (doc === current) {
         show(doc);
         reveal();
-      } else renderStrip();
+      } else {
+        renderStrip();
+        renderProgress();
+      }
     } catch (err) {
       track({ type: "cutout_failed", ...(image ? { size: sizeBucket(image.width, image.height) } : {}) });
       image?.close();
       doc.status = "error";
+      doc.stage = null;
       doc.errorMessage = r.error;
       console.warn("[cutova] Détourage échoué", err);
       if (doc === current) show(doc);
       else renderStrip();
+      renderProgress();
     }
   }
 

@@ -22,6 +22,7 @@ import { es } from "../src/i18n/locales/es.ts";
 import { ptBr } from "../src/i18n/locales/pt-br.ts";
 import { id } from "../src/i18n/locales/id.ts";
 import { resolveSiteUrl } from "./site-url.mjs";
+import { navScriptTag, toolsGroups } from "./nav.mjs";
 import {
   absoluteUrl,
   breadcrumbLd,
@@ -67,7 +68,22 @@ async function writePage(urlPath, html) {
 function seoAssets(manifest) {
   const entry = manifest["src/seo/seo-page.ts"];
   if (!entry) throw new Error("[seo] entrée src/seo/seo-page.ts absente du manifeste Vite (vite.config.ts > build.rollupOptions.input).");
-  return { css: (entry.css ?? []).map((f) => `/${f}`), js: entry.file?.endsWith(".js") ? [`/${entry.file}`] : [] };
+  // Le CSS peut se trouver dans des chunks partagés (ex. seo.css est aussi importé par l'application, Vite
+  // le range alors dans un chunk commun) : on suit les imports récursivement, sans doublon. Ordre : le CSS
+  // de l'entrée d'abord (base.css : reset, jetons, boutons), puis celui des chunks importés (seo.css), pour
+  // que les règles des pages (ex. bouton d'en-tête masqué sur mobile) passent après `.btn`.
+  const css = [];
+  const seen = new Set();
+  const collect = (key) => {
+    if (seen.has(key)) return;
+    seen.add(key);
+    const chunk = manifest[key];
+    if (!chunk) return;
+    for (const file of chunk.css ?? []) if (!css.includes(`/${file}`)) css.push(`/${file}`);
+    for (const imported of chunk.imports ?? []) collect(imported);
+  };
+  collect("src/seo/seo-page.ts");
+  return { css, js: entry.file?.endsWith(".js") ? [`/${entry.file}`] : [] };
 }
 
 async function main() {
@@ -157,6 +173,8 @@ async function main() {
         breadcrumb,
         columns: columnsFor(locale),
         languages: languagesOf(doc, locale),
+        tools: toolsGroups({ site, pages }, locale),
+        labels: { toolsMenu: DICTS[locale].header.toolsMenu },
         assets,
       });
       await writePage(page.path, html);
@@ -197,7 +215,7 @@ async function main() {
     const fallback = `<div class="app-fallback"><h1>${esc(dict.hero.title)}</h1><p>${esc(dict.hero.subtitle)}</p><p>${esc(dict.hero.reassurance)}</p></div>`;
     let html = appHtml
       .replace(/<html lang="[^"]*">/, `<html lang="${esc(locale)}" data-locale="${esc(locale)}">`)
-      .replace(/<title>[^<]*<\/title>/, head)
+      .replace(/<title>[^<]*<\/title>/, `${head}\n    ${navScriptTag({ site, home, pages })}`)
       .replace(
         '<div id="app"></div>',
         `<div id="app">${fallback}</div>\n    ${homeSectionsHtml({

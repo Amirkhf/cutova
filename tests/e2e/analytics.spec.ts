@@ -15,10 +15,10 @@ test.setTimeout(300_000);
  * Playwright n'expose pas le corps d'un sendBeacon (Blob) : on enveloppe navigator.sendBeacon dans la
  * page pour relire EXACTEMENT ce qui part, et on compte aussi les vraies requêtes réseau.
  */
-function captureEvents(page: Page) {
+async function captureEvents(page: Page) {
   const requests: string[] = [];
   const external: string[] = [];
-  void page.addInitScript(() => {
+  await page.addInitScript(() => {
     const original = navigator.sendBeacon.bind(navigator);
     (window as unknown as { __beacons: { url: string; body: string }[] }).__beacons = [];
     navigator.sendBeacon = (url: string | URL, data?: BodyInit | null) => {
@@ -38,7 +38,7 @@ function captureEvents(page: Page) {
 }
 
 test("parcours : événements anonymes, champs autorisés seulement, aucune image envoyée", async ({ page }) => {
-  const cap = captureEvents(page);
+  const cap = await captureEvents(page);
   await page.goto("/");
   await page.setInputFiles('.upload-card input[type="file"]', path.join(ROOT, "tests/images/fur-12162.jpg"));
   await expect(page.locator(".result-panel")).toHaveAttribute("data-state", "done", { timeout: 280_000 });
@@ -72,7 +72,7 @@ for (const [name, script] of [
 ] as const) {
   test(`${name} activé : aucun envoi`, async ({ page }) => {
     await page.addInitScript(script);
-    const cap = captureEvents(page);
+    const cap = await captureEvents(page);
     await page.goto("/");
     await page.waitForTimeout(300);
     expect(await cap.raw()).toEqual([]);
@@ -84,7 +84,7 @@ for (const [name, script] of [
 }
 
 test("pages statiques : page_view avec le chemin et la langue, rien d'autre", async ({ page }) => {
-  const cap = captureEvents(page);
+  const cap = await captureEvents(page);
   await page.goto("/fr/tutoriels/creer-png-transparent/");
   await expect.poll(async () => (await cap.events()).length).toBe(1);
   expect((await cap.events())[0]).toEqual({ type: "page_view", page: "/fr/tutoriels/creer-png-transparent/", lang: "fr" });

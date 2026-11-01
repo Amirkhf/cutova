@@ -9,6 +9,7 @@
       "title": "Add a White Background to a Photo — Free, Pure #FFFFFF | Cutova",
       "description": "Put any photo on a pure white background (#FFFFFF) in seconds, at full resolution: product photos, profile pictures, ID-style photos. Free, no upload.",
       "h1": "Put a photo on a white background",
+      "navLabel": "White background",
       "answer": {
         "label": "Short answer:",
         "text": "open Cutova with the white background already selected, add your photo, and download it as a JPG or PNG. The AI removes the old background and fills it with pure white (#FFFFFF) at the size of your original, in your browser."
@@ -104,6 +105,7 @@
       "title": "Mettre une photo sur fond blanc — Gratuit, blanc pur #FFFFFF | Cutova",
       "description": "Mettez n'importe quelle photo sur un fond blanc pur (#FFFFFF) en quelques secondes, en pleine résolution : produits, photos de profil, photos d'identité. Gratuit, sans envoi.",
       "h1": "Mettre une photo sur fond blanc",
+      "navLabel": "Fond blanc",
       "answer": {
         "label": "En bref :",
         "text": "ouvrez Cutova avec le fond blanc déjà choisi, ajoutez votre photo et téléchargez-la en JPG ou en PNG. L'IA retire l'ancien fond et le remplace par du blanc pur (#FFFFFF), à la taille de l'original, dans votre navigateur."
@@ -199,6 +201,7 @@
       "title": "Colocar Fundo Branco em Foto — Grátis, Branco Puro #FFFFFF | Cutova",
       "description": "Coloque qualquer foto em fundo branco puro (#FFFFFF) em segundos, na resolução original: fotos de produto, foto de perfil, foto 3x4. Grátis, sem upload.",
       "h1": "Como colocar fundo branco em uma foto",
+      "navLabel": "Fundo branco",
       "answer": {
         "label": "Resposta rápida:",
         "text": "abra o Cutova com o fundo branco já selecionado, adicione sua foto e baixe em JPG ou PNG. A IA remove o fundo antigo e preenche com branco puro (#FFFFFF), no tamanho da foto original, direto no seu navegador."
@@ -294,6 +297,7 @@
       "title": "Poner Fondo Blanco a una Foto — Gratis, Blanco Puro #FFFFFF | Cutova",
       "description": "Pon cualquier foto sobre un fondo blanco puro (#FFFFFF) en segundos y a resolución completa: fotos de producto, de perfil o tipo carné. Gratis, sin subir nada.",
       "h1": "Cómo poner fondo blanco a una foto",
+      "navLabel": "Fondo blanco",
       "answer": {
         "label": "Respuesta corta:",
         "text": "abre Cutova con el fondo blanco ya seleccionado, añade tu foto y descárgala en JPG o PNG. La IA quita el fondo anterior y lo rellena con blanco puro (#FFFFFF), al tamaño de tu original, en tu navegador."
@@ -389,6 +393,7 @@
       "title": "Ganti Background Foto Jadi Putih — Gratis, Putih Bersih #FFFFFF | Cutova",
       "description": "Ubah background foto apa pun menjadi putih bersih (#FFFFFF) dalam hitungan detik, resolusi penuh: foto produk, foto profil, pas foto. Gratis, tanpa upload.",
       "h1": "Cara mengganti background foto menjadi putih",
+      "navLabel": "Background putih",
       "answer": {
         "label": "Jawaban singkat:",
         "text": "buka Cutova dengan background putih yang sudah terpilih, tambahkan foto Anda, lalu unduh sebagai JPG atau PNG. AI menghapus background lama dan menggantinya dengan putih bersih (#FFFFFF), seukuran foto asli, langsung di browser Anda."

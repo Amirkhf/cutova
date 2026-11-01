@@ -7,6 +7,7 @@
       "title": "How to Change a Photo's Background to White or Any Color | Cutova",
       "description": "Put your photo on a pure white or colored background in seconds: ideal for product listings, profile pictures and ID-style photos. Free, no upload.",
       "h1": "How to change a photo's background to white or any color",
+      "navLabel": "Change the background color",
       "intro": [
         "Marketplaces often ask for product photos on a white background, and a colored background makes a profile picture stand out. You can do both in a few seconds."
       ],
@@ -60,6 +61,7 @@
       "title": "Comment mettre une photo sur fond blanc ou de couleur | Cutova",
       "description": "Placez votre photo sur un fond blanc pur ou coloré en quelques secondes : idéal pour les annonces produits, les photos de profil et les photos type identité. Gratuit, sans envoi.",
       "h1": "Comment mettre une photo sur fond blanc ou de couleur",
+      "navLabel": "Changer la couleur du fond",
       "intro": [
         "Les places de marché demandent souvent des photos produits sur fond blanc, et un fond coloré fait ressortir une photo de profil. Les deux se font en quelques secondes."
       ],
@@ -113,6 +115,7 @@
       "title": "Como Colocar Fundo Branco ou de Qualquer Cor em uma Foto | Cutova",
       "description": "Coloque sua foto em um fundo branco puro ou colorido em segundos: ideal para anúncios de produtos, foto de perfil e foto 3x4. Grátis, sem upload.",
       "h1": "Como mudar o fundo de uma foto para branco ou qualquer cor",
+      "navLabel": "Mudar a cor do fundo",
       "intro": [
         "Marketplaces costumam pedir fotos de produto com fundo branco, e um fundo colorido faz a foto de perfil se destacar. Dá para fazer as duas coisas em poucos segundos."
       ],
@@ -166,6 +169,7 @@
       "title": "Cómo Poner el Fondo de una Foto Blanco o de Cualquier Color | Cutova",
       "description": "Pon tu foto sobre un fondo blanco puro o de color en segundos: ideal para fichas de producto, fotos de perfil y fotos tipo carné. Gratis, sin subir nada.",
       "h1": "Cómo cambiar el fondo de una foto a blanco o a cualquier color",
+      "navLabel": "Cambiar el color de fondo",
       "intro": [
         "Los marketplaces suelen pedir fotos de producto con fondo blanco, y un fondo de color hace que una foto de perfil destaque. Puedes hacer ambas cosas en unos segundos."
       ],
@@ -219,6 +223,7 @@
       "title": "Cara Mengganti Background Foto Jadi Putih atau Warna Lain | Cutova",
       "description": "Ganti background foto menjadi putih bersih atau warna lain dalam hitungan detik: cocok untuk foto produk marketplace, foto profil, dan pas foto. Gratis, tanpa upload.",
       "h1": "Cara mengganti background foto menjadi putih atau warna apa pun",
+      "navLabel": "Ganti warna background",
       "intro": [
         "Marketplace sering meminta foto produk dengan background putih, dan background berwarna membuat foto profil lebih menonjol. Keduanya bisa dilakukan dalam beberapa detik."
       ],

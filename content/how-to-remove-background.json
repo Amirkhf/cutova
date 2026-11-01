@@ -7,6 +7,7 @@
       "title": "How to Remove the Background from a Photo (Free, No Upload) | Cutova",
       "description": "Remove the background from a photo in three steps, for free and without uploading it. A simple guide with tips for hair, pets and products.",
       "h1": "How to remove the background from a photo",
+      "navLabel": "Remove a photo's background",
       "intro": [
         "You do not need Photoshop or an account to cut out a subject. With Cutova, the whole process takes three steps and happens in your browser, so the photo never leaves your device."
       ],
@@ -60,6 +61,7 @@
       "title": "Comment supprimer l'arrière-plan d'une photo (gratuit, sans envoi) | Cutova",
       "description": "Supprimez l'arrière-plan d'une photo en trois étapes, gratuitement et sans l'envoyer. Un guide simple avec des conseils pour les cheveux, les animaux et les produits.",
       "h1": "Comment supprimer l'arrière-plan d'une photo",
+      "navLabel": "Supprimer l'arrière-plan d'une photo",
       "intro": [
         "Pas besoin de Photoshop ni de compte pour détourer un sujet. Avec Cutova, tout se fait en trois étapes dans votre navigateur : la photo ne quitte jamais votre appareil."
       ],
@@ -113,6 +115,7 @@
       "title": "Como Remover o Fundo de uma Foto (Grátis, Sem Upload) | Cutova",
       "description": "Remova o fundo de uma foto em poucos passos, de graça e sem fazer upload. Um guia simples com dicas para cabelo, bichos de estimação e produtos.",
       "h1": "Como remover o fundo de uma foto",
+      "navLabel": "Remover o fundo de uma foto",
       "intro": [
         "Você não precisa de Photoshop nem de cadastro para recortar uma pessoa ou um objeto. Com o Cutova, tudo leva poucos passos e acontece no navegador, então a foto nunca sai do seu aparelho."
       ],
@@ -166,6 +169,7 @@
       "title": "Cómo Quitar el Fondo de una Foto (Gratis, Sin Subirla) | Cutova",
       "description": "Quita el fondo de una foto en pocos pasos, gratis y sin subirla a internet. Una guía sencilla con consejos para pelo, mascotas y productos.",
       "h1": "Cómo quitar el fondo de una foto",
+      "navLabel": "Quitar el fondo de una foto",
       "intro": [
         "No necesitas Photoshop ni una cuenta para recortar a una persona o un objeto. Con Cutova, el proceso lleva pocos pasos y ocurre en tu navegador, así que la foto nunca sale de tu dispositivo."
       ],
@@ -219,6 +223,7 @@
       "title": "Cara Menghapus Background Foto (Gratis, Tanpa Upload) | Cutova",
       "description": "Hapus background foto dalam beberapa langkah, gratis dan tanpa upload. Panduan sederhana dengan tips untuk rambut, hewan peliharaan, dan foto produk.",
       "h1": "Cara menghapus background foto",
+      "navLabel": "Hapus background foto",
       "intro": [
         "Anda tidak butuh Photoshop atau akun untuk memotong objek dari foto. Dengan Cutova, prosesnya hanya beberapa langkah dan berlangsung di browser, jadi foto tidak pernah keluar dari perangkat Anda."
       ],

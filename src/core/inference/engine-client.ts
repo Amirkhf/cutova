@@ -8,7 +8,7 @@
  * erreur ; un worker qui a échoué une fois échoue ensuite à chaque appel, avec la même erreur
  * (constaté sur un vrai Mac et sur SwiftShader). On repart donc toujours d'un worker neuf.
  */
-import type { EngineKind, MainToWorkerMessage, WorkerToMainMessage } from "./protocol.ts";
+import type { EngineKind, MainToWorkerMessage, PipelineStage, WorkerToMainMessage } from "./protocol.ts";
 import { track } from "../analytics/analytics.ts";
 import { getModelForEngine } from "../model/model-source.ts";
 
@@ -40,7 +40,7 @@ function forceWebGpuFromUrl(): boolean {
 class InferenceEngine {
   private worker: Worker | null = null;
   private nextRequestId = 1;
-  private pending = new Map<number, { resolve: (r: InferenceResult) => void; reject: (e: Error) => void }>();
+  private pending = new Map<number, { resolve: (r: InferenceResult) => void; reject: (e: Error) => void; onStage?: (stage: PipelineStage) => void }>();
   private readyPromise: Promise<EngineKind> | null = null;
   private resolveReady: ((engine: EngineKind) => void) | null = null;
   private rejectReady: ((err: Error) => void) | null = null;
@@ -85,6 +85,9 @@ class InferenceEngine {
     switch (message.type) {
       case "progress":
         for (const listener of this.progressListeners) listener(message);
+        break;
+      case "stage":
+        this.pending.get(message.requestId)?.onStage?.(message.stage);
         break;
       case "ready":
         this.resolveReady?.(message.engine);
@@ -147,11 +150,11 @@ class InferenceEngine {
   }
 
   /** File d'attente côté worker : les appels concurrents sont traités un par un. */
-  run(bitmap: ImageBitmap): Promise<InferenceResult> {
+  run(bitmap: ImageBitmap, onStage?: (stage: PipelineStage) => void): Promise<InferenceResult> {
     void this.preload();
     const requestId = this.nextRequestId++;
     return new Promise<InferenceResult>((resolve, reject) => {
-      this.pending.set(requestId, { resolve, reject });
+      this.pending.set(requestId, { resolve, reject, onStage });
       this.send({ type: "run", requestId, bitmap }, [bitmap]);
     });
   }

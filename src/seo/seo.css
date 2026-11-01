@@ -6,6 +6,7 @@
 }
 
 .seo-header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -34,10 +35,10 @@
 .seo-nav {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-2);
 }
 
-.seo-nav a:not(.btn-primary) {
+.seo-nav > a:not(.btn-primary) {
   color: var(--color-text);
   min-height: 44px;
   display: inline-flex;

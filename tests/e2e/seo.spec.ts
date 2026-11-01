@@ -108,7 +108,8 @@ test("pages guides : aucune violation axe (5 langues)", async ({ page }) => {
 test("accueil /fr/ : l'application démarre en français et le sélecteur mène à /", async ({ page }) => {
   await page.goto("/fr/");
   await expect(page.getByRole("button", { name: "Choisir une image" })).toBeVisible();
-  await page.getByLabel("Langue").selectOption("en");
+  await page.getByRole("button", { name: /^Langue/ }).click();
+  await page.locator("#dd-lang-panel").getByRole("link", { name: "English" }).click();
   await page.waitForURL((url) => url.pathname === "/");
   await expect(page.getByRole("button", { name: "Choose an image" })).toBeVisible();
 });
@@ -163,20 +164,114 @@ test("accueils pt-br, es, id : l'application démarre dans la langue de la page"
     await page.goto(url);
     await expect(page.getByRole("button", { name: label })).toBeVisible();
   }
-  await page.getByLabel("Bahasa").selectOption("es");
+  await page.getByRole("button", { name: /^Bahasa/ }).click();
+  await page.locator("#dd-lang-panel").getByRole("link", { name: "Español" }).click();
   await page.waitForURL((u) => u.pathname === "/es/");
 });
 
-test("sélecteur de langue des pages statiques : les 5 langues, page courante marquée, sans JavaScript", async ({ page }) => {
+test("menu langue (pages statiques) : 5 langues dans leur propre langue, langue active, même page dans l'autre langue", async ({ page }) => {
   await page.goto("/es/para/fotografos/");
-  const menu = page.locator(".seo-header .seo-lang");
-  await menu.locator("summary").click();
-  const links = menu.locator(".seo-lang-list a");
-  await expect(links).toHaveCount(5);
-  await expect(menu.locator('a[aria-current="page"]')).toHaveAttribute("href", "/es/para/fotografos/");
+  const trigger = page.locator(".seo-header #dd-lang .dd-trigger, .seo-header .dd-lang .dd-trigger").first();
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await trigger.click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  const links = page.locator("#dd-lang-panel a.dd-item");
+  await expect(links).toHaveText(["English", "Français", "Português (Brasil)", "Español", "Bahasa Indonesia"]);
+  await expect(links.nth(2)).toHaveAttribute("lang", "pt-BR");
+  await expect(page.locator('#dd-lang-panel a[aria-current="page"]')).toHaveAttribute("href", "/es/para/fotografos/");
   await links.filter({ hasText: "Bahasa Indonesia" }).click();
   await page.waitForURL((u) => u.pathname === "/id/untuk/fotografer/");
   await expect(page.locator(".seo-footer-lang-list a")).toHaveCount(5);
+});
+
+test("menus : clavier (flèches, Échap), clic en dehors, un seul ouvert, panneau dans l'écran à 360 px", async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 780 });
+  for (const url of ["/fr/tutoriels/creer-png-transparent/", "/fr/"]) {
+    await page.goto(url);
+    // Aucun débordement horizontal à 360 px (le bouton d'appel de l'en-tête est masqué sur mobile).
+    expect(await page.evaluate(() => document.documentElement.scrollWidth), url).toBeLessThanOrEqual(360);
+    const lang = page.locator(".dd-lang .dd-trigger");
+    await lang.focus();
+    await page.keyboard.press("ArrowDown");
+    await expect(lang).toHaveAttribute("aria-expanded", "true");
+    await expect(page.locator("#dd-lang-panel a.dd-item").first()).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator("#dd-lang-panel a.dd-item").nth(1)).toBeFocused();
+    await page.keyboard.press("ArrowUp");
+    await page.keyboard.press("ArrowUp");
+    await expect(page.locator("#dd-lang-panel a.dd-item").last()).toBeFocused();
+    const box = (await page.locator("#dd-lang-panel").boundingBox())!;
+    expect(box.x).toBeGreaterThanOrEqual(0);
+    expect(box.x + box.width).toBeLessThanOrEqual(360);
+    await page.keyboard.press("Escape");
+    await expect(lang).toHaveAttribute("aria-expanded", "false");
+    await expect(lang).toBeFocused();
+    // Menu Outils (bouton « menu » sur mobile) : ouvre, ferme l'autre, se ferme au clic en dehors.
+    const tools = page.locator(".dd-nav .dd-trigger");
+    await lang.click();
+    await tools.click();
+    await expect(tools).toHaveAttribute("aria-expanded", "true");
+    await expect(lang).toHaveAttribute("aria-expanded", "false");
+    const toolsBox = (await page.locator("#dd-tools-panel").boundingBox())!;
+    expect(toolsBox.x).toBeGreaterThanOrEqual(0);
+    expect(toolsBox.x + toolsBox.width).toBeLessThanOrEqual(360);
+    await page.mouse.click(5, 700);
+    await expect(tools).toHaveAttribute("aria-expanded", "false");
+  }
+});
+
+test("menu Outils : pages outils et guides, liens qui marchent (5 langues)", async ({ page, request }) => {
+  for (const url of ["/", "/fr/", "/pt-br/", "/es/", "/id/", "/for/ecommerce/", "/es/guias/crear-png-transparente/"]) {
+    await page.goto(url);
+    await page.locator(".dd-nav .dd-trigger").click();
+    const links = page.locator("#dd-tools-panel a.dd-item");
+    await expect(links).toHaveCount(6);
+    await expect(page.locator("#dd-tools-panel .dd-group-title")).toHaveCount(2);
+    for (const href of await links.evaluateAll((els) => els.map((e) => e.getAttribute("href")!))) {
+      expect((await request.get(href)).status(), href).toBe(200);
+    }
+  }
+  await page.goto("/");
+  await page.locator(".dd-nav .dd-trigger").click();
+  await page.locator("#dd-tools-panel").getByRole("link", { name: "White background" }).click();
+  await page.waitForURL((u) => u.pathname === "/white-background/");
+});
+
+test("toutes les pages du sitemap : style du design system appliqué, en-tête visible, aucun CSS/JS en 404", async ({ page, request }) => {
+  test.setTimeout(300_000);
+  const index = await (await request.get("/sitemap.xml")).text();
+  const urls: string[] = [];
+  for (const m of index.matchAll(/<loc>([^<]+)<\/loc>/g)) {
+    const sitemap = await (await request.get(new URL(m[1]!).pathname)).text();
+    for (const u of sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)) urls.push(new URL(u[1]!).pathname);
+  }
+  expect(urls.length).toBe(PAGES.length);
+  const failed: string[] = [];
+  page.on("response", (r) => {
+    const type = r.request().resourceType();
+    if ((type === "stylesheet" || type === "script") && r.status() >= 400) failed.push(`${r.status()} ${r.url()}`);
+  });
+  for (const url of urls) {
+    await page.goto(url);
+    const style = await page.evaluate(() => {
+      const header = document.querySelector<HTMLElement>(".seo-header, .home-header");
+      const cs = header ? getComputedStyle(header) : null;
+      const rect = header?.getBoundingClientRect();
+      return {
+        font: getComputedStyle(document.body).fontFamily,
+        bg: getComputedStyle(document.body).backgroundColor,
+        headerDisplay: cs?.display,
+        headerHeight: rect?.height ?? 0,
+        footerList: document.querySelector(".seo-footer-links") ? getComputedStyle(document.querySelector(".seo-footer-links")!).listStyleType : "none",
+      };
+    });
+    expect(style.font, url).toContain("Inter Variable");
+    expect(style.bg, url).toBe("rgb(250, 250, 247)");
+    expect(style.headerDisplay, url).toBe("flex");
+    expect(style.headerHeight, url).toBeGreaterThan(40);
+    expect(style.footerList, url).toBe("none");
+  }
+  expect(failed).toEqual([]);
 });
 
 test("site blanc pour tout le monde : même si le système est en mode sombre", async ({ browser }) => {

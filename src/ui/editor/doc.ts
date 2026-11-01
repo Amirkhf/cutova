@@ -2,6 +2,7 @@
  * Une image du lot dans l'éditeur : fichier, état du traitement, image décodée, masque éditable,
  * réglages, historique annuler/rétablir (réglages + masque). Chaque image garde ses réglages.
  */
+import type { PipelineStage } from "../../core/inference/protocol.ts";
 import { UndoHistory } from "../../core/editor/history.ts";
 import { cloneSettings, defaultSettings, type EditSettings } from "../../core/editor/settings.ts";
 import { scaleRegion, subjectBounds, type Region } from "../../core/postprocess/crop.ts";
@@ -21,6 +22,8 @@ export class EditorDoc {
   readonly file: File;
   readonly resizeTo?: { width: number; height: number };
   status: DocStatus = "queued";
+  /** Étape du pipeline pendant le traitement (indicateur sur l'image). */
+  stage: PipelineStage | null = null;
   errorMessage = "";
   engine = "";
   elapsedMs = 0;

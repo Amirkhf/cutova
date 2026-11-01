@@ -25,6 +25,16 @@ export interface ProgressResponse {
   total: number;
 }
 
+/** Étapes du pipeline de détourage (affichées sur l'image). `refine` et `done` sont posées par le thread principal. */
+export type PipelineStage = "prepare" | "analyze" | "refine" | "done";
+
+/** Le worker annonce l'étape en cours d'une requête (distinct du téléchargement du modèle : `progress`). */
+export interface StageResponse {
+  type: "stage";
+  requestId: number;
+  stage: Extract<PipelineStage, "prepare" | "analyze">;
+}
+
 export interface ReadyResponse {
   type: "ready";
   engine: EngineKind;
@@ -59,4 +69,4 @@ export interface FallbackResponse {
   reason: string;
 }
 
-export type WorkerToMainMessage = ProgressResponse | ReadyResponse | ResultResponse | ErrorResponse | FallbackResponse;
+export type WorkerToMainMessage = ProgressResponse | StageResponse | ReadyResponse | ResultResponse | ErrorResponse | FallbackResponse;

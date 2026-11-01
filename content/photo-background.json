@@ -9,6 +9,7 @@
       "title": "Change a Photo's Background to Another Photo — Free | Cutova",
       "description": "Replace the background of a photo with a new scene (sea, city, sky, night lights) or blur the original, in seconds and at full resolution. Free, no upload.",
       "h1": "Put a new photo behind your subject",
+      "navLabel": "Photo background",
       "answer": {
         "label": "Short answer:",
         "text": "open Cutova with a photo background already selected, add your picture, then choose one of the six free background photos (or a blur of the original) and download it. The AI cuts out your subject and places it on the new scene, in your browser."
@@ -100,6 +101,7 @@
       "title": "Changer le fond d'une photo par une autre photo — Gratuit | Cutova",
       "description": "Remplacez le fond d'une photo par un nouveau décor (mer, ville, ciel, lumières de nuit) ou floutez l'original, en quelques secondes et en pleine résolution. Gratuit, sans envoi.",
       "h1": "Mettre un nouveau décor derrière votre sujet",
+      "navLabel": "Fond photo",
       "answer": {
         "label": "En bref :",
         "text": "ouvrez Cutova avec un fond photo déjà choisi, ajoutez votre image, puis choisissez l'une des six photos de fond libres (ou un flou de l'original) et téléchargez. L'IA détoure votre sujet et le place sur le nouveau décor, dans votre navigateur."
@@ -191,6 +193,7 @@
       "title": "Trocar o Fundo de uma Foto por Outra Foto — Grátis | Cutova",
       "description": "Troque o fundo de uma foto por um novo cenário (mar, cidade, céu, luzes da noite) ou desfoque o original, em segundos e na resolução original. Grátis, sem upload.",
       "h1": "Como trocar o fundo de uma foto por outro cenário",
+      "navLabel": "Fundo com foto",
       "answer": {
         "label": "Resposta rápida:",
         "text": "abra o Cutova com um fundo de foto já selecionado, adicione sua imagem, escolha uma das seis fotos de fundo grátis (ou o desfoque do original) e baixe. A IA recorta a pessoa ou o objeto e coloca no novo cenário, direto no navegador."
@@ -282,6 +285,7 @@
       "title": "Cambiar el Fondo de una Foto por Otra Foto — Gratis | Cutova",
       "description": "Cambia el fondo de una foto por un nuevo escenario (mar, ciudad, cielo, luces nocturnas) o desenfoca el original, en segundos y a resolución completa. Gratis, sin subir nada.",
       "h1": "Cómo cambiar el fondo de una foto por otro escenario",
+      "navLabel": "Fondo con foto",
       "answer": {
         "label": "Respuesta corta:",
         "text": "abre Cutova con un fondo de foto ya seleccionado, añade tu imagen, elige una de las seis fotos de fondo gratuitas (o un desenfoque del original) y descarga. La IA recorta a la persona o el objeto y lo coloca en el nuevo escenario, en tu navegador."
@@ -373,6 +377,7 @@
       "title": "Ganti Background Foto dengan Foto Lain — Gratis | Cutova",
       "description": "Ganti background foto dengan pemandangan baru (laut, kota, langit, lampu malam) atau buat blur, dalam hitungan detik dan resolusi penuh. Gratis, tanpa upload.",
       "h1": "Cara mengganti background foto dengan pemandangan lain",
+      "navLabel": "Background foto",
       "answer": {
         "label": "Jawaban singkat:",
         "text": "buka Cutova dengan background foto yang sudah terpilih, tambahkan gambar Anda, pilih salah satu dari enam foto background gratis (atau blur dari foto asli), lalu unduh. AI memotong objek Anda dan menaruhnya di pemandangan baru, langsung di browser."

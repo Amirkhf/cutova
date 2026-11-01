@@ -7,6 +7,7 @@
       "title": "How to Make a PNG with a Transparent Background | Cutova",
       "description": "Turn any photo into a PNG with a transparent background in a few seconds, for free and at full resolution. Learn which format keeps transparency.",
       "h1": "How to make a PNG with a transparent background",
+      "navLabel": "Make a transparent PNG",
       "intro": [
         "A transparent PNG lets you place a subject on any slide, website or design without a white box around it. Here is how to make one from an ordinary photo."
       ],
@@ -60,6 +61,7 @@
       "title": "Comment créer un PNG à fond transparent | Cutova",
       "description": "Transformez n'importe quelle photo en PNG à fond transparent en quelques secondes, gratuitement et en pleine résolution. Découvrez quel format garde la transparence.",
       "h1": "Comment créer un PNG à fond transparent",
+      "navLabel": "Créer un PNG transparent",
       "intro": [
         "Un PNG transparent permet de poser un sujet sur une diapositive, un site ou une création sans cadre blanc autour. Voici comment en obtenir un à partir d'une photo ordinaire."
       ],
@@ -113,6 +115,7 @@
       "title": "Como Criar um PNG com Fundo Transparente | Cutova",
       "description": "Transforme qualquer foto em PNG com fundo transparente em poucos segundos, grátis e na resolução original. Veja qual formato mantém a transparência.",
       "h1": "Como criar um PNG com fundo transparente",
+      "navLabel": "Criar um PNG transparente",
       "intro": [
         "Um PNG transparente permite colocar uma pessoa ou um objeto em qualquer slide, site ou arte sem aquele quadrado branco em volta. Veja como criar um a partir de uma foto comum."
       ],
@@ -166,6 +169,7 @@
       "title": "Cómo Hacer un PNG con Fondo Transparente | Cutova",
       "description": "Convierte cualquier foto en un PNG con fondo transparente en segundos, gratis y a resolución completa. Descubre qué formato conserva la transparencia.",
       "h1": "Cómo hacer un PNG con fondo transparente",
+      "navLabel": "Crear un PNG transparente",
       "intro": [
         "Un PNG transparente te permite colocar a una persona o un objeto en cualquier diapositiva, web o diseño sin un recuadro blanco alrededor. Así se crea uno a partir de una foto normal."
       ],
@@ -219,6 +223,7 @@
       "title": "Cara Membuat PNG dengan Background Transparan | Cutova",
       "description": "Ubah foto apa pun menjadi PNG dengan background transparan dalam beberapa detik, gratis dan dalam resolusi penuh. Ketahui format mana yang menyimpan transparansi.",
       "h1": "Cara membuat PNG dengan background transparan",
+      "navLabel": "Buat PNG transparan",
       "intro": [
         "PNG transparan memungkinkan Anda menaruh objek di slide, situs web, atau desain apa pun tanpa kotak putih di sekelilingnya. Begini cara membuatnya dari foto biasa."
       ],

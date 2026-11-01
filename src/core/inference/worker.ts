@@ -181,7 +181,7 @@ function toMask(values: Float32Array): Uint8Array {
   return out;
 }
 
-async function runInference(engine: LoadedEngine, bitmap: ImageBitmap): Promise<InferenceOutcome> {
+async function runInference(engine: LoadedEngine, bitmap: ImageBitmap, onAnalyze: () => void = () => {}): Promise<InferenceOutcome> {
   const canvas = new OffscreenCanvas(bitmap.width, bitmap.height);
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Contexte OffscreenCanvas 2D indisponible");
@@ -189,6 +189,7 @@ async function runInference(engine: LoadedEngine, bitmap: ImageBitmap): Promise<
   const image = RawImage.fromCanvas(canvas);
 
   const { pixel_values } = await engine.processor(image);
+  onAnalyze();
   // Nom d'entrée/sortie propre à chaque modèle : on prend la première entrée de la session, et la
   // sortie `output_image` si elle existe (BiRefNet, IS-Net composite), sinon la première.
   const session = (engine.model as unknown as { sessions: Record<string, { inputNames: string[]; outputNames: string[] }> }).sessions.model!;
@@ -228,11 +229,12 @@ async function drainQueue(): Promise<void> {
 async function processJob(job: RunRequestQueued): Promise<void> {
   let keepBitmap = false;
   try {
+    post({ type: "stage", requestId: job.requestId, stage: "prepare" });
     const engine = await ensureEngine();
     const started = performance.now();
     let outcome: InferenceOutcome;
     try {
-      outcome = await runInference(engine, job.bitmap);
+      outcome = await runInference(engine, job.bitmap, () => post({ type: "stage", requestId: job.requestId, stage: "analyze" }));
     } catch (err) {
       if (engine.kind === "wasm") throw err;
       // Échec WebGPU à l'inférence : ce worker ne peut plus rien exécuter (promesse globale de

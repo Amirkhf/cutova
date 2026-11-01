@@ -6,6 +6,7 @@ export interface Dictionary {
     toolsMenu: string;
     toolsComingSoon: string;
     languageSelectorLabel: string;
+    menuButton: string;
   };
   hero: {
     title: string;
@@ -60,6 +61,13 @@ export interface Dictionary {
     downloadSize: (width: number, height: number) => string;
     newImage: string;
     finishing: string;
+    /** Étapes affichées sur l'image pendant le détourage (distinctes du téléchargement du modèle). */
+    stagePrepare: string;
+    stageAnalyze: string;
+    stageRefine: string;
+    stageDone: string;
+    progressLabel: string;
+    batchProgress: (index: number, total: number) => string;
     touchUpLegend: string;
     toolCompare: string;
     toolErase: string;

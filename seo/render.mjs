@@ -1,7 +1,8 @@
 /**
  * Gabarit unique des pages statiques SEO (fonctions pures, testées : tests/unit/seo-render.test.ts).
- * Aucune dépendance : chaînes HTML échappées à la main. Utilisé par seo/build.mjs.
+ * Chaînes HTML échappées à la main ; menus : src/ui/menu/dropdown.ts (fonction pure). Utilisé par seo/build.mjs.
  */
+import { dropdownHtml, GLOBE_ICON, MENU_ICON } from "../src/ui/menu/dropdown.ts";
 
 const ESCAPES = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
 
@@ -146,20 +147,38 @@ function languageLinks(languages) {
     .join("");
 }
 
-const GLOBE_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20M12 2a15.3 15.3 0 0 0 0 20"/></svg>`;
-
-/** Sélecteur de langue sans JavaScript (<details>) : fonctionne avec la CSP stricte. */
-function languageMenu(chrome, languages) {
-  if (languages.length < 2) return "";
+/** Menus de l'en-tête (Outils + langue) : même composant que l'application (src/ui/menu/dropdown.ts). */
+export function headerMenusHtml({ chrome, languages = [], tools = [], labels }) {
   const current = languages.find((l) => l.current);
-  return `<details class="seo-lang"><summary>${GLOBE_ICON}<span class="sr-only">${esc(chrome.footerLanguageTitle)}: ${esc(current?.label ?? "")}</span><span aria-hidden="true">${esc(current?.code ?? "")}</span></summary><ul class="seo-lang-list">${languageLinks(languages)}</ul></details>`;
+  const toolsMenu = tools.length
+    ? dropdownHtml({
+        id: "dd-tools",
+        variant: "dd-nav",
+        buttonText: labels.toolsMenu,
+        buttonLabel: labels.toolsMenu,
+        mobileIcon: MENU_ICON,
+        groups: tools,
+      })
+    : "";
+  const languageMenu =
+    languages.length > 1
+      ? dropdownHtml({
+          id: "dd-lang",
+          variant: "dd-lang",
+          buttonText: current?.code ?? "",
+          buttonLabel: `${chrome.footerLanguageTitle}: ${current?.label ?? ""}`,
+          icon: GLOBE_ICON,
+          groups: [{ links: languages.map((l) => ({ href: l.href, label: l.label, lang: l.hreflang, hreflang: l.hreflang, current: l.current })) }],
+        })
+      : "";
+  return toolsMenu + languageMenu;
 }
 
-export function headerHtml({ brand, chrome, homePath, languages = [] }) {
+export function headerHtml({ brand, chrome, homePath, languages = [], tools = [], labels = { toolsMenu: "" } }) {
   return `<header class="seo-header">
   <a class="seo-brand" href="${esc(homePath)}">${BRAND_ICON}<span>${esc(brand)}</span></a>
   <nav aria-label="${esc(chrome.nav)}" class="seo-nav">
-    ${languageMenu(chrome, languages)}
+    ${headerMenusHtml({ chrome, languages, tools, labels })}
     <a class="btn btn-primary seo-nav-cta" href="${esc(homePath)}">${esc(chrome.cta)}</a>
   </nav>
 </header>`;
@@ -195,7 +214,7 @@ export function footerHtml({ chrome, brand, columns, languages = [] }) {
  * Page statique complète (article / tutoriel). `assets` = { css: [href], js: [href] } venant du
  * manifeste Vite (même CSS que l'application : jetons, polices, boutons).
  */
-export function renderArticlePage({ lang, head, brand, chrome, homePath, page, breadcrumb, columns, languages, assets }) {
+export function renderArticlePage({ lang, head, brand, chrome, homePath, page, breadcrumb, columns, languages, tools, labels, assets }) {
   const crumbs = breadcrumb
     .map((c, i) => (i < breadcrumb.length - 1 ? `<li><a href="${esc(c.path)}">${esc(c.name)}</a></li>` : `<li aria-current="page">${esc(c.name)}</li>`))
     .join("");
@@ -224,7 +243,7 @@ export function renderArticlePage({ lang, head, brand, chrome, homePath, page, b
   </head>
   <body class="seo-page">
     <a class="skip-link" href="#main">${esc(chrome.skipToContent)}</a>
-    ${headerHtml({ brand, chrome, homePath, languages })}
+    ${headerHtml({ brand, chrome, homePath, languages, tools, labels })}
     <main id="main" class="seo-main">
 ${parts.join("\n")}
     </main>
