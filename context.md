@@ -167,10 +167,15 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
   marketing, developers, ecommerce, media, car-dealerships, enterprise.
 
 ## Tables SQLite
-(vide — phase 2)
+- **D1 `cutova-stats`** (Cloudflare, liaison `DB`) — `daily_events` (`migrations/0001_daily_events.sql`) :
+  clé = `day, type, page, lang, engine, model, tool, format, time_bucket, size_bucket` (valeur absente =
+  `''`), colonne `count`. Compteurs AGRÉGÉS par jour, jamais une ligne par visiteur.
 
 ## Endpoints
-(vide — phase 2)
+- `POST /api/event` (Pages Function `functions/api/event.ts` → `edge/event.ts`) : un événement anonyme,
+  validé par la liste blanche `src/core/analytics/schema.ts` (corps ≤ 512 o, type et champs connus,
+  valeurs dans des listes fermées), limité à 60/min par adresse (en mémoire), upsert dans D1 → 204 ;
+  400 si rejeté, 413 trop gros, 429 trop fréquent, 503 sans D1.
 
 ## Parité remove.bg vs nous
 
@@ -582,6 +587,21 @@ Cloudflare Pages, Search Console, Bing, IndexNow) et tests sur matériel réel.
 - **(Étape 4, préparé) IndexNow** : `INDEXNOW_KEY` au build → fichier-clé `/<clé>.txt` ;
   `scripts/indexnow-ping.mjs` (lancé par l'éditeur après mise en ligne). Le build signale les champs
   `[À COMPLÉTER]` restants.
+
+- **(N1) Mesure d'utilisation anonyme** : `navigator.sendBeacon` → `/api/event` (même origine, CSP
+  `connect-src 'self'` inchangée). 7 événements (page_view, cutout_done, cutout_failed, engine_fallback,
+  download, tool_used, batch_zip) ; champs limités à type, page, langue, moteur, modèle, outil, format,
+  tranche de temps, tranche de taille ; liste blanche partagée navigateur/serveur (`schema.ts`). Rien
+  n'est envoyé si Do Not Track ou Global Privacy Control. `tool_used` : une fois par outil et par image
+  (pas de suivi geste par geste). Politique de confidentialité et page "entreprises" mises à jour.
+- **(N1) Limitation de débit en mémoire** (60/min/adresse, par instance de worker) : l'adresse IP ne sert
+  que de clé temporaire, jamais stockée. Une limite globale stricte demanderait un service partagé
+  (Rate Limiting payant ou Durable Objects) : écartée pour cette version.
+- **(N1) Code serveur dans `edge/`** (types D1 minimaux déclarés, pas de dépendance de types),
+  `functions/` ne contient que les routes ; `tsconfig.edge.json` vérifié au build. `dist/_routes.json` :
+  seules les routes `/api/*` exécutent des fonctions (le reste reste statique et gratuit). wrangler en
+  dépendance de développement ; `npm run dev:edge` = D1 local + `wrangler pages dev` (testé : deux
+  événements identiques → une ligne `count = 2`, champ inconnu → 400).
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` (champs légaux, domaine, R2, Pages, Search Console, Bing,

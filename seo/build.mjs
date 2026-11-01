@@ -57,7 +57,7 @@ async function writePage(urlPath, html) {
 function seoAssets(manifest) {
   const entry = manifest["src/seo/seo-page.ts"];
   if (!entry) throw new Error("[seo] entrée src/seo/seo-page.ts absente du manifeste Vite (vite.config.ts > build.rollupOptions.input).");
-  return { css: (entry.css ?? []).map((f) => `/${f}`) };
+  return { css: (entry.css ?? []).map((f) => `/${f}`), js: entry.file?.endsWith(".js") ? [`/${entry.file}`] : [] };
 }
 
 async function main() {

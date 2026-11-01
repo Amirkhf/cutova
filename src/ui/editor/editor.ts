@@ -23,6 +23,9 @@ import { IMAGE_SELECTED_EVENT, type ImageSelectedDetail } from "../home/events.t
 import { messageForError } from "../home/error-messages.ts";
 import { createCompareSlider } from "../result/compare-slider.ts";
 import { EditorDoc } from "./doc.ts";
+import { track } from "../../core/analytics/analytics.ts";
+import { sizeBucket, timeBucket, type TOOLS } from "../../core/analytics/schema.ts";
+import { getModelForEngine } from "../../core/model/model-source.ts";
 import { button, checkboxField, colorField, fieldset, radioGroup, rangeField, setRange } from "./controls.ts";
 
 /** Plus grand côté de l'aperçu à l'écran (l'export reste en pleine résolution). */
@@ -59,6 +62,14 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   let tool: Tool = "compare";
   let exportFormat: ExportFormat = prefs.exportFormat;
   let destroyed = false;
+  /** Mesure anonyme : chaque outil compté au plus une fois par image (pas de suivi geste par geste). */
+  const usedTools = new Set<string>();
+  function useTool(tool: (typeof TOOLS)[number]): void {
+    const key = `${current?.id ?? 0}:${tool}`;
+    if (usedTools.has(key)) return;
+    usedTools.add(key);
+    track({ type: "tool_used", tool });
+  }
 
   // ---------- Structure ----------
   const section = document.createElement("section");
@@ -206,6 +217,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   resetMaskButton.addEventListener("click", () => {
     if (!current?.mask) return;
     current.resetMask();
+    useTool("reset_mask");
     afterEdit();
   });
   toolGroup.fieldset.append(brush.root, brushHint, resetMaskButton);
@@ -232,7 +244,10 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
       { value: "blur", label: r.bgBlur },
     ],
     "transparent",
-    (kind) => change((d) => (d.settings.background = backgroundOfKind(kind))),
+    (kind) => {
+      change((d) => (d.settings.background = backgroundOfKind(kind)));
+      useTool(kind === "photo" ? "background_photo" : kind === "blur" ? "background_blur" : "background");
+    },
   );
   const color = colorField(r.backgroundColorPicker, prefs.recentColors[0] ?? "#5b4bff", {
     onStart: edit.start,
@@ -267,7 +282,10 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
     img.width = 160;
     img.height = 100;
     b.append(img);
-    b.addEventListener("click", () => change((d) => (d.settings.background = { kind: "photo", photoId: id })));
+    b.addEventListener("click", () => {
+      change((d) => (d.settings.background = { kind: "photo", photoId: id }));
+      useTool("background_photo");
+    });
     photoGrid.append(b);
     photoButtons.set(id, b);
   }
@@ -313,13 +331,19 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   // --- Effets ---
   const fxPanel = panels.get("effects")!;
   const shadowSet = fieldset(r.shadow);
-  const shadowOn = checkboxField(r.shadow, false, (on) => change((d) => (d.settings.effects.shadow.enabled = on)));
+  const shadowOn = checkboxField(r.shadow, false, (on) => {
+    change((d) => (d.settings.effects.shadow.enabled = on));
+    if (on) useTool("shadow");
+  });
   const shadowBlur = rangeField(r.shadowBlur, 0, 100, 30, { onStart: edit.start, onInput: (v) => live((d) => (d.settings.effects.shadow.blur = v)), onCommit: () => updateHistoryButtons() });
   const shadowOffset = rangeField(r.shadowOffset, 0, 100, 20, { onStart: edit.start, onInput: (v) => live((d) => (d.settings.effects.shadow.offset = v)), onCommit: () => updateHistoryButtons() });
   const shadowOpacity = rangeField(r.shadowOpacity, 0, 100, 45, { onStart: edit.start, onInput: (v) => live((d) => (d.settings.effects.shadow.opacity = v)), onCommit: () => updateHistoryButtons() });
   shadowSet.append(shadowOn.root, shadowBlur.root, shadowOffset.root, shadowOpacity.root);
   const outlineSet = fieldset(r.outline);
-  const outlineOn = checkboxField(r.outline, false, (on) => change((d) => (d.settings.effects.outline.enabled = on)));
+  const outlineOn = checkboxField(r.outline, false, (on) => {
+    change((d) => (d.settings.effects.outline.enabled = on));
+    if (on) useTool("outline");
+  });
   const outlineWidth = rangeField(r.outlineWidth, 1, 60, 12, { onStart: edit.start, onInput: (v) => live((d) => (d.settings.effects.outline.width = v)), onCommit: () => updateHistoryButtons() });
   const outlineColor = colorField(r.outlineColor, "#ffffff", { onStart: edit.start, onInput: (v) => live((d) => (d.settings.effects.outline.color = v)), onCommit: () => updateHistoryButtons() });
   outlineSet.append(outlineOn.root, outlineWidth.root, outlineColor.root);
@@ -331,7 +355,14 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   const adjustKeys = ["brightness", "contrast", "saturation", "temperature"] as const;
   const adjustInputs = new Map<(typeof adjustKeys)[number], HTMLInputElement>();
   for (const key of adjustKeys) {
-    const f = rangeField(r[key], -100, 100, 0, { onStart: edit.start, onInput: (v) => live((d) => (d.settings.adjust[key] = v)), onCommit: () => updateHistoryButtons() });
+    const f = rangeField(r[key], -100, 100, 0, {
+      onStart: edit.start,
+      onInput: (v) => live((d) => (d.settings.adjust[key] = v)),
+      onCommit: () => {
+        updateHistoryButtons();
+        useTool("adjust");
+      },
+    });
     adjustInputs.set(key, f.input);
     adjustSet.append(f.root);
   }
@@ -354,7 +385,10 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
     (kind) =>
       change((d) => {
         if (kind === "original") d.settings.framing = { kind };
-        else if (kind === "subject") d.settings.framing = { kind, marginPercent: Number(margin.input.value) };
+        else if (kind === "subject") {
+          d.settings.framing = { kind, marginPercent: Number(margin.input.value) };
+          useTool("crop");
+        }
         else d.settings.framing = { kind, presetId: presetSelect.value, paddingPercent: Number(padding.input.value) };
       }),
   );
@@ -384,6 +418,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   }
   presetSelect.value = prefs.favoritePresets[0] ?? FORMAT_PRESETS[0]!.id;
   presetSelect.addEventListener("change", () => {
+    useTool("format_preset");
     prefs = rememberPreset(prefs, presetSelect.value);
     savePreferences(prefs);
     change((d) => (d.settings.framing = { kind: "preset", presetId: presetSelect.value, paddingPercent: Number(padding.input.value) }));
@@ -649,10 +684,16 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
   }
 
   undoButton.addEventListener("click", () => {
-    if (current?.undo()) afterEdit();
+    if (current?.undo()) {
+      afterEdit();
+      useTool("undo");
+    }
   });
   redoButton.addEventListener("click", () => {
-    if (current?.redo()) afterEdit();
+    if (current?.redo()) {
+      afterEdit();
+      useTool("redo");
+    }
   });
   const onKeyDown = (event: KeyboardEvent) => {
     if (section.hidden || !(event.ctrlKey || event.metaKey)) return;
@@ -717,6 +758,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
     const doc = current;
     void doc.endMaskChange().then(() => {
       section.dataset.edits = String(Number(section.dataset.edits ?? 0) + 1);
+      if (tool !== "compare") useTool(tool);
       if (doc === current) afterEdit();
     });
   };
@@ -747,6 +789,8 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
     downloadButton.disabled = true;
     try {
       save(await exportDoc(doc, exportFormat), exportFileName(doc.name, exportFormat));
+      const out = geometryFor(doc, doc.settings.framing.kind === "preset" ? null : doc.requestedWidth)!;
+      track({ type: "download", format: exportFormat, size: sizeBucket(out.canvasWidth, out.canvasHeight) });
     } finally {
       downloadButton.disabled = false;
     }
@@ -762,6 +806,7 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
         entries.push({ name: names[i]!, data: new Uint8Array(await (await exportDoc(doc, exportFormat)).arrayBuffer()) });
       }
       save(new Blob([createZip(entries)], { type: "application/zip" }), "cutova-images.zip");
+      track({ type: "batch_zip", format: exportFormat });
       status.textContent = r.zipReady(ready.length);
     } finally {
       zipButton.disabled = false;
@@ -915,11 +960,20 @@ export function renderEditor({ dict, onNewImage }: EditorOptions): EditorHandle 
       doc.elapsedMs = result.elapsedMs;
       doc.refineMs = built.refineMs;
       doc.status = "done";
+      const family = result.engine.startsWith("webgpu") ? "webgpu" : "wasm";
+      track({
+        type: "cutout_done",
+        engine: family,
+        model: getModelForEngine(family).id,
+        time: timeBucket(result.elapsedMs + built.refineMs),
+        size: sizeBucket(full.width, full.height),
+      });
       if (doc === current) {
         show(doc);
         reveal();
       } else renderStrip();
     } catch (err) {
+      track({ type: "cutout_failed", ...(image ? { size: sizeBucket(image.width, image.height) } : {}) });
       image?.close();
       doc.status = "error";
       doc.errorMessage = r.error;

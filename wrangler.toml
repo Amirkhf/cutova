@@ -1,0 +1,12 @@
+# Cloudflare Pages (site statique dist/ + fonctions functions/) — voir DEPLOY.md.
+name = "cutova"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-10-01"
+
+# Base D1 des compteurs agrégés de la mesure d'utilisation anonyme.
+# `database_id` : à remplacer par l'identifiant affiché par `npx wrangler d1 create cutova-stats`.
+[[d1_databases]]
+binding = "DB"
+database_name = "cutova-stats"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "migrations"

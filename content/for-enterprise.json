@@ -27,7 +27,7 @@
         {
           "h2": "How Cutova helps",
           "paragraphs": [
-            "No account, no database, no back-end in this version: the website only delivers the app and the AI model. Your security team can check this with the browser's network tools."
+            "No account and no data about your users: the website delivers the app and the AI model, and only receives anonymous daily counts (for example the number of cutouts), never images or personal data. Your security team can check this with the browser's network tools."
           ]
         }
       ],
@@ -38,7 +38,7 @@
         },
         {
           "q": "Can we check that nothing is uploaded?",
-          "a": "Yes: open the network tab of your browser while you process an image. Only the page and model files are downloaded."
+          "a": "Yes: open the network tab of your browser while you process an image. You will see the page and model files being downloaded, and a few tiny anonymous counters being sent; never your image."
         }
       ]
     },
@@ -67,7 +67,7 @@
         {
           "h2": "Ce que Cutova apporte",
           "paragraphs": [
-            "Pas de compte, pas de base de données, pas de serveur applicatif dans cette version : le site ne fait que livrer l'application et le modèle d'IA. Votre équipe sécurité peut le vérifier avec les outils réseau du navigateur."
+            "Pas de compte et aucune donnée sur vos utilisateurs : le site livre l'application et le modèle d'IA, et ne reçoit que des totaux anonymes par jour (par exemple le nombre de détourages), jamais d'image ni de donnée personnelle. Votre équipe sécurité peut le vérifier avec les outils réseau du navigateur."
           ]
         }
       ],
@@ -78,7 +78,7 @@
         },
         {
           "q": "Pouvons-nous vérifier que rien n'est envoyé ?",
-          "a": "Oui : ouvrez l'onglet réseau de votre navigateur pendant le traitement d'une image. Seuls la page et les fichiers du modèle sont téléchargés."
+          "a": "Oui : ouvrez l'onglet réseau de votre navigateur pendant le traitement d'une image. Vous verrez la page et les fichiers du modèle se télécharger, et quelques petits compteurs anonymes partir ; jamais votre image."
         }
       ]
     }

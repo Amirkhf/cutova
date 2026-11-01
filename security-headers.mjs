@@ -72,5 +72,9 @@ ${lines(securityHeaders(modelOrigin))}
 
 /models/*
   Cache-Control: ${MODEL_CACHE_CONTROL}
+
+/api/*
+  Cache-Control: no-store
+  X-Robots-Tag: noindex
 `;
 }

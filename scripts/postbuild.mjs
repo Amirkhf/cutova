@@ -38,6 +38,8 @@ if (indexNowKey) {
   console.log(`[postbuild] fichier-clé IndexNow écrit : /${indexNowKey}.txt`);
 }
 await writeFile(path.join(DIST, "_headers"), cloudflareHeadersFile(originOf(modelBase)));
+// Cloudflare Pages Functions : seules les routes /api/* exécutent du code (le reste est statique).
+await writeFile(path.join(DIST, "_routes.json"), JSON.stringify({ version: 1, include: ["/api/*"], exclude: [] }, null, 2) + "\n");
 
 if (modelBase) {
   await rm(path.join(DIST, "models"), { recursive: true, force: true });

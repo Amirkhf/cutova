@@ -9,6 +9,8 @@
  * (constaté sur un vrai Mac et sur SwiftShader). On repart donc toujours d'un worker neuf.
  */
 import type { EngineKind, MainToWorkerMessage, WorkerToMainMessage } from "./protocol.ts";
+import { track } from "../analytics/analytics.ts";
+import { getModelForEngine } from "../model/model-source.ts";
 
 export interface InferenceResult {
   mask: Uint8Array;
@@ -100,6 +102,7 @@ class InferenceEngine {
         break;
       }
       case "fallback": {
+        track({ type: "engine_fallback", engine: "webgpu", model: getModelForEngine("webgpu").id });
         // WebGPU a échoué : worker neuf en WASM forcé, même requête, même image.
         console.warn(`[cutova] WebGPU a échoué (${message.reason}) : nouveau worker en WASM.`);
         this.forceWasm = true;

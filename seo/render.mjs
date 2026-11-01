@@ -192,6 +192,7 @@ export function renderArticlePage({ lang, head, brand, chrome, homePath, page, b
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     ${assets.css.map((href) => `<link rel="stylesheet" href="${esc(href)}" />`).join("\n    ")}
+    ${(assets.js ?? []).map((src) => `<script type="module" src="${esc(src)}"></script>`).join("\n    ")}
     ${head}
   </head>
   <body class="seo-page">
