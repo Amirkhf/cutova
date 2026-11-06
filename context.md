@@ -12,11 +12,31 @@ Bing, IndexNow) et tests sur matériel réel.
   `wrangler.toml`), `/api/event` vérifié (204, événement compté). `SITE_URL=https://cutova.app` et
   `VITE_MODEL_BASE_URL=https://models.cutova.app` dans `wrangler.toml` > `[vars]` : build `dist/`
   entièrement en `https://cutova.app` (canonical, hreflang, sitemaps, robots.txt, llms.txt), aucun fichier
-  > 25 Mio. **Bloqué : R2 pas encore activé sur le compte Cloudflare** (code 10042, demande une action
-  dans le tableau de bord) → bucket `cutova-models` pas encore créé, modèles pas encore envoyés, le
-  détourage ne fonctionne donc pas encore sur https://cutova.pages.dev (404 attendus sur
-  `models.cutova.app`). `/stats` et `/api/stats` pas encore protégés par Cloudflare Access (`ACCESS_*`
-  non définis → `/api/stats` ferme à 403 par défaut, comportement attendu).
+  > 25 Mio.
+  **R2 activé et opérationnel** : bucket `cutova-models`, domaine personnalisé `models.cutova.app` relié
+  (zone `cutova.app` déjà active sur Cloudflare), CORS (`deploy/r2-cors.json`, schéma `{"rules":[...]}` de
+  l'API R2 actuelle — l'ancien tableau au format S3 ne passe plus) limité à GET/HEAD et aux origines
+  `https://cutova.app`/`https://cutova.pages.dev`, 9 fichiers envoyés (BiRefNet_lite fp32+fp16 + aux,
+  ormbg fp32 + aux, 2 binaires onnxruntime-web), SHA-256 distant = local vérifié sur les deux poids testés.
+  **Écart volontaire vs la demande initiale** : `Cache-Control` reste `no-store, no-transform` (valeur
+  `MODEL_CACHE_CONTROL`, déjà choisie et motivée dans ce fichier pour éviter le bug Chromium
+  `ERR_CACHE_WRITE_FAILURE` à la double lecture) plutôt que `public, max-age=31536000, immutable` ; le
+  cache d'un an reste prévu **côté CDN** via une règle de cache Cloudflare (`MODEL_CDN_CACHE_CONTROL`,
+  DEPLOY.md section 4) — pas encore créée (API : jeton `wrangler` sans le scope `zone` nécessaire aux
+  Transform/Cache Rules, à faire à la main). `Cross-Origin-Resource-Policy: cross-origin` pas posé non
+  plus (même limite de scope) ; sans effet pratique ici, `COEP: require-corp` est déjà satisfait par une
+  réponse CORS valide (`Access-Control-Allow-Origin`) pour les requêtes `fetch()` du worker. Modèle WASM
+  envoyé = **ormbg** (celui réellement câblé dans `models.json`), pas MODNet (jamais intégré, voir
+  Décisions) : une demande antérieure nommant MODNet par erreur a été corrigée après confirmation.
+  `/stats` et `/api/stats` pas encore protégés par Cloudflare Access (`ACCESS_*` non définis →
+  `/api/stats` ferme à 403 par défaut, comportement attendu).
+  **Recette Playwright contre https://cutova.pages.dev** (`playwright.deployed.config.ts`,
+  `tests/e2e-deployed/`) : 3 photos de `tests/images/` (portrait cheveux, produit, voiture) en
+  `?engine=wasm` → vrai masque à chaque fois (`data-engine="wasm"`), p50 6,3 s / p95 6,4 s ; les mêmes 3
+  en `?webgpu=force` (flags SwiftShader) → échec WebGPU puis repli WASM propre à chaque fois (même
+  plafond de 10 storage buffers qu'en local, voir Décisions), p50 13,1 s / p95 14,3 s (repli + nouveau
+  worker inclus) ; aucune requête réseau hors `cutova.pages.dev`/`models.cutova.app` et aucun corps de
+  requête volumineux (vérifié sur les deux parcours) ; capture `docs/review/deployed-home.png`.
   Redéployer après un changement : `npm run build` (avec `SITE_URL`/`VITE_MODEL_BASE_URL` déjà fixés dans
   `wrangler.toml`, lus automatiquement par `npm run build` si exportés dans l'environnement, sinon
   `SITE_URL=https://cutova.app VITE_MODEL_BASE_URL=https://models.cutova.app npm run build`) puis
