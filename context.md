@@ -3,8 +3,8 @@
 ## État actuel
 **Prêt pour la production (2026-11-01)** — détourage 100 % navigateur ; seul code serveur : deux Pages
 Functions (`/api/event` compteurs anonymes agrégés dans D1, `/api/stats` protégé par Cloudflare Access).
-Reste à faire par l'éditeur : `DEPLOY.md` (domaine, champs légaux, R2, Pages, D1, Access, Search Console,
-Bing, IndexNow) et tests sur matériel réel.
+Reste à faire par l'éditeur : `DEPLOY.md` (domaine, R2, Pages, D1, Access, Search Console, Bing,
+IndexNow) et tests sur matériel réel. Champs légaux remplis (voir Décisions, 2026-11-06).
 - **(2026-11-06) Déploiement de test en cours** : domaine réel **cutova.app** (Cloudflare Registrar, pas
   encore relié au projet Pages — volontaire, l'éditeur doit tester avant). Projet Pages **`cutova`** créé
   et déployé (upload direct `wrangler pages deploy dist`, pas encore relié au dépôt Git) : URL de test
@@ -714,6 +714,28 @@ Bing, IndexNow) et tests sur matériel réel.
 - **(UI) `?engine=wasm`** (`engine-client.ts` > `forceWasmFromUrl`) : force WASM dès le chargement, sans
   même sonder WebGPU (contrairement à `?webgpu=force`, qui tente WebGPU malgré des limites
   insuffisantes) — pour les tests manuels sur un appareil sans GPU.
+
+- **(2026-11-06) Champs légaux remplis** (`content/legal-notice.json`, `privacy.json`, `terms.json`,
+  5 langues, `grep "À COMPLÉTER"` → vide) :
+  - Éditeur : **Amir Khelifi**, particulier, site publié à titre non professionnel ; pas de forme
+    juridique/immatriculation ("Non applicable (particulier)"). Adresse postale **non publiée** :
+    mention LCEN art. 6-III-2 (éditeur non professionnel ayant communiqué ses coordonnées à
+    l'hébergeur) à la place, dans les 5 langues.
+  - E-mail de contact unique, partout (mentions légales, confidentialité, CGU) : **contact@cutova.app**.
+    Responsable du traitement : Amir Khelifi (même adresse).
+  - Hébergeur : Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis (déjà présent
+    avant cette passe, vérifié sur `cloudflare.com/website-terms/` au moment de remplir le reste).
+    Contrat et région d'hébergement : Cloudflare Pages (site), Cloudflare R2 (modèles), Cloudflare D1
+    (statistiques anonymes, région Europe de l'Ouest).
+  - Conservation des journaux d'hébergement : **pas de durée inventée** — renvoi à la politique de
+    confidentialité de Cloudflare (`cloudflare.com/privacypolicy/`). La conservation de nos propres
+    données (compteurs D1 agrégés par jour, voir N1 plus haut) était déjà décrite dans le texte, hors
+    champ à remplir : aucune ligne par visiteur, adresse IP jamais enregistrée (utilisée quelques
+    secondes en mémoire pour la limite de débit), agrégats conservés indéfiniment (jamais de
+    suppression automatique).
+  - Droit applicable (CGU) : droit français, tribunaux français compétents, sous réserve des règles
+    impératives de protection du consommateur du pays de résidence du visiteur.
+  - Dernière mise à jour (confidentialité + CGU) : 2026-11-06.
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` dans l'ordre (champs légaux, domaine, R2, Pages + `SITE_URL`, D1,
