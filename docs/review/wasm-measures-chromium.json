@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-31T16:19:40.649Z",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.8078.4 Safari/537.36",
+  "crossOriginIsolated": true,
+  "hardwareConcurrency": 4,
+  "totalMs": 36412,
+  "measures": [
+    {
+      "photo": "hair-157920",
+      "run": 1,
+      "inferenceMs": 10087,
+      "clickToResultMs": 27413,
+      "iou": 0.9849,
+      "foreground": 0.517
+    },
+    {
+      "photo": "fur-12162",
+      "run": 2,
+      "inferenceMs": 3709,
+      "clickToResultMs": 3917,
+      "iou": 0.9978,
+      "foreground": 0.454
+    },
+    {
+      "photo": "product-6346",
+      "run": 3,
+      "inferenceMs": 4279,
+      "clickToResultMs": 4493,
+      "iou": 0.953,
+      "foreground": 0.227
+    }
+  ]
+}

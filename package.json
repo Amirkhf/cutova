@@ -5,10 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && tsc -p tsconfig.edge.json && vite build && node seo/build.mjs && node scripts/postbuild.mjs",
     "preview": "vite preview",
     "test": "vitest run --reporter=dot",
     "test:e2e": "playwright test",
+    "test:e2e:remote": "playwright test -c playwright.remote.config.ts",
+    "check:licenses": "node scripts/check-licenses.mjs",
+    "dev:edge": "wrangler d1 migrations apply cutova-stats --local && wrangler pages dev dist --port 8788",
+    "seed:demo": "node scripts/seed-demo-stats.mjs",
+    "check:audit": "npm audit --audit-level=high",
     "screenshots": "node tests/screenshots.mjs"
   },
   "devDependencies": {
@@ -16,7 +21,8 @@
     "@playwright/test": "^1.64.1",
     "typescript": "~7.0.2",
     "vite": "^8.3.5",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "wrangler": "^4.156.0"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

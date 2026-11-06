@@ -1,0 +1,276 @@
+{
+  "id": "how-to-transparent-png",
+  "type": "howto",
+  "locales": {
+    "en": {
+      "path": "/how-to/make-transparent-png/",
+      "title": "How to Make a PNG with a Transparent Background | Cutova",
+      "description": "Turn any photo into a PNG with a transparent background in a few seconds, for free and at full resolution. Learn which format keeps transparency.",
+      "h1": "How to make a PNG with a transparent background",
+      "navLabel": "Make a transparent PNG",
+      "intro": [
+        "A transparent PNG lets you place a subject on any slide, website or design without a white box around it. Here is how to make one from an ordinary photo."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Add your photo to Cutova",
+          "text": "Open Cutova and choose, drop or paste your image (PNG, JPEG, WebP, AVIF or GIF)."
+        },
+        {
+          "name": "Let the AI remove the background",
+          "text": "After a few seconds, the background is replaced by a checkerboard: that pattern means \"transparent\"."
+        },
+        {
+          "name": "Keep \"Transparent\" selected",
+          "text": "In the Background options, leave Transparent selected."
+        },
+        {
+          "name": "Choose PNG and download",
+          "text": "Select PNG as the format and click Download. You get a full-resolution PNG with an alpha channel."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "PNG, WebP or JPG: which keeps transparency?",
+          "paragraphs": [
+            "PNG and WebP both store transparency. PNG is the safest choice for compatibility (office documents, design tools). WebP makes smaller files and is ideal for websites.",
+            "JPG cannot store transparency. If you choose JPG, Cutova fills the background with white or the color you picked."
+          ]
+        },
+        {
+          "h2": "Why the checkerboard?",
+          "paragraphs": [
+            "Image editors show transparent areas as a gray and white checkerboard. It is not part of your image: once you place the PNG on a page, those areas show whatever is behind them."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "My PNG has a white background in another app. Why?",
+          "a": "Some apps show transparency as white, or you may have downloaded a JPG. Check that the file ends in .png and open it in an app that supports transparency."
+        },
+        {
+          "q": "Is the PNG compressed?",
+          "a": "PNG is lossless: no detail is lost. Files can be large for big photos; use WebP if you need a lighter file."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/tutoriels/creer-png-transparent/",
+      "title": "Comment créer un PNG à fond transparent | Cutova",
+      "description": "Transformez n'importe quelle photo en PNG à fond transparent en quelques secondes, gratuitement et en pleine résolution. Découvrez quel format garde la transparence.",
+      "h1": "Comment créer un PNG à fond transparent",
+      "navLabel": "Créer un PNG transparent",
+      "intro": [
+        "Un PNG transparent permet de poser un sujet sur une diapositive, un site ou une création sans cadre blanc autour. Voici comment en obtenir un à partir d'une photo ordinaire."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Ajoutez votre photo dans Cutova",
+          "text": "Ouvrez Cutova puis choisissez, déposez ou collez votre image (PNG, JPEG, WebP, AVIF ou GIF)."
+        },
+        {
+          "name": "Laissez l'IA retirer le fond",
+          "text": "Après quelques secondes, le fond est remplacé par un damier : ce motif signifie « transparent »."
+        },
+        {
+          "name": "Gardez « Transparent » sélectionné",
+          "text": "Dans les options de fond, laissez Transparent sélectionné."
+        },
+        {
+          "name": "Choisissez PNG et téléchargez",
+          "text": "Sélectionnez le format PNG et cliquez sur Télécharger. Vous obtenez un PNG en pleine résolution avec canal alpha."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "PNG, WebP ou JPG : lequel garde la transparence ?",
+          "paragraphs": [
+            "Le PNG et le WebP gardent tous deux la transparence. Le PNG est le choix le plus compatible (documents bureautiques, logiciels de création). Le WebP produit des fichiers plus légers, idéal pour le web.",
+            "Le JPG ne peut pas stocker de transparence. Si vous choisissez JPG, Cutova remplit le fond en blanc ou avec la couleur choisie."
+          ]
+        },
+        {
+          "h2": "Pourquoi un damier ?",
+          "paragraphs": [
+            "Les éditeurs d'images affichent les zones transparentes sous forme de damier gris et blanc. Il ne fait pas partie de l'image : une fois le PNG posé sur une page, ces zones laissent voir ce qu'il y a derrière."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Mon PNG a un fond blanc dans une autre application. Pourquoi ?",
+          "a": "Certaines applications affichent la transparence en blanc, ou vous avez peut-être téléchargé un JPG. Vérifiez que le fichier se termine par .png et ouvrez-le dans une application qui gère la transparence."
+        },
+        {
+          "q": "Le PNG est-il compressé ?",
+          "a": "Le PNG est sans perte : aucun détail n'est perdu. Les fichiers peuvent être lourds pour les grandes photos ; utilisez le WebP si vous avez besoin d'un fichier plus léger."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/tutoriais/criar-png-transparente/",
+      "title": "Como Criar um PNG com Fundo Transparente | Cutova",
+      "description": "Transforme qualquer foto em PNG com fundo transparente em poucos segundos, grátis e na resolução original. Veja qual formato mantém a transparência.",
+      "h1": "Como criar um PNG com fundo transparente",
+      "navLabel": "Criar um PNG transparente",
+      "intro": [
+        "Um PNG transparente permite colocar uma pessoa ou um objeto em qualquer slide, site ou arte sem aquele quadrado branco em volta. Veja como criar um a partir de uma foto comum."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Adicione sua foto no Cutova",
+          "text": "Abra o Cutova e escolha, arraste ou cole a imagem (PNG, JPEG, WebP, AVIF ou GIF)."
+        },
+        {
+          "name": "Deixe a IA remover o fundo",
+          "text": "Em poucos segundos, o fundo é substituído por um quadriculado: esse padrão significa \"transparente\"."
+        },
+        {
+          "name": "Mantenha \"Transparente\" selecionado",
+          "text": "Na aba Fundo, deixe a opção Transparente marcada."
+        },
+        {
+          "name": "Escolha PNG e baixe",
+          "text": "Selecione o formato PNG e clique em Baixar. Você recebe um PNG em resolução total com canal alfa."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "PNG, WebP ou JPG: qual mantém a transparência?",
+          "paragraphs": [
+            "PNG e WebP guardam a transparência. O PNG é a opção mais segura em compatibilidade (documentos de escritório, programas de design). O WebP gera arquivos menores e é ideal para sites.",
+            "O JPG não guarda transparência. Se você escolher JPG, o Cutova preenche o fundo com branco ou com a cor escolhida."
+          ]
+        },
+        {
+          "h2": "Por que aparece um quadriculado?",
+          "paragraphs": [
+            "Os editores de imagem mostram as áreas transparentes como um quadriculado cinza e branco. Ele não faz parte da imagem: quando você coloca o PNG em uma página, essas áreas mostram o que estiver atrás."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Meu PNG aparece com fundo branco em outro aplicativo. Por quê?",
+          "a": "Alguns aplicativos mostram a transparência como branco, ou talvez você tenha baixado um JPG. Confira se o arquivo termina em .png e abra em um aplicativo que suporte transparência."
+        },
+        {
+          "q": "O PNG é comprimido?",
+          "a": "O PNG não tem perda: nenhum detalhe é perdido. Para fotos grandes, o arquivo pode ficar pesado; use WebP se precisar de um arquivo mais leve."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/guias/crear-png-transparente/",
+      "title": "Cómo Hacer un PNG con Fondo Transparente | Cutova",
+      "description": "Convierte cualquier foto en un PNG con fondo transparente en segundos, gratis y a resolución completa. Descubre qué formato conserva la transparencia.",
+      "h1": "Cómo hacer un PNG con fondo transparente",
+      "navLabel": "Crear un PNG transparente",
+      "intro": [
+        "Un PNG transparente te permite colocar a una persona o un objeto en cualquier diapositiva, web o diseño sin un recuadro blanco alrededor. Así se crea uno a partir de una foto normal."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Añade tu foto a Cutova",
+          "text": "Abre Cutova y elige, arrastra o pega tu imagen (PNG, JPEG, WebP, AVIF o GIF)."
+        },
+        {
+          "name": "Deja que la IA quite el fondo",
+          "text": "En unos segundos, el fondo se sustituye por un damero: ese patrón significa \"transparente\"."
+        },
+        {
+          "name": "Deja \"Transparente\" seleccionado",
+          "text": "En la pestaña Fondo, deja marcada la opción Transparente."
+        },
+        {
+          "name": "Elige PNG y descarga",
+          "text": "Selecciona el formato PNG y haz clic en Descargar. Obtienes un PNG a resolución completa con canal alfa."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "PNG, WebP o JPG: ¿cuál conserva la transparencia?",
+          "paragraphs": [
+            "PNG y WebP guardan la transparencia. PNG es la opción más segura por compatibilidad (documentos de oficina, programas de diseño). WebP genera archivos más ligeros y es ideal para webs.",
+            "JPG no puede guardar transparencia. Si eliges JPG, Cutova rellena el fondo con blanco o con el color que hayas elegido."
+          ]
+        },
+        {
+          "h2": "¿Por qué aparece un damero?",
+          "paragraphs": [
+            "Los editores de imagen muestran las zonas transparentes como un damero gris y blanco. No forma parte de tu imagen: cuando colocas el PNG en una página, esas zonas dejan ver lo que haya detrás."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Mi PNG sale con fondo blanco en otra aplicación. ¿Por qué?",
+          "a": "Algunas aplicaciones muestran la transparencia en blanco, o quizá descargaste un JPG. Comprueba que el archivo termina en .png y ábrelo en una aplicación compatible con transparencias."
+        },
+        {
+          "q": "¿El PNG está comprimido?",
+          "a": "PNG es un formato sin pérdida: no se pierde ningún detalle. Con fotos grandes los archivos pueden pesar bastante; usa WebP si necesitas un archivo más ligero."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/panduan/cara-membuat-png-transparan/",
+      "title": "Cara Membuat PNG dengan Background Transparan | Cutova",
+      "description": "Ubah foto apa pun menjadi PNG dengan background transparan dalam beberapa detik, gratis dan dalam resolusi penuh. Ketahui format mana yang menyimpan transparansi.",
+      "h1": "Cara membuat PNG dengan background transparan",
+      "navLabel": "Buat PNG transparan",
+      "intro": [
+        "PNG transparan memungkinkan Anda menaruh objek di slide, situs web, atau desain apa pun tanpa kotak putih di sekelilingnya. Begini cara membuatnya dari foto biasa."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Tambahkan foto ke Cutova",
+          "text": "Buka Cutova lalu pilih, seret, atau tempel gambar Anda (PNG, JPEG, WebP, AVIF, atau GIF)."
+        },
+        {
+          "name": "Biarkan AI menghapus background",
+          "text": "Dalam beberapa detik, background diganti pola kotak-kotak: pola itu berarti \"transparan\"."
+        },
+        {
+          "name": "Biarkan \"Transparan\" tetap dipilih",
+          "text": "Di tab Background, biarkan opsi Transparan tetap terpilih."
+        },
+        {
+          "name": "Pilih PNG lalu unduh",
+          "text": "Pilih format PNG dan klik Unduh. Anda mendapat PNG resolusi penuh dengan saluran alfa."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "PNG, WebP, atau JPG: mana yang menyimpan transparansi?",
+          "paragraphs": [
+            "PNG dan WebP sama-sama menyimpan transparansi. PNG paling aman untuk kompatibilitas (dokumen kantor, aplikasi desain). WebP menghasilkan file lebih kecil dan cocok untuk situs web.",
+            "JPG tidak bisa menyimpan transparansi. Jika memilih JPG, Cutova mengisi background dengan putih atau warna yang Anda pilih."
+          ]
+        },
+        {
+          "h2": "Kenapa ada pola kotak-kotak?",
+          "paragraphs": [
+            "Aplikasi edit gambar menampilkan area transparan sebagai kotak-kotak abu-abu dan putih. Pola itu bukan bagian dari gambar: saat PNG ditempatkan di halaman, area itu akan menampilkan apa pun yang ada di belakangnya."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "PNG saya terlihat ber-background putih di aplikasi lain. Kenapa?",
+          "a": "Beberapa aplikasi menampilkan transparansi sebagai putih, atau mungkin yang terunduh adalah JPG. Pastikan nama file berakhiran .png dan buka di aplikasi yang mendukung transparansi."
+        },
+        {
+          "q": "Apakah PNG dikompresi?",
+          "a": "PNG bersifat lossless: tidak ada detail yang hilang. Untuk foto besar, ukuran file bisa cukup besar; gunakan WebP jika butuh file yang lebih ringan."
+        }
+      ]
+    }
+  }
+}

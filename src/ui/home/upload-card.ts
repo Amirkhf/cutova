@@ -1,62 +1,41 @@
 import type { Dictionary } from "../../i18n/index.ts";
-import { MAX_FILE_SIZE_BYTES, validateImage, type ValidationError } from "../../core/validate-image/validate-image.ts";
-import { ABSOLUTE_MAX_DECODE_PIXELS } from "../../core/limits/device-limits.ts";
+import { validateImage } from "../../core/validate-image/validate-image.ts";
 import { emitImageSelected, type ImageSource } from "./events.ts";
+import { messageForError } from "./error-messages.ts";
 import { inferenceEngine } from "../../core/inference/engine-client.ts";
-import { subjectOnBackgroundMarkup, subjectPathData, uploadArrowIconMarkup, type ExampleSubject } from "./visuals.ts";
+import { uploadArrowIconMarkup } from "./visuals.ts";
 
 const ACCEPTED_MIME =
   "image/png,image/jpeg,image/webp,image/avif,image/gif,image/heic,image/heif";
 
-interface ExampleSpec {
-  shape: ExampleSubject;
-  bg: string;
-  fg: string;
+/** Vraies photos libres (Pexels), optimisées dans public/examples/ — sources : public/examples/SOURCES.md. */
+const EXAMPLES = ["person", "product", "animal", "car"] as const;
+type ExampleId = (typeof EXAMPLES)[number];
+
+
+/** Télécharge la photo d'exemple (même origine) et la transforme en File, comme un envoi normal. */
+async function exampleToFile(id: ExampleId): Promise<File> {
+  const response = await fetch(`/examples/${id}.webp`);
+  if (!response.ok) throw new Error(`Exemple introuvable (${response.status})`);
+  const blob = await response.blob();
+  return new File([blob], `example-${id}.webp`, { type: "image/webp" });
 }
 
-const EXAMPLES: ExampleSpec[] = [
-  { shape: "person", bg: "#ffb27a", fg: "#5c3a1e" },
-  { shape: "sneaker", bg: "#9ad1c8", fg: "#17433c" },
-  { shape: "cat", bg: "#f2c744", fg: "#4a3a06" },
-  { shape: "car", bg: "#c6b7f2", fg: "#372a5c" },
-];
-
-function messageForError(error: ValidationError, dict: Dictionary): string {
-  switch (error.code) {
-    case "unsupported-format":
-      return dict.errors.unsupportedFormat(error.format);
-    case "file-too-large":
-      return dict.errors.fileTooLarge(Math.round(MAX_FILE_SIZE_BYTES / (1024 * 1024)));
-    case "dimensions-too-large":
-      return dict.errors.dimensionsTooLarge(Math.round(ABSOLUTE_MAX_DECODE_PIXELS / 1_000_000));
-    case "unreadable":
-      return dict.errors.generic;
-  }
-}
-
-/** Dessine un exemple directement en canvas (évite un aller-retour SVG → image → blob). */
-async function exampleToFile(spec: ExampleSpec, index: number): Promise<File> {
-  const canvas = document.createElement("canvas");
-  canvas.width = 512;
-  canvas.height = 512;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) throw new Error("2D canvas context unavailable");
-
-  ctx.fillStyle = spec.bg;
-  ctx.fillRect(0, 0, 512, 512);
-  ctx.fillStyle = spec.fg;
-
-  // Les chemins sont définis en viewBox 200x200 (voir visuals.ts) ; on les mappose
-  // au centre du canvas 512x512 via une mise à l'échelle.
-  ctx.save();
-  ctx.translate(56, 56);
-  ctx.scale(2, 2);
-  ctx.fill(new Path2D(subjectPathData(spec.shape)));
-  ctx.restore();
-
-  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
-  if (!blob) throw new Error("canvas.toBlob returned null");
-  return new File([blob], `example-${index + 1}.png`, { type: "image/png" });
+/** Vignette en AVIF (plus léger) avec repli WebP. */
+function exampleThumbnail(id: ExampleId): HTMLPictureElement {
+  const picture = document.createElement("picture");
+  const avif = document.createElement("source");
+  avif.type = "image/avif";
+  avif.srcset = `/examples/${id}-thumb.avif`;
+  const img = document.createElement("img");
+  img.src = `/examples/${id}-thumb.webp`;
+  img.alt = "";
+  img.width = 120;
+  img.height = 120;
+  img.loading = "lazy";
+  img.decoding = "async";
+  picture.append(avif, img);
+  return picture;
 }
 
 export interface UploadCardOptions {
@@ -107,6 +86,7 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
   fileInput.type = "file";
   fileInput.className = "sr-only";
   fileInput.accept = ACCEPTED_MIME;
+  fileInput.multiple = true;
   fileInput.tabIndex = -1;
   fileInput.setAttribute("aria-hidden", "true");
 
@@ -180,7 +160,7 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
       status.textContent = dict.upload.imageDownscaled(result.resizeTo.width, result.resizeTo.height);
     }
     showSelected(file);
-    emitImageSelected({ file, source });
+    emitImageSelected({ file, source, resizeTo: result.resizeTo });
     onFileAccepted(file);
   }
 
@@ -193,19 +173,26 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
     fileInput.value = "";
     showIdle();
   });
+  // Plusieurs fichiers possibles : chacun devient une image du lot (éditeur, bande de miniatures).
+  const handleAll = async (files: File[], source: ImageSource) => {
+    for (const file of files) await handleCandidate(file, source);
+  };
   fileInput.addEventListener("change", () => {
-    const file = fileInput.files?.[0];
-    if (file) void handleCandidate(file, "picker");
+    const files = Array.from(fileInput.files ?? []);
+    fileInput.value = "";
+    void handleAll(files, "picker");
   });
 
-  for (const [index, spec] of EXAMPLES.entries()) {
+  for (const [index, id] of EXAMPLES.entries()) {
     const exampleButton = document.createElement("button");
     exampleButton.type = "button";
     exampleButton.className = "upload-example";
     exampleButton.setAttribute("aria-label", dict.upload.exampleAlt(index + 1));
-    exampleButton.innerHTML = subjectOnBackgroundMarkup(spec.shape, spec.bg, spec.fg);
+    exampleButton.append(exampleThumbnail(id));
     exampleButton.addEventListener("click", () => {
-      void exampleToFile(spec, index).then((file) => handleCandidate(file, "example"));
+      void exampleToFile(id)
+        .then((file) => handleCandidate(file, "example"))
+        .catch(() => (status.textContent = dict.errors.generic));
     });
     examplesList.append(exampleButton);
   }
@@ -238,21 +225,19 @@ export function renderUploadCard({ dict, initialFile, onFileAccepted }: UploadCa
     dragDepth = 0;
     document.body.classList.remove("is-drag-active");
     dropHint.textContent = dict.upload.dropHint;
-    const file = event.dataTransfer?.files?.[0];
-    if (file) void handleCandidate(file, "drop");
+    void handleAll(Array.from(event.dataTransfer?.files ?? []), "drop");
   };
   const onPaste = (event: ClipboardEvent) => {
     const items = event.clipboardData?.items;
     if (!items) return;
+    const files: File[] = [];
     for (const item of items) {
       if (item.kind === "file" && item.type.startsWith("image/")) {
         const file = item.getAsFile();
-        if (file) {
-          void handleCandidate(file, "paste");
-          break;
-        }
+        if (file) files.push(file);
       }
     }
+    void handleAll(files, "paste");
   };
 
   window.addEventListener("dragenter", onDragEnter);

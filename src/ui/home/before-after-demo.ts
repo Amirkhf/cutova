@@ -1,5 +1,16 @@
 import type { Dictionary } from "../../i18n/index.ts";
-import { dragHandleIconMarkup, demoAfterMarkup, demoBeforeMarkup } from "./visuals.ts";
+import { dragHandleIconMarkup } from "./visuals.ts";
+
+/** Vraie photo (Pexels) détourée par notre modèle : public/showcase/, sources dans public/examples/SOURCES.md. */
+function demoImage(src: string, alt: string): HTMLImageElement {
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = alt;
+  img.width = 480;
+  img.height = 720;
+  img.decoding = "async";
+  return img;
+}
 
 export function renderBeforeAfterDemo(dict: Dictionary): HTMLElement {
   const section = document.createElement("section");
@@ -16,7 +27,7 @@ export function renderBeforeAfterDemo(dict: Dictionary): HTMLElement {
 
   const before = document.createElement("div");
   before.className = "home-demo-layer home-demo-before";
-  before.innerHTML = demoBeforeMarkup("#ffb27a", "#5c3a1e");
+  before.append(demoImage("/showcase/demo-before.webp", dict.demo.beforeAlt));
   const beforeBadge = document.createElement("span");
   beforeBadge.className = "home-demo-badge home-demo-badge-before";
   beforeBadge.textContent = dict.demo.beforeLabel;
@@ -24,7 +35,7 @@ export function renderBeforeAfterDemo(dict: Dictionary): HTMLElement {
 
   const after = document.createElement("div");
   after.className = "home-demo-layer home-demo-after checkerboard";
-  after.innerHTML = demoAfterMarkup("#5c3a1e");
+  after.append(demoImage("/showcase/demo-after.webp", dict.demo.afterAlt));
   const afterBadge = document.createElement("span");
   afterBadge.className = "home-demo-badge home-demo-badge-after";
   afterBadge.textContent = dict.demo.afterLabel;

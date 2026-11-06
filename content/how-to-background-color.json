@@ -1,0 +1,276 @@
+{
+  "id": "how-to-background-color",
+  "type": "howto",
+  "locales": {
+    "en": {
+      "path": "/how-to/change-photo-background-color/",
+      "title": "How to Change a Photo's Background to White or Any Color | Cutova",
+      "description": "Put your photo on a pure white or colored background in seconds: ideal for product listings, profile pictures and ID-style photos. Free, no upload.",
+      "h1": "How to change a photo's background to white or any color",
+      "navLabel": "Change the background color",
+      "intro": [
+        "Marketplaces often ask for product photos on a white background, and a colored background makes a profile picture stand out. You can do both in a few seconds."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Add your photo to Cutova",
+          "text": "Open Cutova and choose, drop or paste the photo."
+        },
+        {
+          "name": "Wait for the cutout",
+          "text": "The AI removes the original background automatically."
+        },
+        {
+          "name": "Pick a background",
+          "text": "Under Background, choose White, or choose Color and pick any color with the color picker. The preview updates right away."
+        },
+        {
+          "name": "Download",
+          "text": "Choose JPG for the smallest file, or PNG for lossless quality, then click Download."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Pure white for product photos",
+          "paragraphs": [
+            "Many online marketplaces recommend or require a pure white background (#FFFFFF) for the main product image. Cutova's White option uses exactly that value, at the full resolution of your photo.",
+            "Always check the current image rules of the marketplace you sell on, as they change over time."
+          ]
+        },
+        {
+          "h2": "Brand colors and profile pictures",
+          "paragraphs": [
+            "Use the Color option with your brand color for a consistent look across a team page, or a soft color behind a portrait for social media."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can I use a photo as the new background?",
+          "a": "Yes. Under Background, choose Photo to use one of the free background photos, or Blur to keep the original background, blurred, behind the subject."
+        },
+        {
+          "q": "Which format should I choose with a colored background?",
+          "a": "JPG gives the smallest file and is accepted everywhere. PNG keeps every detail. Both use the background color you picked."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/tutoriels/changer-couleur-fond-photo/",
+      "title": "Comment mettre une photo sur fond blanc ou de couleur | Cutova",
+      "description": "Placez votre photo sur un fond blanc pur ou coloré en quelques secondes : idéal pour les annonces produits, les photos de profil et les photos type identité. Gratuit, sans envoi.",
+      "h1": "Comment mettre une photo sur fond blanc ou de couleur",
+      "navLabel": "Changer la couleur du fond",
+      "intro": [
+        "Les places de marché demandent souvent des photos produits sur fond blanc, et un fond coloré fait ressortir une photo de profil. Les deux se font en quelques secondes."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Ajoutez votre photo dans Cutova",
+          "text": "Ouvrez Cutova puis choisissez, déposez ou collez la photo."
+        },
+        {
+          "name": "Attendez le détourage",
+          "text": "L'IA retire automatiquement l'arrière-plan d'origine."
+        },
+        {
+          "name": "Choisissez un fond",
+          "text": "Dans Fond, choisissez Blanc, ou Couleur puis n'importe quelle couleur avec le sélecteur. L'aperçu se met à jour tout de suite."
+        },
+        {
+          "name": "Téléchargez",
+          "text": "Choisissez JPG pour le fichier le plus léger, ou PNG pour une qualité sans perte, puis cliquez sur Télécharger."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Blanc pur pour les photos produits",
+          "paragraphs": [
+            "Beaucoup de places de marché recommandent ou exigent un fond blanc pur (#FFFFFF) pour l'image principale d'un produit. L'option Blanc de Cutova utilise exactement cette valeur, à la pleine résolution de votre photo.",
+            "Vérifiez toujours les règles d'images actuelles de la plateforme sur laquelle vous vendez : elles évoluent."
+          ]
+        },
+        {
+          "h2": "Couleurs de marque et photos de profil",
+          "paragraphs": [
+            "Utilisez l'option Couleur avec la couleur de votre marque pour une page d'équipe homogène, ou une couleur douce derrière un portrait pour les réseaux sociaux."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Puis-je utiliser une photo comme nouveau fond ?",
+          "a": "Oui. Dans l'onglet Arrière-plan, choisissez Photo pour utiliser l'une des photos de fond libres, ou Flou pour garder le fond d'origine, flouté, derrière le sujet."
+        },
+        {
+          "q": "Quel format choisir avec un fond coloré ?",
+          "a": "Le JPG donne le fichier le plus léger et est accepté partout. Le PNG garde tous les détails. Les deux utilisent la couleur de fond choisie."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/tutoriais/mudar-cor-do-fundo-da-foto/",
+      "title": "Como Colocar Fundo Branco ou de Qualquer Cor em uma Foto | Cutova",
+      "description": "Coloque sua foto em um fundo branco puro ou colorido em segundos: ideal para anúncios de produtos, foto de perfil e foto 3x4. Grátis, sem upload.",
+      "h1": "Como mudar o fundo de uma foto para branco ou qualquer cor",
+      "navLabel": "Mudar a cor do fundo",
+      "intro": [
+        "Marketplaces costumam pedir fotos de produto com fundo branco, e um fundo colorido faz a foto de perfil se destacar. Dá para fazer as duas coisas em poucos segundos."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Adicione sua foto no Cutova",
+          "text": "Abra o Cutova e escolha, arraste ou cole a foto."
+        },
+        {
+          "name": "Espere o recorte",
+          "text": "A IA remove o fundo original automaticamente."
+        },
+        {
+          "name": "Escolha um fundo",
+          "text": "Na aba Fundo, escolha Branco, ou escolha Cor e selecione qualquer cor no seletor. A prévia se atualiza na hora."
+        },
+        {
+          "name": "Baixe",
+          "text": "Escolha JPG para o arquivo mais leve, ou PNG para qualidade sem perda, e clique em Baixar."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Branco puro para fotos de produto",
+          "paragraphs": [
+            "Muitos marketplaces recomendam ou exigem um fundo branco puro (#FFFFFF) na foto principal do produto. A opção Branco do Cutova usa exatamente esse valor, na resolução total da sua foto.",
+            "Confira sempre as regras de imagem atuais do marketplace onde você vende, porque elas mudam com o tempo."
+          ]
+        },
+        {
+          "h2": "Cores da marca e fotos de perfil",
+          "paragraphs": [
+            "Use a opção Cor com a cor da sua marca para deixar a página da equipe com um visual uniforme, ou uma cor suave atrás de um retrato para as redes sociais."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Posso usar uma foto como novo fundo?",
+          "a": "Sim. Na aba Fundo, escolha Foto para usar uma das fotos de fundo grátis, ou Desfoque para manter o fundo original desfocado atrás do objeto."
+        },
+        {
+          "q": "Qual formato escolher com fundo colorido?",
+          "a": "O JPG gera o arquivo mais leve e é aceito em todo lugar. O PNG preserva todos os detalhes. Os dois usam a cor de fundo escolhida."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/guias/cambiar-color-de-fondo-de-una-foto/",
+      "title": "Cómo Poner el Fondo de una Foto Blanco o de Cualquier Color | Cutova",
+      "description": "Pon tu foto sobre un fondo blanco puro o de color en segundos: ideal para fichas de producto, fotos de perfil y fotos tipo carné. Gratis, sin subir nada.",
+      "h1": "Cómo cambiar el fondo de una foto a blanco o a cualquier color",
+      "navLabel": "Cambiar el color de fondo",
+      "intro": [
+        "Los marketplaces suelen pedir fotos de producto con fondo blanco, y un fondo de color hace que una foto de perfil destaque. Puedes hacer ambas cosas en unos segundos."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Añade tu foto a Cutova",
+          "text": "Abre Cutova y elige, arrastra o pega la foto."
+        },
+        {
+          "name": "Espera el recorte",
+          "text": "La IA quita el fondo original automáticamente."
+        },
+        {
+          "name": "Elige un fondo",
+          "text": "En la pestaña Fondo, elige Blanco, o elige Color y selecciona cualquier color en el selector. La vista previa se actualiza al instante."
+        },
+        {
+          "name": "Descarga",
+          "text": "Elige JPG para el archivo más ligero, o PNG para una calidad sin pérdida, y haz clic en Descargar."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Blanco puro para fotos de producto",
+          "paragraphs": [
+            "Muchos marketplaces recomiendan o exigen un fondo blanco puro (#FFFFFF) en la imagen principal del producto. La opción Blanco de Cutova usa exactamente ese valor, a la resolución completa de tu foto.",
+            "Revisa siempre las normas de imagen actuales del marketplace en el que vendes, porque cambian con el tiempo."
+          ]
+        },
+        {
+          "h2": "Colores de marca y fotos de perfil",
+          "paragraphs": [
+            "Usa la opción Color con el color de tu marca para dar un aspecto uniforme a la página del equipo, o un color suave detrás de un retrato para redes sociales."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Puedo usar una foto como fondo nuevo?",
+          "a": "Sí. En la pestaña Fondo, elige Foto para usar una de las fotos de fondo gratuitas, o Desenfoque para mantener el fondo original desenfocado detrás del sujeto."
+        },
+        {
+          "q": "¿Qué formato elijo con un fondo de color?",
+          "a": "JPG da el archivo más ligero y se acepta en todas partes. PNG conserva todos los detalles. Ambos usan el color de fondo que hayas elegido."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/panduan/cara-ganti-warna-background-foto/",
+      "title": "Cara Mengganti Background Foto Jadi Putih atau Warna Lain | Cutova",
+      "description": "Ganti background foto menjadi putih bersih atau warna lain dalam hitungan detik: cocok untuk foto produk marketplace, foto profil, dan pas foto. Gratis, tanpa upload.",
+      "h1": "Cara mengganti background foto menjadi putih atau warna apa pun",
+      "navLabel": "Ganti warna background",
+      "intro": [
+        "Marketplace sering meminta foto produk dengan background putih, dan background berwarna membuat foto profil lebih menonjol. Keduanya bisa dilakukan dalam beberapa detik."
+      ],
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Tambahkan foto ke Cutova",
+          "text": "Buka Cutova lalu pilih, seret, atau tempel foto."
+        },
+        {
+          "name": "Tunggu hasil potongan",
+          "text": "AI menghapus background asli secara otomatis."
+        },
+        {
+          "name": "Pilih background",
+          "text": "Di tab Background, pilih Putih, atau pilih Warna lalu tentukan warna apa saja di pemilih warna. Pratinjau langsung berubah."
+        },
+        {
+          "name": "Unduh",
+          "text": "Pilih JPG untuk file paling ringan, atau PNG untuk kualitas tanpa kompresi yang merusak, lalu klik Unduh."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Putih bersih untuk foto produk",
+          "paragraphs": [
+            "Banyak marketplace menyarankan atau mewajibkan background putih bersih (#FFFFFF) untuk foto utama produk. Opsi Putih di Cutova memakai nilai persis itu, dalam resolusi penuh foto Anda.",
+            "Selalu cek aturan gambar terbaru di marketplace tempat Anda berjualan, karena aturannya bisa berubah."
+          ]
+        },
+        {
+          "h2": "Warna brand dan foto profil",
+          "paragraphs": [
+            "Gunakan opsi Warna dengan warna brand Anda agar foto tim terlihat seragam, atau warna lembut di belakang potret untuk media sosial."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Bisakah memakai foto sebagai background baru?",
+          "a": "Bisa. Di tab Background, pilih Foto untuk memakai salah satu foto background gratis, atau Blur untuk mempertahankan background asli dalam keadaan buram di belakang objek."
+        },
+        {
+          "q": "Format apa yang sebaiknya dipilih untuk background berwarna?",
+          "a": "JPG menghasilkan file paling ringan dan diterima di mana saja. PNG mempertahankan semua detail. Keduanya memakai warna background yang Anda pilih."
+        }
+      ]
+    }
+  }
+}

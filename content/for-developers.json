@@ -1,0 +1,201 @@
+{
+  "id": "for-developers",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/developers/",
+      "title": "In-Browser Background Removal for Developers | Cutova",
+      "description": "How Cutova removes backgrounds entirely in the browser with open models (MIT, Apache-2.0), WebGPU and WebAssembly. No API yet.",
+      "h1": "Background removal in the browser, explained for developers",
+      "card": {
+        "title": "Developers",
+        "text": "Open models, in-browser processing, and what is coming next."
+      },
+      "intro": [
+        "Cutova runs open segmentation models directly in the browser with ONNX Runtime Web: WebGPU when the graphics card allows it, WebAssembly otherwise. There is no server and no API key."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Preparing images for a project without uploading assets",
+            "Batch exports as a ZIP of transparent PNGs",
+            "Checking what in-browser AI can do on your hardware"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "Models: BiRefNet_lite (MIT) on WebGPU and ormbg (Apache-2.0) on WebAssembly. Pages are cross-origin isolated for multithreaded WebAssembly, and a strict Content Security Policy prevents any upload. A public API is planned but not available yet."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is there an API?",
+          "a": "Not yet. It is planned; today Cutova is a web app."
+        },
+        {
+          "q": "Which browsers are supported?",
+          "a": "Recent Chrome, Edge, Firefox and Safari. WebGPU is used only when the graphics card supports what the model needs."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/developpeurs/",
+      "title": "Détourage dans le navigateur, pour les développeurs | Cutova",
+      "description": "Comment Cutova supprime l'arrière-plan entièrement dans le navigateur avec des modèles ouverts (MIT, Apache-2.0), WebGPU et WebAssembly. Pas encore d'API.",
+      "h1": "Le détourage dans le navigateur, expliqué aux développeurs",
+      "card": {
+        "title": "Développeurs",
+        "text": "Modèles ouverts, traitement dans le navigateur, et la suite."
+      },
+      "intro": [
+        "Cutova exécute des modèles de segmentation ouverts directement dans le navigateur avec ONNX Runtime Web : WebGPU quand la carte graphique le permet, WebAssembly sinon. Il n'y a ni serveur ni clé d'API."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Préparer des images pour un projet sans envoyer les fichiers",
+            "Exports par lot en ZIP de PNG transparents",
+            "Mesurer ce que l'IA dans le navigateur donne sur votre matériel"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Modèles : BiRefNet_lite (MIT) en WebGPU et ormbg (Apache-2.0) en WebAssembly. Les pages sont isolées (cross-origin) pour le WebAssembly multithread, et une politique de sécurité du contenu stricte empêche tout envoi. Une API publique est prévue mais pas encore disponible."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Y a-t-il une API ?",
+          "a": "Pas encore. Elle est prévue ; aujourd'hui Cutova est une application web."
+        },
+        {
+          "q": "Quels navigateurs sont pris en charge ?",
+          "a": "Chrome, Edge, Firefox et Safari récents. WebGPU n'est utilisé que si la carte graphique offre ce dont le modèle a besoin."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/para/desenvolvedores/",
+      "title": "Remoção de Fundo no Navegador para Desenvolvedores | Cutova",
+      "description": "Como o Cutova remove fundos inteiramente no navegador com modelos abertos (MIT, Apache-2.0), WebGPU e WebAssembly. Ainda sem API.",
+      "h1": "Remoção de fundo no navegador, explicada para desenvolvedores",
+      "card": {
+        "title": "Desenvolvedores",
+        "text": "Modelos abertos, processamento no navegador e o que vem por aí."
+      },
+      "intro": [
+        "O Cutova roda modelos de segmentação abertos direto no navegador com o ONNX Runtime Web: WebGPU quando a placa de vídeo permite, WebAssembly nos outros casos. Não há servidor nem chave de API."
+      ],
+      "sections": [
+        {
+          "h2": "Usos comuns",
+          "list": [
+            "Preparar imagens para um projeto sem enviar arquivos",
+            "Exportação em lote como ZIP de PNGs transparentes",
+            "Ver o que a IA no navegador consegue fazer no seu hardware"
+          ]
+        },
+        {
+          "h2": "Como o Cutova ajuda",
+          "paragraphs": [
+            "Modelos: BiRefNet_lite (MIT) em WebGPU e ormbg (Apache-2.0) em WebAssembly. As páginas têm isolamento entre origens (cross-origin isolation) para o WebAssembly multithread, e uma Content Security Policy rígida impede qualquer upload. Uma API pública está nos planos, mas ainda não está disponível."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Existe uma API?",
+          "a": "Ainda não. Ela está nos planos; hoje o Cutova é um aplicativo web."
+        },
+        {
+          "q": "Quais navegadores são compatíveis?",
+          "a": "Versões recentes do Chrome, Edge, Firefox e Safari. O WebGPU só é usado quando a placa de vídeo suporta o que o modelo precisa."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/para/desarrolladores/",
+      "title": "Quitar Fondos en el Navegador, para Desarrolladores | Cutova",
+      "description": "Cómo Cutova quita fondos íntegramente en el navegador con modelos abiertos (MIT, Apache-2.0), WebGPU y WebAssembly. Sin API por ahora.",
+      "h1": "Quitar fondos en el navegador, explicado para desarrolladores",
+      "card": {
+        "title": "Desarrolladores",
+        "text": "Modelos abiertos, procesamiento en el navegador y lo que viene."
+      },
+      "intro": [
+        "Cutova ejecuta modelos de segmentación abiertos directamente en el navegador con ONNX Runtime Web: WebGPU cuando la tarjeta gráfica lo permite y WebAssembly en los demás casos. No hay servidor ni clave de API."
+      ],
+      "sections": [
+        {
+          "h2": "Usos habituales",
+          "list": [
+            "Preparar imágenes para un proyecto sin subir archivos",
+            "Exportaciones por lotes en un ZIP de PNG transparentes",
+            "Comprobar lo que puede hacer la IA en el navegador con tu equipo"
+          ]
+        },
+        {
+          "h2": "Cómo te ayuda Cutova",
+          "paragraphs": [
+            "Modelos: BiRefNet_lite (MIT) en WebGPU y ormbg (Apache-2.0) en WebAssembly. Las páginas están aisladas entre orígenes (cross-origin isolation) para el WebAssembly multihilo, y una Content Security Policy estricta impide cualquier subida. Hay una API pública prevista, pero todavía no está disponible."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Hay una API?",
+          "a": "Todavía no. Está prevista; hoy Cutova es una aplicación web."
+        },
+        {
+          "q": "¿Qué navegadores son compatibles?",
+          "a": "Las versiones recientes de Chrome, Edge, Firefox y Safari. WebGPU solo se usa cuando la tarjeta gráfica admite lo que necesita el modelo."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/untuk/developer/",
+      "title": "Hapus Background di Browser untuk Developer | Cutova",
+      "description": "Cara Cutova menghapus background sepenuhnya di browser dengan model terbuka (MIT, Apache-2.0), WebGPU, dan WebAssembly. Belum ada API.",
+      "h1": "Penghapusan background di browser, dijelaskan untuk developer",
+      "card": {
+        "title": "Developer",
+        "text": "Model terbuka, pemrosesan di browser, dan rencana berikutnya."
+      },
+      "intro": [
+        "Cutova menjalankan model segmentasi terbuka langsung di browser dengan ONNX Runtime Web: WebGPU jika kartu grafis mendukung, WebAssembly jika tidak. Tidak ada server dan tidak perlu API key."
+      ],
+      "sections": [
+        {
+          "h2": "Kegunaan umum",
+          "list": [
+            "Menyiapkan gambar untuk proyek tanpa mengunggah aset",
+            "Ekspor massal berupa ZIP berisi PNG transparan",
+            "Menguji kemampuan AI di browser pada perangkat Anda"
+          ]
+        },
+        {
+          "h2": "Bagaimana Cutova membantu",
+          "paragraphs": [
+            "Model: BiRefNet_lite (MIT) di WebGPU dan ormbg (Apache-2.0) di WebAssembly. Halaman memakai cross-origin isolation agar WebAssembly bisa multithread, dan Content Security Policy yang ketat mencegah upload apa pun. API publik sedang direncanakan, tetapi belum tersedia."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Apakah ada API?",
+          "a": "Belum. API sedang direncanakan; saat ini Cutova adalah aplikasi web."
+        },
+        {
+          "q": "Browser apa saja yang didukung?",
+          "a": "Chrome, Edge, Firefox, dan Safari versi terbaru. WebGPU hanya dipakai jika kartu grafis mendukung kebutuhan model."
+        }
+      ]
+    }
+  }
+}

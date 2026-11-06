@@ -1,11 +1,12 @@
 import type { Dictionary, Locale } from "../../i18n/index.ts";
 import { availableLocales } from "../../i18n/index.ts";
-import { chevronDownIconMarkup, globeIconMarkup, scissorsIconMarkup } from "./visuals.ts";
+import { scissorsIconMarkup } from "./visuals.ts";
+import { dropdownHtml, GLOBE_ICON, initDropdowns, MENU_ICON, type DropdownGroup } from "../menu/dropdown.ts";
 
 const LOCALE_NAMES: Record<Locale, string> = {
   en: "English",
   fr: "Français",
-  "pt-br": "Português (BR)",
+  "pt-br": "Português (Brasil)",
   es: "Español",
   id: "Bahasa Indonesia",
 };
@@ -24,7 +25,27 @@ export interface HeaderOptions {
   onLocaleChange: (locale: Locale) => void;
 }
 
+interface NavLocale {
+  tools: DropdownGroup[];
+  home: string;
+  hreflang: string;
+  languageName: string;
+}
+
+/** Données des menus injectées par seo/build.mjs (production) ou par le serveur de dev (vite.config.ts). */
+function readNav(): Partial<Record<Locale, NavLocale>> {
+  try {
+    const text = document.getElementById("cutova-nav")?.textContent;
+    return text ? (JSON.parse(text) as Partial<Record<Locale, NavLocale>>) : {};
+  } catch {
+    return {};
+  }
+}
+
+let cleanupMenus: (() => void) | null = null;
+
 export function renderHeader({ dict, locale, onLocaleChange }: HeaderOptions): HTMLElement {
+  cleanupMenus?.();
   const header = document.createElement("header");
   header.className = "home-header";
 
@@ -36,60 +57,45 @@ export function renderHeader({ dict, locale, onLocaleChange }: HeaderOptions): H
   nav.className = "home-nav";
   nav.setAttribute("aria-label", dict.header.toolsMenu);
 
-  const toolsWrapper = document.createElement("div");
-  toolsWrapper.className = "home-tools";
+  const data = readNav();
+  const tools = data[locale]?.tools ?? [];
+  const current = data[locale];
+  // Même composant que les pages statiques (src/ui/menu/dropdown.ts) ; balisage de confiance (nos données).
+  nav.innerHTML =
+    (tools.length
+      ? dropdownHtml({ id: "dd-tools", variant: "dd-nav", buttonText: dict.header.toolsMenu, buttonLabel: dict.header.toolsMenu, mobileIcon: MENU_ICON, groups: tools })
+      : "") +
+    dropdownHtml({
+      id: "dd-lang",
+      variant: "dd-lang",
+      buttonText: LOCALE_CODES[locale],
+      buttonLabel: `${dict.header.languageSelectorLabel}: ${current?.languageName ?? LOCALE_NAMES[locale]}`,
+      icon: GLOBE_ICON,
+      groups: [
+        {
+          links: availableLocales.map((code) => ({
+            href: data[code]?.home ?? "/",
+            label: data[code]?.languageName ?? LOCALE_NAMES[code],
+            lang: data[code]?.hreflang ?? code,
+            hreflang: data[code]?.hreflang ?? code,
+            current: code === locale,
+          })),
+        },
+      ],
+    });
 
-  const toolsButton = document.createElement("button");
-  toolsButton.type = "button";
-  toolsButton.className = "home-tools-btn";
-  toolsButton.innerHTML = `<span>${dict.header.toolsMenu}</span><span aria-hidden="true" class="home-tools-chevron">${chevronDownIconMarkup()}</span>`;
-  toolsButton.setAttribute("aria-haspopup", "true");
-  toolsButton.setAttribute("aria-expanded", "false");
-
-  const toolsPanel = document.createElement("div");
-  toolsPanel.className = "home-tools-panel";
-  toolsPanel.hidden = true;
-  toolsPanel.textContent = dict.header.toolsComingSoon;
-
-  toolsButton.addEventListener("click", () => {
-    const isOpen = !toolsPanel.hidden;
-    toolsPanel.hidden = isOpen;
-    toolsButton.setAttribute("aria-expanded", String(!isOpen));
+  // Accueil publié (`data-locale`) : les liens mènent à l'accueil de l'autre langue (URL hreflang). En dev
+  // (pas de page par langue) : re-rendu sur place.
+  nav.querySelector("#dd-lang-panel")?.addEventListener("click", (event) => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>("a.dd-item");
+    if (!link) return;
+    const code = availableLocales.find((c) => (data[c]?.hreflang ?? c) === link.hreflang);
+    if (!code || document.documentElement.dataset.locale) return;
+    event.preventDefault();
+    onLocaleChange(code);
   });
 
-  toolsWrapper.append(toolsButton, toolsPanel);
-
-  const langWrap = document.createElement("div");
-  langWrap.className = "home-lang";
-
-  const langIcon = document.createElement("span");
-  langIcon.className = "home-lang-icon";
-  langIcon.setAttribute("aria-hidden", "true");
-  langIcon.innerHTML = globeIconMarkup();
-
-  const langLabel = document.createElement("label");
-  langLabel.className = "home-lang-label sr-only";
-  langLabel.htmlFor = "home-lang-select";
-  langLabel.textContent = dict.header.languageSelectorLabel;
-
-  const langSelect = document.createElement("select");
-  langSelect.id = "home-lang-select";
-  langSelect.className = "home-lang-select";
-  for (const code of availableLocales) {
-    const option = document.createElement("option");
-    option.value = code;
-    option.lang = code;
-    option.textContent = LOCALE_CODES[code];
-    option.title = LOCALE_NAMES[code];
-    option.selected = code === locale;
-    langSelect.append(option);
-  }
-  langSelect.addEventListener("change", () => {
-    onLocaleChange(langSelect.value as Locale);
-  });
-
-  langWrap.append(langIcon, langLabel, langSelect);
-  nav.append(toolsWrapper, langWrap);
+  cleanupMenus = initDropdowns(nav);
   header.append(brand, nav);
   return header;
 }

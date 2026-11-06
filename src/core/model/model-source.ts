@@ -1,16 +1,33 @@
 /**
- * Identifiant du modèle. Doit rester synchronisé avec `scripts/model-manifest.mjs`
- * (dupliqué plutôt qu'importé : ce fichier est bundlé par Vite/TS, l'autre tourne sous
- * Node pour le téléchargement — les mélanger complique la résolution de module pour un
- * gain nul, la valeur ne change quasiment jamais).
+ * Vue navigateur de la source unique `models.json` (aussi lue par Node via
+ * `scripts/model-manifest.mjs`). Pour changer le modèle d'un moteur : modifier
+ * `models.json` > `engines`, rien d'autre.
  *
- * C'est aussi l'identifiant transmis à `AutoModel.from_pretrained` / `AutoProcessor.from_pretrained`.
+ * `repoId` est l'identifiant transmis à `AutoModel.from_pretrained` / `AutoProcessor.from_pretrained`.
  * Avec `env.allowRemoteModels = false` et `env.allowLocalModels = true`, transformers.js résout
- * ces fichiers sous `${env.localModelPath}${MODEL_REPO_ID}/...`, soit
- * `/models/onnx-community/BiRefNet_lite-ONNX/`, exactement l'arborescence écrite par
- * `scripts/fetch-model.mjs` dans `public/models/`.
+ * les fichiers sous `${env.localModelPath}${repoId}/...`, soit `/models/<repoId>/...`, exactement
+ * l'arborescence écrite par `scripts/fetch-model.mjs` dans `public/models/`.
  */
-export const MODEL_REPO_ID = "onnx-community/BiRefNet_lite-ONNX";
+import catalog from "./models.json";
 
-/** Taille d'entrée attendue par `preprocessor_config.json` (voir context.md > Modèle). */
+export type EngineFamily = "webgpu" | "wasm";
+
+export interface ModelInfo {
+  id: string;
+  repoId: string;
+  revision: string;
+  license: string;
+  inputSize: number;
+  /** Besoins WebGPU (limites minimales de l'adaptateur), voir engine-selection.ts. */
+  webgpu: { minStorageBuffersPerShaderStage?: number };
+}
+
+export function getModelForEngine(engine: EngineFamily): ModelInfo {
+  const id = catalog.engines[engine];
+  const model = (catalog.models as Record<string, { repoId: string; revision: string; license: string; inputSize: number; webgpu?: { minStorageBuffersPerShaderStage?: number } }>)[id];
+  if (!model) throw new Error(`models.json : modèle "${id}" introuvable pour le moteur ${engine}`);
+  return { id, repoId: model.repoId, revision: model.revision, license: model.license, inputSize: model.inputSize, webgpu: model.webgpu ?? {} };
+}
+
+/** Taille de l'aperçu provisoire (tous les modèles retenus travaillent en 1024×1024). */
 export const MODEL_INPUT_SIZE = 1024;

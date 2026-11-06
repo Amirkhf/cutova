@@ -1,0 +1,206 @@
+{
+  "id": "for-media",
+  "type": "segment",
+  "locales": {
+    "en": {
+      "path": "/for/media/",
+      "title": "Background Remover for Thumbnails and Covers | Cutova",
+      "description": "Cut out people and objects for video thumbnails, covers and article illustrations. Fast, free and private.",
+      "h1": "Cutouts for thumbnails, covers and articles",
+      "card": {
+        "title": "Media and creators",
+        "text": "Thumbnails, covers and illustrations made fast."
+      },
+      "intro": [
+        "A strong thumbnail or cover often starts with a person or object cut out from its background. Cutova makes that step quick so you can focus on the layout."
+      ],
+      "sections": [
+        {
+          "h2": "Common uses",
+          "list": [
+            "Video thumbnails (1280 × 720)",
+            "Podcast and newsletter covers",
+            "Article illustrations and collages",
+            "Sticker-style cutouts with an outline"
+          ]
+        },
+        {
+          "h2": "How Cutova helps",
+          "paragraphs": [
+            "Use the outline and shadow effects for the popular sticker look, then export a transparent PNG to place in your editing tool."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Can I use the results commercially?",
+          "a": "Yes. Your images stay yours, and the models are under licenses that allow commercial use."
+        },
+        {
+          "q": "Does it work on screenshots and graphics?",
+          "a": "Often, but results are best on photos with a clear subject."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/pour/medias/",
+      "title": "Détourage pour miniatures et couvertures | Cutova",
+      "description": "Détourez personnes et objets pour vos miniatures vidéo, couvertures et illustrations d'articles. Rapide, gratuit et confidentiel.",
+      "h1": "Des détourages pour miniatures, couvertures et articles",
+      "card": {
+        "title": "Médias et créateurs",
+        "text": "Miniatures, couvertures et illustrations, rapidement."
+      },
+      "intro": [
+        "Une miniature ou une couverture efficace commence souvent par une personne ou un objet détouré. Cutova rend cette étape rapide pour que vous vous concentriez sur la mise en page."
+      ],
+      "sections": [
+        {
+          "h2": "Usages courants",
+          "list": [
+            "Miniatures vidéo (1280 × 720)",
+            "Couvertures de podcasts et de newsletters",
+            "Illustrations d'articles et collages",
+            "Détourages façon autocollant avec contour"
+          ]
+        },
+        {
+          "h2": "Ce que Cutova apporte",
+          "paragraphs": [
+            "Utilisez les effets contour et ombre pour le style autocollant, puis exportez un PNG transparent à placer dans votre outil de montage."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Puis-je utiliser les résultats commercialement ?",
+          "a": "Oui. Vos images restent les vôtres, et les modèles sont sous des licences qui autorisent l'usage commercial."
+        },
+        {
+          "q": "Est-ce que ça marche sur des captures d'écran et des graphiques ?",
+          "a": "Souvent, mais les résultats sont meilleurs sur des photos avec un sujet net."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/para/criadores-de-conteudo/",
+      "title": "Removedor de Fundo para Thumbnails e Capas | Cutova",
+      "description": "Recorte pessoas e objetos para thumbnails de vídeo, capas e ilustrações de matérias. Rápido, grátis e privado.",
+      "h1": "Recortes para thumbnails, capas e matérias",
+      "card": {
+        "title": "Mídia e criadores",
+        "text": "Thumbnails, capas e ilustrações feitas rapidinho."
+      },
+      "intro": [
+        "Uma thumbnail ou capa marcante muitas vezes começa com uma pessoa ou um objeto recortado do fundo. O Cutova deixa essa etapa rápida para você se concentrar no layout."
+      ],
+      "sections": [
+        {
+          "h2": "Usos comuns",
+          "list": [
+            "Thumbnails de vídeo (1280 × 720)",
+            "Capas de podcast e newsletter",
+            "Ilustrações de matérias e colagens",
+            "Recortes estilo figurinha com contorno"
+          ]
+        },
+        {
+          "h2": "Como o Cutova ajuda",
+          "paragraphs": [
+            "Use os efeitos de contorno e sombra para o visual de figurinha que faz sucesso, e exporte um PNG transparente para usar no seu editor."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Posso usar os resultados comercialmente?",
+          "a": "Sim. Suas imagens continuam sendo suas, e os modelos têm licenças que permitem uso comercial."
+        },
+        {
+          "q": "Funciona com prints de tela e gráficos?",
+          "a": "Muitas vezes sim, mas os melhores resultados são com fotos que têm um objeto principal bem definido."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/para/creadores-de-contenido/",
+      "title": "Quitar Fondos para Miniaturas y Portadas | Cutova",
+      "description": "Recorta personas y objetos para miniaturas de vídeo, portadas e ilustraciones de artículos. Rápido, gratis y privado.",
+      "h1": "Recortes para miniaturas, portadas y artículos",
+      "card": {
+        "title": "Medios y creadores",
+        "text": "Miniaturas, portadas e ilustraciones en un momento."
+      },
+      "intro": [
+        "Una buena miniatura o portada suele empezar con una persona u objeto recortado de su fondo. Cutova hace ese paso rápido para que te centres en el diseño."
+      ],
+      "sections": [
+        {
+          "h2": "Usos habituales",
+          "list": [
+            "Miniaturas de vídeo (1280 × 720)",
+            "Portadas de pódcast y newsletter",
+            "Ilustraciones de artículos y collages",
+            "Recortes tipo sticker con contorno"
+          ]
+        },
+        {
+          "h2": "Cómo te ayuda Cutova",
+          "paragraphs": [
+            "Usa los efectos de contorno y sombra para el popular estilo sticker y exporta un PNG transparente para colocarlo en tu programa de edición."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿Puedo usar los resultados con fines comerciales?",
+          "a": "Sí. Tus imágenes siguen siendo tuyas, y los modelos tienen licencias que permiten el uso comercial."
+        },
+        {
+          "q": "¿Funciona con capturas de pantalla y gráficos?",
+          "a": "A menudo sí, pero los mejores resultados se obtienen con fotos que tienen un sujeto claro."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/untuk/kreator-konten/",
+      "title": "Hapus Background untuk Thumbnail dan Sampul | Cutova",
+      "description": "Potong orang dan objek untuk thumbnail video, sampul, dan ilustrasi artikel. Cepat, gratis, dan privat.",
+      "h1": "Potongan untuk thumbnail, sampul, dan artikel",
+      "card": {
+        "title": "Media dan kreator",
+        "text": "Thumbnail, sampul, dan ilustrasi dalam sekejap."
+      },
+      "intro": [
+        "Thumbnail atau sampul yang menarik sering dimulai dari orang atau objek yang dipotong dari background-nya. Cutova mempercepat langkah itu supaya Anda bisa fokus ke tata letak."
+      ],
+      "sections": [
+        {
+          "h2": "Kegunaan umum",
+          "list": [
+            "Thumbnail video (1280 × 720)",
+            "Sampul podcast dan newsletter",
+            "Ilustrasi artikel dan kolase",
+            "Potongan bergaya stiker dengan garis tepi"
+          ]
+        },
+        {
+          "h2": "Bagaimana Cutova membantu",
+          "paragraphs": [
+            "Gunakan efek garis tepi dan bayangan untuk tampilan stiker yang populer, lalu ekspor PNG transparan untuk dipakai di aplikasi edit Anda."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Bolehkah hasilnya dipakai untuk keperluan komersial?",
+          "a": "Boleh. Gambar Anda tetap milik Anda, dan modelnya memakai lisensi yang mengizinkan penggunaan komersial."
+        },
+        {
+          "q": "Apakah bisa untuk screenshot dan grafis?",
+          "a": "Sering kali bisa, tetapi hasil terbaik didapat dari foto dengan objek utama yang jelas."
+        }
+      ]
+    }
+  }
+}

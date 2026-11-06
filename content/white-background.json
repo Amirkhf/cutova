@@ -1,0 +1,488 @@
+{
+  "id": "white-background",
+  "type": "howto",
+  "tool": true,
+  "$comment": "Page outil « fond blanc » (N4). Le bouton d'appel ouvre l'outil avec le fond blanc présélectionné (?bg=white, lu par src/core/editor/url-preset.ts).",
+  "locales": {
+    "en": {
+      "path": "/white-background/",
+      "title": "Add a White Background to a Photo — Free, Pure #FFFFFF | Cutova",
+      "description": "Put any photo on a pure white background (#FFFFFF) in seconds, at full resolution: product photos, profile pictures, ID-style photos. Free, no upload.",
+      "h1": "Put a photo on a white background",
+      "navLabel": "White background",
+      "answer": {
+        "label": "Short answer:",
+        "text": "open Cutova with the white background already selected, add your photo, and download it as a JPG or PNG. The AI removes the old background and fills it with pure white (#FFFFFF) at the size of your original, in your browser."
+      },
+      "intro": [
+        "A white background makes a subject easy to read and fits almost any page, listing or document. Here is how to get a clean result, and what to check before you publish."
+      ],
+      "cta": {
+        "query": "?bg=white",
+        "label": "Open the tool with a white background"
+      },
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Open the tool with white selected",
+          "text": "Use the button on this page: Cutova opens with the white background already chosen."
+        },
+        {
+          "name": "Add your photo",
+          "text": "Choose a file, drag it onto the page or paste it with Ctrl+V. You can add several photos at once."
+        },
+        {
+          "name": "Check the edges",
+          "text": "Compare before and after. If a small area is missing or left over, fix it with the Restore and Erase brushes."
+        },
+        {
+          "name": "Frame it if needed",
+          "text": "In Size, crop to the subject or pick a ready-made format: the product is centered with an even margin."
+        },
+        {
+          "name": "Download",
+          "text": "Choose JPG for a light file accepted everywhere, or PNG for lossless quality. Download one image or all of them as a ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Why pure white matters",
+          "paragraphs": [
+            "\"White\" in an image editor is not always exactly white. A slightly gray or warm background looks dirty next to the page around it, and some marketplaces reject it. Cutova fills the background with the exact value #FFFFFF (red, green and blue at 255), so it blends into a white page with no visible box."
+          ]
+        },
+        {
+          "h2": "When to use a white background",
+          "list": [
+            "Main product images for online stores and marketplaces",
+            "Catalogs, price lists and printed flyers",
+            "Team pages and staff directories, for a consistent look",
+            "Profile pictures for professional networks",
+            "ID-style photos, before checking the official rules for size and face position"
+          ]
+        },
+        {
+          "h2": "Tips for a better result",
+          "list": [
+            "Start from a sharp photo where the subject is well separated from what is behind it.",
+            "Add a soft drop shadow (Effects tab) so the product does not look like it is floating.",
+            "Keep the same margin for a whole series: pick one format and apply it to every image.",
+            "White objects on white need care: a light shadow or a thin outline helps to show their shape."
+          ]
+        },
+        {
+          "h2": "JPG or PNG?",
+          "paragraphs": [
+            "With a white background, JPG is usually the best choice: the file is small and every platform accepts it. Choose PNG when you want no compression at all, for example before more editing. If you need transparency instead of white, see the guide to transparent PNGs."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Is the white really #FFFFFF?",
+          "a": "Yes. The White option fills the background with exactly #FFFFFF, at the full resolution of your photo. Light effects you add yourself (a shadow, for example) are drawn on top of it."
+        },
+        {
+          "q": "Does it work for marketplace product photos?",
+          "a": "It produces what most marketplaces ask for: a pure white background and a centered product. Each platform has its own rules on size and margins, and they change, so check the current requirements before you upload."
+        },
+        {
+          "q": "Can I make an ID or passport photo with it?",
+          "a": "You can replace the background with white, but official photos have strict rules (size, head position, lighting) that Cutova does not check. Use the result as a start and follow the official guidelines of your country."
+        },
+        {
+          "q": "Can I do many photos with the same white background?",
+          "a": "Yes. Add several photos at once: each one gets the white background, and you can download them all in a single ZIP."
+        },
+        {
+          "q": "Is my photo uploaded?",
+          "a": "No. The AI runs in your browser and the photo never leaves your device."
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/fond-blanc/",
+      "title": "Mettre une photo sur fond blanc — Gratuit, blanc pur #FFFFFF | Cutova",
+      "description": "Mettez n'importe quelle photo sur un fond blanc pur (#FFFFFF) en quelques secondes, en pleine résolution : produits, photos de profil, photos d'identité. Gratuit, sans envoi.",
+      "h1": "Mettre une photo sur fond blanc",
+      "navLabel": "Fond blanc",
+      "answer": {
+        "label": "En bref :",
+        "text": "ouvrez Cutova avec le fond blanc déjà choisi, ajoutez votre photo et téléchargez-la en JPG ou en PNG. L'IA retire l'ancien fond et le remplace par du blanc pur (#FFFFFF), à la taille de l'original, dans votre navigateur."
+      },
+      "intro": [
+        "Un fond blanc rend le sujet lisible et s'adapte à presque toutes les pages, annonces et documents. Voici comment obtenir un résultat propre, et ce qu'il faut vérifier avant de publier."
+      ],
+      "cta": {
+        "query": "?bg=white",
+        "label": "Ouvrir l'outil avec un fond blanc"
+      },
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Ouvrez l'outil avec le blanc choisi",
+          "text": "Utilisez le bouton de cette page : Cutova s'ouvre avec le fond blanc déjà sélectionné."
+        },
+        {
+          "name": "Ajoutez votre photo",
+          "text": "Choisissez un fichier, glissez-le sur la page ou collez-le avec Ctrl+V. Vous pouvez en ajouter plusieurs d'un coup."
+        },
+        {
+          "name": "Vérifiez les contours",
+          "text": "Comparez avant et après. S'il manque un petit morceau ou s'il en reste un, corrigez avec les pinceaux Restaurer et Gommer."
+        },
+        {
+          "name": "Cadrez si besoin",
+          "text": "Dans Formats, recadrez sur le sujet ou choisissez un format prêt à l'emploi : le produit est centré avec une marge régulière."
+        },
+        {
+          "name": "Téléchargez",
+          "text": "Choisissez JPG pour un fichier léger accepté partout, ou PNG pour une qualité sans perte. Téléchargez une image, ou toutes dans un ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Pourquoi un blanc pur",
+          "paragraphs": [
+            "Dans un logiciel, « blanc » ne veut pas toujours dire exactement blanc. Un fond légèrement gris ou jaune paraît sale à côté de la page qui l'entoure, et certaines places de marché le refusent. Cutova remplit le fond avec la valeur exacte #FFFFFF (rouge, vert et bleu à 255) : il se fond dans une page blanche sans cadre visible."
+          ]
+        },
+        {
+          "h2": "Quand utiliser un fond blanc",
+          "list": [
+            "Photos principales de produits pour les boutiques en ligne et les places de marché",
+            "Catalogues, tarifs et prospectus imprimés",
+            "Pages équipe et annuaires internes, pour un rendu homogène",
+            "Photos de profil pour les réseaux professionnels",
+            "Photos de type identité, avant de vérifier les règles officielles de taille et de cadrage"
+          ]
+        },
+        {
+          "h2": "Conseils pour un meilleur résultat",
+          "list": [
+            "Partez d'une photo nette où le sujet se détache bien de ce qu'il y a derrière.",
+            "Ajoutez une ombre douce (onglet Effets) pour que le produit ne semble pas flotter.",
+            "Gardez la même marge sur toute une série : choisissez un format et appliquez-le à chaque image.",
+            "Un objet blanc sur fond blanc demande du soin : une ombre légère ou un fin contour aide à montrer sa forme."
+          ]
+        },
+        {
+          "h2": "JPG ou PNG ?",
+          "paragraphs": [
+            "Avec un fond blanc, le JPG est souvent le meilleur choix : le fichier est léger et toutes les plateformes l'acceptent. Choisissez le PNG si vous ne voulez aucune compression, par exemple avant une autre retouche. Si vous voulez de la transparence plutôt que du blanc, consultez le guide du PNG transparent."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Le blanc est-il vraiment #FFFFFF ?",
+          "a": "Oui. L'option Blanc remplit le fond avec exactement #FFFFFF, en pleine résolution. Les effets que vous ajoutez vous-même (une ombre, par exemple) sont dessinés par-dessus."
+        },
+        {
+          "q": "Est-ce adapté aux photos produits des places de marché ?",
+          "a": "Le résultat correspond à ce que demandent la plupart des places de marché : fond blanc pur et produit centré. Chaque plateforme a ses propres règles de taille et de marges, et elles changent : vérifiez les exigences actuelles avant de publier."
+        },
+        {
+          "q": "Puis-je faire une photo d'identité ?",
+          "a": "Vous pouvez remplacer le fond par du blanc, mais les photos officielles ont des règles strictes (taille, position de la tête, éclairage) que Cutova ne vérifie pas. Utilisez le résultat comme base et suivez les règles officielles de votre pays."
+        },
+        {
+          "q": "Puis-je traiter beaucoup de photos avec le même fond blanc ?",
+          "a": "Oui. Ajoutez plusieurs photos d'un coup : chacune reçoit le fond blanc, et vous pouvez toutes les télécharger dans un seul ZIP."
+        },
+        {
+          "q": "Ma photo est-elle envoyée sur un serveur ?",
+          "a": "Non. L'IA fonctionne dans votre navigateur et la photo ne quitte jamais votre appareil."
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/fundo-branco/",
+      "title": "Colocar Fundo Branco em Foto — Grátis, Branco Puro #FFFFFF | Cutova",
+      "description": "Coloque qualquer foto em fundo branco puro (#FFFFFF) em segundos, na resolução original: fotos de produto, foto de perfil, foto 3x4. Grátis, sem upload.",
+      "h1": "Como colocar fundo branco em uma foto",
+      "navLabel": "Fundo branco",
+      "answer": {
+        "label": "Resposta rápida:",
+        "text": "abra o Cutova com o fundo branco já selecionado, adicione sua foto e baixe em JPG ou PNG. A IA remove o fundo antigo e preenche com branco puro (#FFFFFF), no tamanho da foto original, direto no seu navegador."
+      },
+      "intro": [
+        "Um fundo branco deixa o objeto fácil de ver e combina com quase qualquer página, anúncio ou documento. Veja como conseguir um resultado limpo e o que conferir antes de publicar."
+      ],
+      "cta": {
+        "query": "?bg=white",
+        "label": "Abrir a ferramenta com fundo branco"
+      },
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Abra a ferramenta com o branco selecionado",
+          "text": "Use o botão desta página: o Cutova abre com o fundo branco já escolhido."
+        },
+        {
+          "name": "Adicione sua foto",
+          "text": "Escolha um arquivo, arraste para a página ou cole com Ctrl+V. Dá para adicionar várias fotos de uma vez."
+        },
+        {
+          "name": "Confira as bordas",
+          "text": "Compare o antes e o depois. Se faltar ou sobrar algum pedacinho, corrija com os pincéis Restaurar e Apagar."
+        },
+        {
+          "name": "Enquadre, se precisar",
+          "text": "Na aba Tamanho, recorte no objeto ou escolha um formato pronto: o produto fica centralizado com uma margem uniforme."
+        },
+        {
+          "name": "Baixe",
+          "text": "Escolha JPG para um arquivo leve aceito em todo lugar, ou PNG para qualidade sem perda. Baixe uma imagem ou todas em um ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Por que o branco precisa ser puro",
+          "paragraphs": [
+            "Em um editor de imagem, \"branco\" nem sempre é exatamente branco. Um fundo levemente cinza ou amarelado parece sujo ao lado da página, e alguns marketplaces recusam a foto. O Cutova preenche o fundo com o valor exato #FFFFFF (vermelho, verde e azul em 255), que se mistura a uma página branca sem deixar um quadro visível."
+          ]
+        },
+        {
+          "h2": "Quando usar fundo branco",
+          "list": [
+            "Foto principal de produtos em lojas virtuais e marketplaces",
+            "Catálogos, tabelas de preço e panfletos impressos",
+            "Páginas de equipe e diretórios internos, com visual padronizado",
+            "Foto de perfil para redes profissionais",
+            "Fotos tipo 3x4 ou de documento, conferindo depois as regras oficiais de tamanho e enquadramento"
+          ]
+        },
+        {
+          "h2": "Dicas para um resultado melhor",
+          "list": [
+            "Comece com uma foto nítida em que o objeto se destaque bem do que está atrás.",
+            "Adicione uma sombra suave (aba Efeitos) para o produto não parecer flutuar.",
+            "Mantenha a mesma margem em toda a série: escolha um formato e aplique em todas as imagens.",
+            "Objeto branco em fundo branco pede cuidado: uma sombra leve ou um contorno fino ajudam a mostrar a forma."
+          ]
+        },
+        {
+          "h2": "JPG ou PNG?",
+          "paragraphs": [
+            "Com fundo branco, o JPG costuma ser a melhor escolha: o arquivo é leve e todas as plataformas aceitam. Escolha PNG quando não quiser nenhuma compressão, por exemplo antes de outra edição. Se você precisa de transparência em vez de branco, veja o tutorial de PNG transparente."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "O branco é mesmo #FFFFFF?",
+          "a": "Sim. A opção Branco preenche o fundo com exatamente #FFFFFF, na resolução total da foto. Efeitos que você adiciona (uma sombra, por exemplo) são desenhados por cima."
+        },
+        {
+          "q": "Serve para fotos de produto de marketplace?",
+          "a": "O resultado é o que a maioria dos marketplaces pede: fundo branco puro e produto centralizado. Cada plataforma tem as próprias regras de tamanho e margem, e elas mudam; confira as exigências atuais antes de publicar."
+        },
+        {
+          "q": "Dá para fazer foto 3x4 ou de passaporte?",
+          "a": "Você pode trocar o fundo por branco, mas fotos oficiais têm regras rígidas (tamanho, posição da cabeça, iluminação) que o Cutova não verifica. Use o resultado como ponto de partida e siga as regras oficiais."
+        },
+        {
+          "q": "Posso fazer várias fotos com o mesmo fundo branco?",
+          "a": "Sim. Adicione várias fotos de uma vez: todas recebem o fundo branco, e você pode baixar tudo em um único ZIP."
+        },
+        {
+          "q": "Minha foto é enviada para algum servidor?",
+          "a": "Não. A IA roda no seu navegador e a foto nunca sai do seu aparelho."
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/fondo-blanco/",
+      "title": "Poner Fondo Blanco a una Foto — Gratis, Blanco Puro #FFFFFF | Cutova",
+      "description": "Pon cualquier foto sobre un fondo blanco puro (#FFFFFF) en segundos y a resolución completa: fotos de producto, de perfil o tipo carné. Gratis, sin subir nada.",
+      "h1": "Cómo poner fondo blanco a una foto",
+      "navLabel": "Fondo blanco",
+      "answer": {
+        "label": "Respuesta corta:",
+        "text": "abre Cutova con el fondo blanco ya seleccionado, añade tu foto y descárgala en JPG o PNG. La IA quita el fondo anterior y lo rellena con blanco puro (#FFFFFF), al tamaño de tu original, en tu navegador."
+      },
+      "intro": [
+        "Un fondo blanco hace que el sujeto se vea con claridad y encaja en casi cualquier página, anuncio o documento. Así se consigue un resultado limpio, y esto es lo que conviene revisar antes de publicar."
+      ],
+      "cta": {
+        "query": "?bg=white",
+        "label": "Abrir la herramienta con fondo blanco"
+      },
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Abre la herramienta con el blanco elegido",
+          "text": "Usa el botón de esta página: Cutova se abre con el fondo blanco ya seleccionado."
+        },
+        {
+          "name": "Añade tu foto",
+          "text": "Elige un archivo, arrástralo a la página o pégalo con Ctrl+V. Puedes añadir varias fotos a la vez."
+        },
+        {
+          "name": "Revisa los bordes",
+          "text": "Compara el antes y el después. Si falta o sobra alguna zona pequeña, corrígela con los pinceles Restaurar y Borrar."
+        },
+        {
+          "name": "Encuadra si hace falta",
+          "text": "En Tamaño, recorta al sujeto o elige un formato predefinido: el producto queda centrado con un margen uniforme."
+        },
+        {
+          "name": "Descarga",
+          "text": "Elige JPG para un archivo ligero que se acepta en todas partes, o PNG para una calidad sin pérdida. Descarga una imagen o todas en un ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Por qué importa que el blanco sea puro",
+          "paragraphs": [
+            "En un editor de imágenes, «blanco» no siempre es exactamente blanco. Un fondo ligeramente gris o amarillento parece sucio junto a la página que lo rodea, y algunos marketplaces lo rechazan. Cutova rellena el fondo con el valor exacto #FFFFFF (rojo, verde y azul a 255), que se funde con una página blanca sin dejar un recuadro visible."
+          ]
+        },
+        {
+          "h2": "Cuándo usar un fondo blanco",
+          "list": [
+            "Imagen principal de productos en tiendas online y marketplaces",
+            "Catálogos, listas de precios y folletos impresos",
+            "Páginas de equipo y directorios internos, con un aspecto uniforme",
+            "Fotos de perfil para redes profesionales",
+            "Fotos tipo carné, revisando después las normas oficiales de tamaño y encuadre"
+          ]
+        },
+        {
+          "h2": "Consejos para un mejor resultado",
+          "list": [
+            "Parte de una foto nítida en la que el sujeto se separe bien de lo que tiene detrás.",
+            "Añade una sombra suave (pestaña Efectos) para que el producto no parezca flotar.",
+            "Mantén el mismo margen en toda una serie: elige un formato y aplícalo a cada imagen.",
+            "Un objeto blanco sobre fondo blanco requiere cuidado: una sombra ligera o un contorno fino ayudan a mostrar su forma."
+          ]
+        },
+        {
+          "h2": "¿JPG o PNG?",
+          "paragraphs": [
+            "Con fondo blanco, el JPG suele ser la mejor opción: el archivo es ligero y todas las plataformas lo aceptan. Elige PNG si no quieres ninguna compresión, por ejemplo antes de seguir editando. Si necesitas transparencia en lugar de blanco, consulta la guía del PNG transparente."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "¿El blanco es de verdad #FFFFFF?",
+          "a": "Sí. La opción Blanco rellena el fondo con exactamente #FFFFFF, a la resolución completa de tu foto. Los efectos que añadas tú (una sombra, por ejemplo) se dibujan encima."
+        },
+        {
+          "q": "¿Sirve para las fotos de producto de un marketplace?",
+          "a": "El resultado es lo que piden la mayoría de marketplaces: fondo blanco puro y producto centrado. Cada plataforma tiene sus propias normas de tamaño y márgenes, y cambian; revisa los requisitos actuales antes de subir las fotos."
+        },
+        {
+          "q": "¿Puedo hacer una foto de carné o de pasaporte?",
+          "a": "Puedes cambiar el fondo por blanco, pero las fotos oficiales tienen normas estrictas (tamaño, posición de la cabeza, iluminación) que Cutova no comprueba. Usa el resultado como punto de partida y sigue las normas oficiales de tu país."
+        },
+        {
+          "q": "¿Puedo hacer muchas fotos con el mismo fondo blanco?",
+          "a": "Sí. Añade varias fotos a la vez: cada una recibe el fondo blanco y puedes descargarlas todas en un único ZIP."
+        },
+        {
+          "q": "¿Se sube mi foto a algún servidor?",
+          "a": "No. La IA funciona en tu navegador y la foto nunca sale de tu dispositivo."
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/background-putih/",
+      "title": "Ganti Background Foto Jadi Putih — Gratis, Putih Bersih #FFFFFF | Cutova",
+      "description": "Ubah background foto apa pun menjadi putih bersih (#FFFFFF) dalam hitungan detik, resolusi penuh: foto produk, foto profil, pas foto. Gratis, tanpa upload.",
+      "h1": "Cara mengganti background foto menjadi putih",
+      "navLabel": "Background putih",
+      "answer": {
+        "label": "Jawaban singkat:",
+        "text": "buka Cutova dengan background putih yang sudah terpilih, tambahkan foto Anda, lalu unduh sebagai JPG atau PNG. AI menghapus background lama dan menggantinya dengan putih bersih (#FFFFFF), seukuran foto asli, langsung di browser Anda."
+      },
+      "intro": [
+        "Background putih membuat objek terlihat jelas dan cocok untuk hampir semua halaman, listing produk, atau dokumen. Begini cara mendapatkan hasil yang rapi, dan hal yang perlu dicek sebelum mengunggah."
+      ],
+      "cta": {
+        "query": "?bg=white",
+        "label": "Buka alat dengan background putih"
+      },
+      "totalTime": "PT1M",
+      "steps": [
+        {
+          "name": "Buka alat dengan putih terpilih",
+          "text": "Gunakan tombol di halaman ini: Cutova terbuka dengan background putih yang sudah dipilih."
+        },
+        {
+          "name": "Tambahkan foto",
+          "text": "Pilih file, seret ke halaman, atau tempel dengan Ctrl+V. Anda bisa menambahkan beberapa foto sekaligus."
+        },
+        {
+          "name": "Periksa bagian tepi",
+          "text": "Bandingkan sebelum dan sesudah. Jika ada bagian kecil yang hilang atau tersisa, rapikan dengan kuas Pulihkan dan Hapus."
+        },
+        {
+          "name": "Atur bingkai bila perlu",
+          "text": "Di tab Ukuran, potong ke objek atau pilih format siap pakai: produk diletakkan di tengah dengan margin yang rata."
+        },
+        {
+          "name": "Unduh",
+          "text": "Pilih JPG untuk file ringan yang diterima di mana saja, atau PNG untuk kualitas tanpa penurunan. Unduh satu gambar atau semuanya dalam ZIP."
+        }
+      ],
+      "sections": [
+        {
+          "h2": "Kenapa harus putih bersih",
+          "paragraphs": [
+            "Di aplikasi edit gambar, \"putih\" tidak selalu benar-benar putih. Background yang sedikit abu-abu atau kekuningan terlihat kusam di samping halaman, dan beberapa marketplace menolaknya. Cutova mengisi background dengan nilai persis #FFFFFF (merah, hijau, dan biru bernilai 255), sehingga menyatu dengan halaman putih tanpa kotak yang terlihat."
+          ]
+        },
+        {
+          "h2": "Kapan memakai background putih",
+          "list": [
+            "Foto utama produk di toko online dan marketplace",
+            "Katalog, daftar harga, dan brosur cetak",
+            "Halaman tim dan direktori karyawan, agar tampilan seragam",
+            "Foto profil untuk jejaring profesional",
+            "Pas foto, lalu cek aturan resmi soal ukuran dan posisi wajah"
+          ]
+        },
+        {
+          "h2": "Tips agar hasilnya lebih bagus",
+          "list": [
+            "Mulai dari foto yang tajam dengan objek yang terpisah jelas dari belakangnya.",
+            "Tambahkan bayangan lembut (tab Efek) agar produk tidak terlihat melayang.",
+            "Gunakan margin yang sama untuk satu seri: pilih satu format dan terapkan ke semua gambar.",
+            "Benda putih di atas background putih perlu perhatian: bayangan tipis atau garis tepi halus membantu menonjolkan bentuknya."
+          ]
+        },
+        {
+          "h2": "JPG atau PNG?",
+          "paragraphs": [
+            "Dengan background putih, JPG biasanya pilihan terbaik: filenya ringan dan diterima semua platform. Pilih PNG jika tidak ingin ada kompresi sama sekali, misalnya sebelum diedit lagi. Jika Anda butuh transparan, bukan putih, lihat panduan PNG transparan."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "Apakah putihnya benar-benar #FFFFFF?",
+          "a": "Ya. Opsi Putih mengisi background dengan tepat #FFFFFF, dalam resolusi penuh foto Anda. Efek yang Anda tambahkan sendiri (misalnya bayangan) digambar di atasnya."
+        },
+        {
+          "q": "Apakah cocok untuk foto produk di marketplace?",
+          "a": "Hasilnya sesuai dengan yang diminta kebanyakan marketplace: background putih bersih dan produk di tengah. Setiap platform punya aturan ukuran dan margin sendiri, dan aturannya bisa berubah; cek persyaratan terbaru sebelum mengunggah."
+        },
+        {
+          "q": "Bisakah membuat pas foto atau foto paspor?",
+          "a": "Anda bisa mengganti background menjadi putih, tetapi foto resmi punya aturan ketat (ukuran, posisi kepala, pencahayaan) yang tidak diperiksa oleh Cutova. Gunakan hasilnya sebagai awal dan ikuti aturan resmi yang berlaku."
+        },
+        {
+          "q": "Bisakah memproses banyak foto dengan background putih yang sama?",
+          "a": "Bisa. Tambahkan beberapa foto sekaligus: semuanya mendapat background putih, dan Anda bisa mengunduh semuanya dalam satu ZIP."
+        },
+        {
+          "q": "Apakah foto saya diunggah ke server?",
+          "a": "Tidak. AI berjalan di browser Anda dan foto tidak pernah keluar dari perangkat Anda."
+        }
+      ]
+    }
+  }
+}

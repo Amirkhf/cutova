@@ -30,3 +30,7 @@ server/*.db
 *.njsproj
 *.sln
 *.sw?
+
+# Wrangler (D1 local, état de pages dev)
+.wrangler/
+.dev.vars

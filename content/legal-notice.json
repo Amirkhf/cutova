@@ -1,0 +1,207 @@
+{
+  "id": "legal-notice",
+  "type": "legal",
+  "$comment": "Champs [À COMPLÉTER] à remplir par l'éditeur du site avant mise en ligne (liste dans DEPLOY.md).",
+  "locales": {
+    "en": {
+      "path": "/legal/",
+      "title": "Legal notice | Cutova",
+      "description": "Legal notice of Cutova: who publishes and hosts the free in-browser background remover, and who owns what.",
+      "h1": "Legal notice",
+      "intro": [
+        "This page identifies who publishes and hosts Cutova."
+      ],
+      "sections": [
+        {
+          "h2": "Publisher",
+          "paragraphs": [
+            "Name or company: [À COMPLÉTER]",
+            "Legal form and registration number (if a company): [À COMPLÉTER]",
+            "Postal address: [À COMPLÉTER]",
+            "Contact email: [À COMPLÉTER]",
+            "Publication director: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Hosting",
+          "paragraphs": [
+            "The website is hosted by Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, United States (Cloudflare Pages and Cloudflare R2).",
+            "Hosting contract and region: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Intellectual property",
+          "paragraphs": [
+            "The Cutova name, interface, texts and code are the property of the publisher, unless stated otherwise. The AI models used are published by their authors under open licenses (MIT and Apache-2.0); see the licenses page in the source repository."
+          ]
+        },
+        {
+          "h2": "Your images",
+          "paragraphs": [
+            "Images you process with Cutova never leave your device and remain entirely yours. The publisher never receives them."
+          ]
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/mentions-legales/",
+      "title": "Mentions légales | Cutova",
+      "description": "Mentions légales de Cutova : qui édite et qui héberge l'outil gratuit de détourage dans le navigateur, et à qui appartient quoi.",
+      "h1": "Mentions légales",
+      "intro": [
+        "Cette page indique qui édite et qui héberge Cutova."
+      ],
+      "sections": [
+        {
+          "h2": "Éditeur",
+          "paragraphs": [
+            "Nom ou raison sociale : [À COMPLÉTER]",
+            "Forme juridique et numéro d'immatriculation (SIREN/SIRET si société ou entreprise individuelle) : [À COMPLÉTER]",
+            "Adresse postale : [À COMPLÉTER]",
+            "Adresse e-mail de contact : [À COMPLÉTER]",
+            "Directeur ou directrice de la publication : [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Hébergement",
+          "paragraphs": [
+            "Le site est hébergé par Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis (Cloudflare Pages et Cloudflare R2).",
+            "Contrat et région d'hébergement : [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Propriété intellectuelle",
+          "paragraphs": [
+            "Le nom Cutova, l'interface, les textes et le code appartiennent à l'éditeur, sauf mention contraire. Les modèles d'IA utilisés sont publiés par leurs auteurs sous licences libres (MIT et Apache-2.0) ; voir la page des licences dans le dépôt du code."
+          ]
+        },
+        {
+          "h2": "Vos images",
+          "paragraphs": [
+            "Les images traitées avec Cutova ne quittent jamais votre appareil et restent entièrement les vôtres. L'éditeur ne les reçoit jamais."
+          ]
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/aviso-legal/",
+      "title": "Aviso legal do site | Cutova",
+      "description": "Aviso legal do Cutova: quem publica e hospeda o removedor de fundo grátis que funciona no navegador, e a quem pertence cada coisa.",
+      "h1": "Aviso legal",
+      "intro": [
+        "Esta página identifica quem publica e hospeda o Cutova."
+      ],
+      "sections": [
+        {
+          "h2": "Responsável pela publicação",
+          "paragraphs": [
+            "Nome ou empresa: [À COMPLÉTER]",
+            "Forma jurídica e número de registro (se for empresa): [À COMPLÉTER]",
+            "Endereço postal: [À COMPLÉTER]",
+            "E-mail de contato: [À COMPLÉTER]",
+            "Diretor de publicação: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Hospedagem",
+          "paragraphs": [
+            "O site é hospedado pela Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, Estados Unidos (Cloudflare Pages e Cloudflare R2).",
+            "Contrato e região de hospedagem: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Propriedade intelectual",
+          "paragraphs": [
+            "O nome Cutova, a interface, os textos e o código pertencem ao responsável pela publicação, salvo indicação em contrário. Os modelos de IA usados são publicados pelos seus autores sob licenças abertas (MIT e Apache-2.0); veja a página de licenças no repositório do código-fonte."
+          ]
+        },
+        {
+          "h2": "Suas imagens",
+          "paragraphs": [
+            "As imagens que você processa com o Cutova nunca saem do seu aparelho e continuam sendo totalmente suas. O responsável pela publicação nunca as recebe."
+          ]
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/aviso-legal/",
+      "title": "Aviso legal del sitio | Cutova",
+      "description": "Aviso legal de Cutova: quién publica y aloja la herramienta gratuita para quitar fondos en el navegador, y a quién pertenece cada cosa.",
+      "h1": "Aviso legal",
+      "intro": [
+        "Esta página identifica a quién publica y aloja Cutova."
+      ],
+      "sections": [
+        {
+          "h2": "Titular",
+          "paragraphs": [
+            "Nombre o empresa: [À COMPLÉTER]",
+            "Forma jurídica y número de registro (si es una empresa): [À COMPLÉTER]",
+            "Dirección postal: [À COMPLÉTER]",
+            "Correo de contacto: [À COMPLÉTER]",
+            "Responsable de la publicación: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Alojamiento",
+          "paragraphs": [
+            "La web está alojada por Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, Estados Unidos (Cloudflare Pages y Cloudflare R2).",
+            "Contrato y región de alojamiento: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Propiedad intelectual",
+          "paragraphs": [
+            "El nombre Cutova, la interfaz, los textos y el código pertenecen al titular, salvo que se indique lo contrario. Los modelos de IA utilizados los publican sus autores con licencias abiertas (MIT y Apache-2.0); consulta la página de licencias del repositorio de código fuente."
+          ]
+        },
+        {
+          "h2": "Tus imágenes",
+          "paragraphs": [
+            "Las imágenes que procesas con Cutova nunca salen de tu dispositivo y siguen siendo totalmente tuyas. El titular nunca las recibe."
+          ]
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/informasi-hukum/",
+      "title": "Informasi hukum | Cutova",
+      "description": "Informasi hukum Cutova: siapa yang menerbitkan dan meng-hosting alat hapus background gratis di browser ini, dan siapa pemilik setiap bagiannya.",
+      "h1": "Informasi hukum",
+      "intro": [
+        "Halaman ini menjelaskan siapa yang menerbitkan dan meng-hosting Cutova."
+      ],
+      "sections": [
+        {
+          "h2": "Penerbit",
+          "paragraphs": [
+            "Nama atau perusahaan: [À COMPLÉTER]",
+            "Bentuk badan hukum dan nomor registrasi (jika perusahaan): [À COMPLÉTER]",
+            "Alamat pos: [À COMPLÉTER]",
+            "Email kontak: [À COMPLÉTER]",
+            "Penanggung jawab publikasi: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Hosting",
+          "paragraphs": [
+            "Situs ini di-hosting oleh Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, Amerika Serikat (Cloudflare Pages dan Cloudflare R2).",
+            "Kontrak dan wilayah hosting: [À COMPLÉTER]"
+          ]
+        },
+        {
+          "h2": "Hak kekayaan intelektual",
+          "paragraphs": [
+            "Nama Cutova, antarmuka, teks, dan kode adalah milik penerbit, kecuali dinyatakan lain. Model AI yang dipakai diterbitkan oleh pembuatnya dengan lisensi terbuka (MIT dan Apache-2.0); lihat halaman lisensi di repositori kode sumber."
+          ]
+        },
+        {
+          "h2": "Gambar Anda",
+          "paragraphs": [
+            "Gambar yang Anda proses dengan Cutova tidak pernah keluar dari perangkat Anda dan sepenuhnya tetap milik Anda. Penerbit tidak pernah menerimanya."
+          ]
+        }
+      ]
+    }
+  }
+}

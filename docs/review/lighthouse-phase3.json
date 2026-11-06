@@ -1,0 +1,47 @@
+{
+  "/": {
+    "scores": {
+      "performance": 99,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "1.7 s",
+    "cls": "0",
+    "tbt": "0 ms"
+  },
+  "/fr/": {
+    "scores": {
+      "performance": 99,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "1.7 s",
+    "cls": "0",
+    "tbt": "0 ms"
+  },
+  "/remove-bg-alternative/": {
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "1.4 s",
+    "cls": "0",
+    "tbt": "0 ms"
+  },
+  "/how-to/make-transparent-png/": {
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "1.4 s",
+    "cls": "0",
+    "tbt": "0 ms"
+  },
+  "_note": "Lighthouse 12.8.2, mobile (défaut), Chromium headless, vite preview local, 2026-10-31. Premier passage à froid sur / : performance 83 ; passages suivants 99."
+}

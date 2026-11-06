@@ -1,0 +1,222 @@
+{
+  "id": "terms",
+  "type": "legal",
+  "$comment": "Conditions d'utilisation simples d'un outil gratuit sans compte. Champs [À COMPLÉTER] listés dans DEPLOY.md.",
+  "locales": {
+    "en": {
+      "path": "/terms/",
+      "title": "Terms of use | Cutova",
+      "description": "The terms that apply when you use Cutova, the free background remover that runs entirely in your browser.",
+      "h1": "Terms of use",
+      "intro": [
+        "By using Cutova you accept these terms. They are short because the service is simple: a free tool that runs in your browser."
+      ],
+      "sections": [
+        {
+          "h2": "The service",
+          "paragraphs": [
+            "Cutova removes the background of images directly in your web browser. It is free, needs no account, and is provided as is, without any guarantee of results or availability."
+          ]
+        },
+        {
+          "h2": "Your content",
+          "paragraphs": [
+            "You keep all rights to the images you process and to the results. You are responsible for having the right to use the images you add (for example, photos of other people or protected works)."
+          ]
+        },
+        {
+          "h2": "Acceptable use",
+          "paragraphs": [
+            "Do not use Cutova to create content that is illegal, misleading or that infringes other people's rights. Do not try to disrupt the website or its hosting."
+          ]
+        },
+        {
+          "h2": "Liability",
+          "paragraphs": [
+            "Automatic background removal can make mistakes. Check your results before using them. To the extent permitted by law, the publisher is not liable for damages resulting from the use of the service."
+          ]
+        },
+        {
+          "h2": "Applicable law and contact",
+          "paragraphs": [
+            "Applicable law and competent courts: [À COMPLÉTER]",
+            "Contact: [À COMPLÉTER]",
+            "Last update: [À COMPLÉTER]"
+          ]
+        }
+      ]
+    },
+    "fr": {
+      "path": "/fr/conditions/",
+      "title": "Conditions d'utilisation | Cutova",
+      "description": "Les conditions qui s'appliquent quand vous utilisez Cutova, l'outil gratuit de détourage qui fonctionne entièrement dans votre navigateur.",
+      "h1": "Conditions d'utilisation",
+      "intro": [
+        "En utilisant Cutova, vous acceptez ces conditions. Elles sont courtes parce que le service est simple : un outil gratuit qui fonctionne dans votre navigateur."
+      ],
+      "sections": [
+        {
+          "h2": "Le service",
+          "paragraphs": [
+            "Cutova supprime l'arrière-plan des images directement dans votre navigateur. Il est gratuit, sans compte, et fourni tel quel, sans garantie de résultat ni de disponibilité."
+          ]
+        },
+        {
+          "h2": "Vos contenus",
+          "paragraphs": [
+            "Vous gardez tous les droits sur les images que vous traitez et sur les résultats. Vous êtes responsable d'avoir le droit d'utiliser les images que vous ajoutez (par exemple les photos d'autres personnes ou les œuvres protégées)."
+          ]
+        },
+        {
+          "h2": "Utilisation acceptable",
+          "paragraphs": [
+            "N'utilisez pas Cutova pour créer des contenus illégaux, trompeurs ou qui portent atteinte aux droits d'autrui. N'essayez pas de perturber le site ou son hébergement."
+          ]
+        },
+        {
+          "h2": "Responsabilité",
+          "paragraphs": [
+            "Le détourage automatique peut se tromper. Vérifiez vos résultats avant de les utiliser. Dans les limites permises par la loi, l'éditeur n'est pas responsable des dommages résultant de l'utilisation du service."
+          ]
+        },
+        {
+          "h2": "Droit applicable et contact",
+          "paragraphs": [
+            "Droit applicable et tribunaux compétents : [À COMPLÉTER]",
+            "Contact : [À COMPLÉTER]",
+            "Dernière mise à jour : [À COMPLÉTER]"
+          ]
+        }
+      ]
+    },
+    "pt-br": {
+      "path": "/pt-br/termos-de-uso/",
+      "title": "Termos de uso | Cutova",
+      "description": "Os termos que valem quando você usa o Cutova, o removedor de fundo grátis que funciona inteiramente no seu navegador.",
+      "h1": "Termos de uso",
+      "intro": [
+        "Ao usar o Cutova, você aceita estes termos. Eles são curtos porque o serviço é simples: uma ferramenta grátis que roda no seu navegador."
+      ],
+      "sections": [
+        {
+          "h2": "O serviço",
+          "paragraphs": [
+            "O Cutova remove o fundo de imagens direto no seu navegador. Ele é grátis, não exige cadastro e é oferecido no estado em que se encontra, sem garantia de resultado ou de disponibilidade."
+          ]
+        },
+        {
+          "h2": "Seu conteúdo",
+          "paragraphs": [
+            "Você mantém todos os direitos sobre as imagens que processa e sobre os resultados. Você é responsável por ter o direito de usar as imagens que adiciona (por exemplo, fotos de outras pessoas ou obras protegidas)."
+          ]
+        },
+        {
+          "h2": "Uso aceitável",
+          "paragraphs": [
+            "Não use o Cutova para criar conteúdo ilegal, enganoso ou que viole direitos de outras pessoas. Não tente prejudicar o funcionamento do site ou da sua hospedagem."
+          ]
+        },
+        {
+          "h2": "Responsabilidade",
+          "paragraphs": [
+            "A remoção automática de fundo pode errar. Confira os resultados antes de usá-los. Na medida permitida pela lei, o responsável pela publicação não responde por danos resultantes do uso do serviço."
+          ]
+        },
+        {
+          "h2": "Lei aplicável e contato",
+          "paragraphs": [
+            "Lei aplicável e foro competente: [À COMPLÉTER]",
+            "Contato: [À COMPLÉTER]",
+            "Última atualização: [À COMPLÉTER]"
+          ]
+        }
+      ]
+    },
+    "es": {
+      "path": "/es/condiciones-de-uso/",
+      "title": "Condiciones de uso | Cutova",
+      "description": "Las condiciones que se aplican cuando usas Cutova, la herramienta gratuita para quitar fondos que funciona por completo en tu navegador.",
+      "h1": "Condiciones de uso",
+      "intro": [
+        "Al usar Cutova aceptas estas condiciones. Son breves porque el servicio es sencillo: una herramienta gratuita que funciona en tu navegador."
+      ],
+      "sections": [
+        {
+          "h2": "El servicio",
+          "paragraphs": [
+            "Cutova quita el fondo de las imágenes directamente en tu navegador. Es gratis, no necesita cuenta y se ofrece tal cual, sin garantía de resultados ni de disponibilidad."
+          ]
+        },
+        {
+          "h2": "Tu contenido",
+          "paragraphs": [
+            "Conservas todos los derechos sobre las imágenes que procesas y sobre los resultados. Eres responsable de tener derecho a usar las imágenes que añades (por ejemplo, fotos de otras personas u obras protegidas)."
+          ]
+        },
+        {
+          "h2": "Uso aceptable",
+          "paragraphs": [
+            "No uses Cutova para crear contenido ilegal, engañoso o que vulnere los derechos de otras personas. No intentes perturbar el funcionamiento de la web ni de su alojamiento."
+          ]
+        },
+        {
+          "h2": "Responsabilidad",
+          "paragraphs": [
+            "La eliminación automática de fondos puede equivocarse. Revisa tus resultados antes de usarlos. En la medida en que lo permita la ley, el titular no se hace responsable de los daños derivados del uso del servicio."
+          ]
+        },
+        {
+          "h2": "Ley aplicable y contacto",
+          "paragraphs": [
+            "Ley aplicable y tribunales competentes: [À COMPLÉTER]",
+            "Contacto: [À COMPLÉTER]",
+            "Última actualización: [À COMPLÉTER]"
+          ]
+        }
+      ]
+    },
+    "id": {
+      "path": "/id/syarat-penggunaan/",
+      "title": "Syarat penggunaan | Cutova",
+      "description": "Syarat yang berlaku saat Anda memakai Cutova, alat hapus background gratis yang berjalan sepenuhnya di browser Anda.",
+      "h1": "Syarat penggunaan",
+      "intro": [
+        "Dengan memakai Cutova, Anda menyetujui syarat ini. Isinya singkat karena layanannya sederhana: alat gratis yang berjalan di browser Anda."
+      ],
+      "sections": [
+        {
+          "h2": "Layanan",
+          "paragraphs": [
+            "Cutova menghapus background gambar langsung di browser Anda. Layanan ini gratis, tidak memerlukan akun, dan diberikan apa adanya, tanpa jaminan hasil maupun ketersediaan."
+          ]
+        },
+        {
+          "h2": "Konten Anda",
+          "paragraphs": [
+            "Anda tetap memegang semua hak atas gambar yang Anda proses dan hasilnya. Anda bertanggung jawab memastikan bahwa Anda berhak memakai gambar yang ditambahkan (misalnya foto orang lain atau karya yang dilindungi)."
+          ]
+        },
+        {
+          "h2": "Penggunaan yang diperbolehkan",
+          "paragraphs": [
+            "Jangan memakai Cutova untuk membuat konten yang melanggar hukum, menyesatkan, atau melanggar hak orang lain. Jangan mencoba mengganggu situs atau layanan hosting-nya."
+          ]
+        },
+        {
+          "h2": "Tanggung jawab",
+          "paragraphs": [
+            "Penghapusan background otomatis bisa keliru. Periksa hasil sebelum memakainya. Sejauh diizinkan oleh hukum, penerbit tidak bertanggung jawab atas kerugian akibat penggunaan layanan."
+          ]
+        },
+        {
+          "h2": "Hukum yang berlaku dan kontak",
+          "paragraphs": [
+            "Hukum yang berlaku dan pengadilan yang berwenang: [À COMPLÉTER]",
+            "Kontak: [À COMPLÉTER]",
+            "Pembaruan terakhir: [À COMPLÉTER]"
+          ]
+        }
+      ]
+    }
+  }
+}

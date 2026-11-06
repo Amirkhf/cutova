@@ -1,12 +1,15 @@
 import type { Dictionary, Locale } from "./types.ts";
 import { en } from "./locales/en.ts";
 import { fr } from "./locales/fr.ts";
+import { es } from "./locales/es.ts";
+import { ptBr } from "./locales/pt-br.ts";
+import { id } from "./locales/id.ts";
 
 /** Toutes les locales prévues pour le sélecteur de langue (voir context.md > Pages SEO). */
 export const availableLocales: Locale[] = ["en", "fr", "pt-br", "es", "id"];
 
-/** Locales ayant un dictionnaire complet. Les autres retombent sur l'anglais (`en`). */
-const dictionaries: Partial<Record<Locale, Dictionary>> = { en, fr };
+/** Un dictionnaire complet par locale publiée. */
+const dictionaries: Record<Locale, Dictionary> = { en, fr, "pt-br": ptBr, es, id };
 
 export function getDictionary(locale: Locale): Dictionary {
   return dictionaries[locale] ?? en;

@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-01T00:56:55.041Z",
+  "runtime": "onnxruntime-web wasm (Node), 4 threads",
+  "model": "ormbg",
+  "photos": 20,
+  "p50": 4023,
+  "p95": 4253,
+  "iouMean": 0.684,
+  "peakRssMb": 1205,
+  "runs": [
+    {
+      "photo": "busy-9816.jpg",
+      "ms": 4024,
+      "iou": 0.5288,
+      "mae": 0.1848
+    },
+    {
+      "photo": "car-4314.jpg",
+      "ms": 4436,
+      "iou": 0.5856,
+      "mae": 0.2889
+    },
+    {
+      "photo": "car-7406.jpg",
+      "ms": 4007,
+      "iou": 0.7067,
+      "mae": 0.2139
+    },
+    {
+      "photo": "fur-12162.jpg",
+      "ms": 4253,
+      "iou": 0.9978,
+      "mae": 0.0016
+    },
+    {
+      "photo": "fur-17767.jpg",
+      "ms": 3880,
+      "iou": 0.9749,
+      "mae": 0.0123
+    },
+    {
+      "photo": "fur-17773.jpg",
+      "ms": 4139,
+      "iou": 0.5889,
+      "mae": 0.1953
+    },
+    {
+      "photo": "fur-6235.jpg",
+      "ms": 3937,
+      "iou": 0.0806,
+      "mae": 0.3221
+    },
+    {
+      "photo": "glass-1484.jpg",
+      "ms": 4025,
+      "iou": 0.4112,
+      "mae": 0.0821
+    },
+    {
+      "photo": "glass-3584.jpg",
+      "ms": 3941,
+      "iou": 0.7401,
+      "mae": 0.0846
+    },
+    {
+      "photo": "glass-5568.jpg",
+      "ms": 4209,
+      "iou": 0.405,
+      "mae": 0.2482
+    },
+    {
+      "photo": "hair-157915.jpg",
+      "ms": 4189,
+      "iou": 0.9829,
+      "mae": 0.0081
+    },
+    {
+      "photo": "hair-157920.jpg",
+      "ms": 3910,
+      "iou": 0.9848,
+      "mae": 0.0077
+    },
+    {
+      "photo": "hair-35537.jpg",
+      "ms": 3851,
+      "iou": 0.9887,
+      "mae": 0.0044
+    },
+    {
+      "photo": "hair-53000.jpg",
+      "ms": 3870,
+      "iou": 0.9979,
+      "mae": 0.0016
+    },
+    {
+      "photo": "logo-109998.jpg",
+      "ms": 4085,
+      "iou": 0.8009,
+      "mae": 0.0147
+    },
+    {
+      "photo": "product-1591.jpg",
+      "ms": 3837,
+      "iou": 0.5228,
+      "mae": 0.2102
+    },
+    {
+      "photo": "product-5670.jpg",
+      "ms": 4023,
+      "iou": 0.7333,
+      "mae": 0.1013
+    },
+    {
+      "photo": "product-6346.jpg",
+      "ms": 3933,
+      "iou": 0.9518,
+      "mae": 0.0192
+    },
+    {
+      "photo": "signature-175045.jpg",
+      "ms": 4067,
+      "iou": 0.6155,
+      "mae": 0.1416
+    },
+    {
+      "photo": "signature-51159.jpg",
+      "ms": 4033,
+      "iou": 0.0827,
+      "mae": 0.1286
+    }
+  ]
+}

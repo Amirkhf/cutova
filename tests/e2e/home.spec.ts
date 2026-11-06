@@ -30,7 +30,7 @@ test.beforeEach(async ({ page }) => {
 
 test("choix via le bouton principal émet image:selected", async ({ page }) => {
   await page.goto("/");
-  await page.setInputFiles('input[type="file"]', {
+  await page.setInputFiles('.upload-card input[type="file"]', {
     name: "photo.png",
     mimeType: "image/png",
     buffer: pngBuffer(),
@@ -83,7 +83,7 @@ test("clic sur un exemple émet image:selected", async ({ page }) => {
 
 test("fichier invalide affiche un message d'erreur", async ({ page }) => {
   await page.goto("/");
-  await page.setInputFiles('input[type="file"]', {
+  await page.setInputFiles('.upload-card input[type="file"]', {
     name: "notes.png",
     mimeType: "image/png",
     buffer: Buffer.from("this is plain text, not an image"),

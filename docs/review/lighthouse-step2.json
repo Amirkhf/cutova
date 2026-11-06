@@ -1,0 +1,43 @@
+{
+  "_note": "Lighthouse 12.8.2, mobile, Chromium headless, vite preview local, 2026-11-01 (étape 2).",
+  "/": {
+    "scores": {
+      "performance": 98,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "2.3 s",
+    "cls": "0"
+  },
+  "/fr/": {
+    "scores": {
+      "performance": 98,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "2.3 s",
+    "cls": "0"
+  },
+  "/for/ecommerce/": {
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "1.5 s",
+    "cls": "0"
+  },
+  "/privacy/": {
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": "1.5 s",
+    "cls": "0"
+  }
+}

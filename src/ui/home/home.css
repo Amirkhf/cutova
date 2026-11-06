@@ -1,22 +1,6 @@
-.skip-link {
-  position: absolute;
-  top: var(--space-2);
-  left: var(--space-2);
-  z-index: 100;
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
-  border-radius: var(--radius-sm);
-  transform: translateY(-200%);
-  transition: transform var(--duration-fast) var(--ease-standard);
-}
-
-.skip-link:focus-visible {
-  transform: translateY(0);
-}
-
 /* En-tête */
 .home-header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,7 +36,7 @@
 .home-nav {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-2);
 }
 
 .home-tools {
@@ -203,7 +187,7 @@
 
 .home-demo-frame {
   position: relative;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 2 / 3;
   max-width: 320px;
   margin-top: var(--space-4);
   border-radius: var(--radius-lg);
@@ -218,9 +202,12 @@
   inset: 0;
 }
 
-.home-demo-layer svg {
+.home-demo-layer svg,
+.home-demo-layer img {
+  display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
 .home-demo-after {
@@ -408,40 +395,12 @@
   border-color: var(--color-accent);
 }
 
-/* Panneau de résultat provisoire (voir src/ui/result/render-result.ts) */
-.result-panel {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-  margin-top: var(--space-6);
-}
 
-.result-badge {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-body-medium);
-  color: var(--color-text-secondary);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-}
-
-.result-canvas-wrap {
-  width: min(100%, 480px);
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--color-border-subtle);
-}
-
-.result-canvas {
+/* Vignettes d'exemple (vraies photos) : remplissent le bouton sans déformation. */
+.upload-example picture,
+.upload-example img {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
-}
-
-.result-status {
-  min-height: 1.5em;
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
+  object-fit: cover;
 }
