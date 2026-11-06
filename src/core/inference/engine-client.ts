@@ -37,6 +37,15 @@ function forceWebGpuFromUrl(): boolean {
   }
 }
 
+/** `?engine=wasm` : forcer WASM sans même tenter WebGPU (tests manuels sur un appareil sans GPU). */
+export function forceWasmFromUrl(): boolean {
+  try {
+    return new URLSearchParams(globalThis.location?.search ?? "").get("engine") === "wasm";
+  } catch {
+    return false;
+  }
+}
+
 class InferenceEngine {
   private worker: Worker | null = null;
   private nextRequestId = 1;
@@ -46,7 +55,7 @@ class InferenceEngine {
   private rejectReady: ((err: Error) => void) | null = null;
   private progressListeners = new Set<ProgressListener>();
   /** Devient vrai après un échec WebGPU : tous les workers suivants sont en WASM seul. */
-  private forceWasm = false;
+  private forceWasm = forceWasmFromUrl();
   private readonly forceWebGpu = forceWebGpuFromUrl();
 
   private ensureWorker(): Worker {

@@ -671,6 +671,9 @@ Bing, IndexNow) et tests sur matériel réel.
   (`aria-live="polite"`) sur l'image, balayage animé (aucun si animations réduites), lot : « Image k / n »
   + barre globale. Le téléchargement du modèle reste un état distinct (ligne de statut `progress`).
 - **(UI) Test analytics instable** : `addInitScript` n'était pas attendu (course avec la navigation) → attendu.
+- **(UI) `?engine=wasm`** (`engine-client.ts` > `forceWasmFromUrl`) : force WASM dès le chargement, sans
+  même sonder WebGPU (contrairement à `?webgpu=force`, qui tente WebGPU malgré des limites
+  insuffisantes) — pour les tests manuels sur un appareil sans GPU.
 
 ## Prochaine étape
 1. Éditeur du site : suivre `DEPLOY.md` dans l'ordre (champs légaux, domaine, R2, Pages + `SITE_URL`, D1,
