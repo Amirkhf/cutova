@@ -23,6 +23,8 @@ Bing, IndexNow) et tests sur matériel réel.
   comparaison, graphiques SVG maison ; données de démo en dev uniquement.
 - **Qualité** : 165 tests unitaires, 152 e2e Chromium (dont chaque URL du sitemap vérifiée stylée) + recette Firefox/WebKit, `npm audit`
   0 faille, licences sans GPL/AGPL. Rapport : `docs/QA.md` ; captures : `docs/review/`.
+- 2 tests e2e en échec connus : inference.spec.ts:89 (rechargement cache OPFS bloqué à 100 %) et
+  webgpu.spec.ts:58 (repli WASM reste en running) — à vérifier sur Chrome réel.
 
 ## Modules
 - `src/core/model/` — `models.json` (**source unique** des modèles : dépôt, révision figée, SHA-256,
