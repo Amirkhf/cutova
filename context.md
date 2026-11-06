@@ -5,6 +5,22 @@
 Functions (`/api/event` compteurs anonymes agrégés dans D1, `/api/stats` protégé par Cloudflare Access).
 Reste à faire par l'éditeur : `DEPLOY.md` (domaine, champs légaux, R2, Pages, D1, Access, Search Console,
 Bing, IndexNow) et tests sur matériel réel.
+- **(2026-11-06) Déploiement de test en cours** : domaine réel **cutova.app** (Cloudflare Registrar, pas
+  encore relié au projet Pages — volontaire, l'éditeur doit tester avant). Projet Pages **`cutova`** créé
+  et déployé (upload direct `wrangler pages deploy dist`, pas encore relié au dépôt Git) : URL de test
+  **https://cutova.pages.dev**. Base D1 **`cutova-stats`** créée et migrée (`database_id` dans
+  `wrangler.toml`), `/api/event` vérifié (204, événement compté). `SITE_URL=https://cutova.app` et
+  `VITE_MODEL_BASE_URL=https://models.cutova.app` dans `wrangler.toml` > `[vars]` : build `dist/`
+  entièrement en `https://cutova.app` (canonical, hreflang, sitemaps, robots.txt, llms.txt), aucun fichier
+  > 25 Mio. **Bloqué : R2 pas encore activé sur le compte Cloudflare** (code 10042, demande une action
+  dans le tableau de bord) → bucket `cutova-models` pas encore créé, modèles pas encore envoyés, le
+  détourage ne fonctionne donc pas encore sur https://cutova.pages.dev (404 attendus sur
+  `models.cutova.app`). `/stats` et `/api/stats` pas encore protégés par Cloudflare Access (`ACCESS_*`
+  non définis → `/api/stats` ferme à 403 par défaut, comportement attendu).
+  Redéployer après un changement : `npm run build` (avec `SITE_URL`/`VITE_MODEL_BASE_URL` déjà fixés dans
+  `wrangler.toml`, lus automatiquement par `npm run build` si exportés dans l'environnement, sinon
+  `SITE_URL=https://cutova.app VITE_MODEL_BASE_URL=https://models.cutova.app npm run build`) puis
+  `npx wrangler pages deploy dist --project-name cutova`.
 - **Moteur IA** : Web Worker, WebGPU → BiRefNet_lite (si ≥ 11 storage buffers par shader), WASM → ormbg
   (Apache-2.0), repli WebGPU → WASM dans un worker neuf, cache OPFS, WASM multithread, zéro requête externe.
 - **Accueil + éditeur** : lot d'images, gomme/restaurer, fonds (transparent, couleurs, 6 photos libres,
