@@ -28,8 +28,12 @@ Bing, IndexNow) et tests sur matériel réel.
   réponse CORS valide (`Access-Control-Allow-Origin`) pour les requêtes `fetch()` du worker. Modèle WASM
   envoyé = **ormbg** (celui réellement câblé dans `models.json`), pas MODNet (jamais intégré, voir
   Décisions) : une demande antérieure nommant MODNet par erreur a été corrigée après confirmation.
-  `/stats` et `/api/stats` pas encore protégés par Cloudflare Access (`ACCESS_*` non définis →
-  `/api/stats` ferme à 403 par défaut, comportement attendu).
+  **`/stats` et `/api/stats` protégés par Cloudflare Access** (application `cutova-stats`, team
+  `silent-recipe-0df0.cloudflareaccess.com`, 6 chemins couverts, seule l'adresse de l'éditeur autorisée,
+  One-time PIN) : `ACCESS_TEAM_DOMAIN`/`ACCESS_AUD` posés comme secrets du projet Pages `cutova`
+  (production), redéployé. Vérifié sans connexion : `/stats` et `/api/stats` → 302 vers
+  `cloudflareaccess.com` sur `https://cutova.pages.dev` **et** sur une URL de preview
+  (`*.cutova.pages.dev`), jamais 200 ; `/api/event` (POST) reste public (204).
   **Recette Playwright contre https://cutova.pages.dev** (`playwright.deployed.config.ts`,
   `tests/e2e-deployed/`) : 3 photos de `tests/images/` (portrait cheveux, produit, voiture) en
   `?engine=wasm` → vrai masque à chaque fois (`data-engine="wasm"`), p50 6,3 s / p95 6,4 s ; les mêmes 3
