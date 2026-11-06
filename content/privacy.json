@@ -1,7 +1,7 @@
 {
   "id": "privacy",
   "type": "legal",
-  "$comment": "Politique de confidentialité factuelle : pas de compte, pas de base de données, pas de back-end, pas de traceur. Champs [À COMPLÉTER] listés dans DEPLOY.md.",
+  "$comment": "Politique de confidentialité factuelle : pas de compte, pas de base de données, pas de back-end, pas de traceur. Tous les champs sont remplis (voir context.md > Décisions).",
   "locales": {
     "en": {
       "path": "/privacy/",
@@ -38,7 +38,7 @@
           "h2": "What our hosting provider sees",
           "paragraphs": [
             "Like any website, our host (Cloudflare) processes technical data needed to deliver pages and files, such as IP address and browser type, and may keep short-term security logs. We do not use these data for advertising or profiling.",
-            "Retention of hosting logs: [À COMPLÉTER]. No third-party analytics tool is used."
+            "Retention of hosting logs: set by Cloudflare under its own privacy policy: https://www.cloudflare.com/privacypolicy/. No third-party analytics tool is used."
           ]
         },
         {
@@ -50,14 +50,14 @@
         {
           "h2": "Your rights and contact",
           "paragraphs": [
-            "You can ask any question about your data or exercise your rights (access, erasure, objection) by writing to: [À COMPLÉTER]. You can also contact your data protection authority (in France: the CNIL).",
-            "Data controller: [À COMPLÉTER]"
+            "You can ask any question about your data or exercise your rights (access, erasure, objection) by writing to: contact@cutova.app. You can also contact your data protection authority (in France: the CNIL).",
+            "Data controller: Amir Khelifi (contact@cutova.app)"
           ]
         },
         {
           "h2": "Changes",
           "paragraphs": [
-            "If this policy changes, this page will be updated with a new date. Last update: [À COMPLÉTER]."
+            "If this policy changes, this page will be updated with a new date. Last update: 2026-11-06."
           ]
         }
       ]
@@ -97,7 +97,7 @@
           "h2": "Ce que voit notre hébergeur",
           "paragraphs": [
             "Comme pour tout site web, notre hébergeur (Cloudflare) traite les données techniques nécessaires pour livrer les pages et les fichiers, comme l'adresse IP et le type de navigateur, et peut garder des journaux de sécurité de courte durée. Nous n'utilisons pas ces données pour de la publicité ou du profilage.",
-            "Durée de conservation des journaux d'hébergement : [À COMPLÉTER]. Aucun outil de mesure d'audience tiers n'est utilisé."
+            "Durée de conservation des journaux d'hébergement : définie par Cloudflare dans sa propre politique de confidentialité : https://www.cloudflare.com/privacypolicy/. Aucun outil de mesure d'audience tiers n'est utilisé."
           ]
         },
         {
@@ -109,14 +109,14 @@
         {
           "h2": "Vos droits et contact",
           "paragraphs": [
-            "Vous pouvez poser toute question sur vos données ou exercer vos droits (accès, effacement, opposition) en écrivant à : [À COMPLÉTER]. Vous pouvez aussi saisir la CNIL.",
-            "Responsable du traitement : [À COMPLÉTER]"
+            "Vous pouvez poser toute question sur vos données ou exercer vos droits (accès, effacement, opposition) en écrivant à : contact@cutova.app. Vous pouvez aussi saisir la CNIL.",
+            "Responsable du traitement : Amir Khelifi (contact@cutova.app)"
           ]
         },
         {
           "h2": "Modifications",
           "paragraphs": [
-            "Si cette politique change, cette page sera mise à jour avec une nouvelle date. Dernière mise à jour : [À COMPLÉTER]."
+            "Si cette politique change, cette page sera mise à jour avec une nouvelle date. Dernière mise à jour : 2026-11-06."
           ]
         }
       ]
@@ -156,7 +156,7 @@
           "h2": "O que o nosso provedor de hospedagem vê",
           "paragraphs": [
             "Como em qualquer site, o nosso provedor (Cloudflare) trata os dados técnicos necessários para entregar páginas e arquivos, como o endereço IP e o tipo de navegador, e pode manter registros de segurança por pouco tempo. Não usamos esses dados para publicidade nem para criação de perfis.",
-            "Prazo de conservação dos registros de hospedagem: [À COMPLÉTER]. Nenhuma ferramenta de análise de terceiros é usada."
+            "Prazo de conservação dos registros de hospedagem: definido pela Cloudflare em sua própria política de privacidade: https://www.cloudflare.com/privacypolicy/. Nenhuma ferramenta de análise de terceiros é usada."
           ]
         },
         {
@@ -168,14 +168,14 @@
         {
           "h2": "Seus direitos e contato",
           "paragraphs": [
-            "Você pode tirar dúvidas sobre seus dados ou exercer seus direitos (acesso, eliminação, oposição), conforme a LGPD e o RGPD, escrevendo para: [À COMPLÉTER]. Você também pode procurar a autoridade de proteção de dados (no Brasil, a ANPD).",
-            "Controlador dos dados: [À COMPLÉTER]"
+            "Você pode tirar dúvidas sobre seus dados ou exercer seus direitos (acesso, eliminação, oposição), conforme a LGPD e o RGPD, escrevendo para: contact@cutova.app. Você também pode procurar a autoridade de proteção de dados (no Brasil, a ANPD).",
+            "Controlador dos dados: Amir Khelifi (contact@cutova.app)"
           ]
         },
         {
           "h2": "Alterações",
           "paragraphs": [
-            "Se esta política mudar, esta página será atualizada com uma nova data. Última atualização: [À COMPLÉTER]."
+            "Se esta política mudar, esta página será atualizada com uma nova data. Última atualização: 2026-11-06."
           ]
         }
       ]
@@ -215,7 +215,7 @@
           "h2": "Qué ve nuestro proveedor de alojamiento",
           "paragraphs": [
             "Como en cualquier web, nuestro proveedor (Cloudflare) trata los datos técnicos necesarios para servir páginas y archivos, como la dirección IP y el tipo de navegador, y puede conservar registros de seguridad durante poco tiempo. No usamos estos datos para publicidad ni para elaborar perfiles.",
-            "Plazo de conservación de los registros de alojamiento: [À COMPLÉTER]. No se usa ninguna herramienta de analítica de terceros."
+            "Plazo de conservación de los registros de alojamiento: definido por Cloudflare en su propia política de privacidad: https://www.cloudflare.com/privacypolicy/. No se usa ninguna herramienta de analítica de terceros."
           ]
         },
         {
@@ -227,14 +227,14 @@
         {
           "h2": "Tus derechos y contacto",
           "paragraphs": [
-            "Puedes hacer cualquier pregunta sobre tus datos o ejercer tus derechos (acceso, supresión, oposición) escribiendo a: [À COMPLÉTER]. También puedes acudir a tu autoridad de protección de datos (en España, la AEPD).",
-            "Responsable del tratamiento: [À COMPLÉTER]"
+            "Puedes hacer cualquier pregunta sobre tus datos o ejercer tus derechos (acceso, supresión, oposición) escribiendo a: contact@cutova.app. También puedes acudir a tu autoridad de protección de datos (en España, la AEPD).",
+            "Responsable del tratamiento: Amir Khelifi (contact@cutova.app)"
           ]
         },
         {
           "h2": "Cambios",
           "paragraphs": [
-            "Si esta política cambia, esta página se actualizará con una nueva fecha. Última actualización: [À COMPLÉTER]."
+            "Si esta política cambia, esta página se actualizará con una nueva fecha. Última actualización: 2026-11-06."
           ]
         }
       ]
@@ -274,7 +274,7 @@
           "h2": "Yang dilihat penyedia hosting kami",
           "paragraphs": [
             "Seperti situs web lain, penyedia hosting kami (Cloudflare) memproses data teknis yang diperlukan untuk mengirim halaman dan file, seperti alamat IP dan jenis browser, dan bisa menyimpan log keamanan dalam waktu singkat. Kami tidak memakai data ini untuk iklan atau pembuatan profil.",
-            "Masa simpan log hosting: [À COMPLÉTER]. Tidak ada alat analitik pihak ketiga yang dipakai."
+            "Masa simpan log hosting: ditentukan oleh Cloudflare dalam kebijakan privasinya sendiri: https://www.cloudflare.com/privacypolicy/. Tidak ada alat analitik pihak ketiga yang dipakai."
           ]
         },
         {
@@ -286,14 +286,14 @@
         {
           "h2": "Hak Anda dan kontak",
           "paragraphs": [
-            "Anda bisa bertanya apa pun tentang data Anda atau menggunakan hak Anda (akses, penghapusan, keberatan) dengan menulis ke: [À COMPLÉTER]. Anda juga bisa menghubungi otoritas pelindungan data di negara Anda.",
-            "Pengendali data: [À COMPLÉTER]"
+            "Anda bisa bertanya apa pun tentang data Anda atau menggunakan hak Anda (akses, penghapusan, keberatan) dengan menulis ke: contact@cutova.app. Anda juga bisa menghubungi otoritas pelindungan data di negara Anda.",
+            "Pengendali data: Amir Khelifi (contact@cutova.app)"
           ]
         },
         {
           "h2": "Perubahan",
           "paragraphs": [
-            "Jika kebijakan ini berubah, halaman ini akan diperbarui dengan tanggal baru. Pembaruan terakhir: [À COMPLÉTER]."
+            "Jika kebijakan ini berubah, halaman ini akan diperbarui dengan tanggal baru. Pembaruan terakhir: 2026-11-06."
           ]
         }
       ]

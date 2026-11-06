@@ -1,7 +1,7 @@
 {
   "id": "terms",
   "type": "legal",
-  "$comment": "Conditions d'utilisation simples d'un outil gratuit sans compte. Champs [À COMPLÉTER] listés dans DEPLOY.md.",
+  "$comment": "Conditions d'utilisation simples d'un outil gratuit sans compte. Tous les champs sont remplis (voir context.md > Décisions).",
   "locales": {
     "en": {
       "path": "/terms/",
@@ -39,9 +39,9 @@
         {
           "h2": "Applicable law and contact",
           "paragraphs": [
-            "Applicable law and competent courts: [À COMPLÉTER]",
-            "Contact: [À COMPLÉTER]",
-            "Last update: [À COMPLÉTER]"
+            "Applicable law and competent courts: French law applies. French courts have jurisdiction, subject to any mandatory consumer-protection rules of your country of residence.",
+            "Contact: contact@cutova.app",
+            "Last update: 2026-11-06"
           ]
         }
       ]
@@ -82,9 +82,9 @@
         {
           "h2": "Droit applicable et contact",
           "paragraphs": [
-            "Droit applicable et tribunaux compétents : [À COMPLÉTER]",
-            "Contact : [À COMPLÉTER]",
-            "Dernière mise à jour : [À COMPLÉTER]"
+            "Droit applicable et tribunaux compétents : le droit français s'applique. Les tribunaux français sont compétents, sous réserve des règles impératives de protection du consommateur de votre pays de résidence.",
+            "Contact : contact@cutova.app",
+            "Dernière mise à jour : 2026-11-06"
           ]
         }
       ]
@@ -125,9 +125,9 @@
         {
           "h2": "Lei aplicável e contato",
           "paragraphs": [
-            "Lei aplicável e foro competente: [À COMPLÉTER]",
-            "Contato: [À COMPLÉTER]",
-            "Última atualização: [À COMPLÉTER]"
+            "Lei aplicável e foro competente: aplica-se a lei francesa. Os tribunais franceses têm competência, sem prejuízo das regras imperativas de proteção ao consumidor do seu país de residência.",
+            "Contato: contact@cutova.app",
+            "Última atualização: 2026-11-06"
           ]
         }
       ]
@@ -168,9 +168,9 @@
         {
           "h2": "Ley aplicable y contacto",
           "paragraphs": [
-            "Ley aplicable y tribunales competentes: [À COMPLÉTER]",
-            "Contacto: [À COMPLÉTER]",
-            "Última actualización: [À COMPLÉTER]"
+            "Ley aplicable y tribunales competentes: se aplica el derecho francés. Los tribunales franceses son competentes, sin perjuicio de las normas imperativas de protección del consumidor de tu país de residencia.",
+            "Contacto: contact@cutova.app",
+            "Última actualización: 2026-11-06"
           ]
         }
       ]
@@ -211,9 +211,9 @@
         {
           "h2": "Hukum yang berlaku dan kontak",
           "paragraphs": [
-            "Hukum yang berlaku dan pengadilan yang berwenang: [À COMPLÉTER]",
-            "Kontak: [À COMPLÉTER]",
-            "Pembaruan terakhir: [À COMPLÉTER]"
+            "Hukum yang berlaku dan pengadilan yang berwenang: hukum Prancis berlaku. Pengadilan Prancis berwenang, tanpa mengurangi aturan wajib perlindungan konsumen di negara tempat tinggal Anda.",
+            "Kontak: contact@cutova.app",
+            "Pembaruan terakhir: 2026-11-06"
           ]
         }
       ]

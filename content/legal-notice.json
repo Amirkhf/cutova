@@ -1,7 +1,7 @@
 {
   "id": "legal-notice",
   "type": "legal",
-  "$comment": "Champs [À COMPLÉTER] à remplir par l'éditeur du site avant mise en ligne (liste dans DEPLOY.md).",
+  "$comment": "Tous les champs sont remplis (éditeur : Amir Khelifi, particulier ; voir context.md > Décisions).",
   "locales": {
     "en": {
       "path": "/legal/",
@@ -15,18 +15,18 @@
         {
           "h2": "Publisher",
           "paragraphs": [
-            "Name or company: [À COMPLÉTER]",
-            "Legal form and registration number (if a company): [À COMPLÉTER]",
-            "Postal address: [À COMPLÉTER]",
-            "Contact email: [À COMPLÉTER]",
-            "Publication director: [À COMPLÉTER]"
+            "Name or company: Amir Khelifi",
+            "Legal form and registration number (if a company): Not applicable (private individual, no business registration)",
+            "Postal address: In accordance with Article 6-III-2 of French law n° 2004-575 (LCEN), the publisher, acting on a non-professional basis, has provided identifying information to the host.",
+            "Contact email: contact@cutova.app",
+            "Publication director: Amir Khelifi"
           ]
         },
         {
           "h2": "Hosting",
           "paragraphs": [
             "The website is hosted by Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, United States (Cloudflare Pages and Cloudflare R2).",
-            "Hosting contract and region: [À COMPLÉTER]"
+            "Hosting contract and region: Cloudflare Pages (website), Cloudflare R2 (AI model storage) and Cloudflare D1 (anonymous statistics database, Western Europe region)."
           ]
         },
         {
@@ -55,18 +55,18 @@
         {
           "h2": "Éditeur",
           "paragraphs": [
-            "Nom ou raison sociale : [À COMPLÉTER]",
-            "Forme juridique et numéro d'immatriculation (SIREN/SIRET si société ou entreprise individuelle) : [À COMPLÉTER]",
-            "Adresse postale : [À COMPLÉTER]",
-            "Adresse e-mail de contact : [À COMPLÉTER]",
-            "Directeur ou directrice de la publication : [À COMPLÉTER]"
+            "Nom ou raison sociale : Amir Khelifi",
+            "Forme juridique et numéro d'immatriculation (SIREN/SIRET si société ou entreprise individuelle) : Non applicable (particulier, aucune immatriculation)",
+            "Adresse postale : Conformément à l'article 6-III-2 de la loi n° 2004-575 du 21 juin 2004 (LCEN), l'éditeur, non professionnel, a communiqué ses éléments d'identification à l'hébergeur.",
+            "Adresse e-mail de contact : contact@cutova.app",
+            "Directeur ou directrice de la publication : Amir Khelifi"
           ]
         },
         {
           "h2": "Hébergement",
           "paragraphs": [
             "Le site est hébergé par Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, États-Unis (Cloudflare Pages et Cloudflare R2).",
-            "Contrat et région d'hébergement : [À COMPLÉTER]"
+            "Contrat et région d'hébergement : Cloudflare Pages (site), Cloudflare R2 (stockage des modèles d'IA) et Cloudflare D1 (base des statistiques anonymes, région Europe de l'Ouest)."
           ]
         },
         {
@@ -95,18 +95,18 @@
         {
           "h2": "Responsável pela publicação",
           "paragraphs": [
-            "Nome ou empresa: [À COMPLÉTER]",
-            "Forma jurídica e número de registro (se for empresa): [À COMPLÉTER]",
-            "Endereço postal: [À COMPLÉTER]",
-            "E-mail de contato: [À COMPLÉTER]",
-            "Diretor de publicação: [À COMPLÉTER]"
+            "Nome ou empresa: Amir Khelifi",
+            "Forma jurídica e número de registro (se for empresa): Não aplicável (pessoa física, sem registro de empresa)",
+            "Endereço postal: Em conformidade com o artigo 6-III-2 da lei francesa n° 2004-575 (LCEN), o responsável pela publicação, agindo a título não profissional, informou seus dados de identificação ao provedor de hospedagem.",
+            "E-mail de contato: contact@cutova.app",
+            "Diretor de publicação: Amir Khelifi"
           ]
         },
         {
           "h2": "Hospedagem",
           "paragraphs": [
             "O site é hospedado pela Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, Estados Unidos (Cloudflare Pages e Cloudflare R2).",
-            "Contrato e região de hospedagem: [À COMPLÉTER]"
+            "Contrato e região de hospedagem: Cloudflare Pages (site), Cloudflare R2 (armazenamento dos modelos de IA) e Cloudflare D1 (banco de estatísticas anônimas, região Europa Ocidental)."
           ]
         },
         {
@@ -135,18 +135,18 @@
         {
           "h2": "Titular",
           "paragraphs": [
-            "Nombre o empresa: [À COMPLÉTER]",
-            "Forma jurídica y número de registro (si es una empresa): [À COMPLÉTER]",
-            "Dirección postal: [À COMPLÉTER]",
-            "Correo de contacto: [À COMPLÉTER]",
-            "Responsable de la publicación: [À COMPLÉTER]"
+            "Nombre o empresa: Amir Khelifi",
+            "Forma jurídica y número de registro (si es una empresa): No aplicable (particular, sin registro de empresa)",
+            "Dirección postal: De conformidad con el artículo 6-III-2 de la ley francesa n.º 2004-575 (LCEN), el titular, que actúa a título no profesional, ha comunicado sus datos de identificación al proveedor de alojamiento.",
+            "Correo de contacto: contact@cutova.app",
+            "Responsable de la publicación: Amir Khelifi"
           ]
         },
         {
           "h2": "Alojamiento",
           "paragraphs": [
             "La web está alojada por Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, Estados Unidos (Cloudflare Pages y Cloudflare R2).",
-            "Contrato y región de alojamiento: [À COMPLÉTER]"
+            "Contrato y región de alojamiento: Cloudflare Pages (sitio web), Cloudflare R2 (almacenamiento de los modelos de IA) y Cloudflare D1 (base de estadísticas anónimas, región Europa Occidental)."
           ]
         },
         {
@@ -175,18 +175,18 @@
         {
           "h2": "Penerbit",
           "paragraphs": [
-            "Nama atau perusahaan: [À COMPLÉTER]",
-            "Bentuk badan hukum dan nomor registrasi (jika perusahaan): [À COMPLÉTER]",
-            "Alamat pos: [À COMPLÉTER]",
-            "Email kontak: [À COMPLÉTER]",
-            "Penanggung jawab publikasi: [À COMPLÉTER]"
+            "Nama atau perusahaan: Amir Khelifi",
+            "Bentuk badan hukum dan nomor registrasi (jika perusahaan): Tidak berlaku (perseorangan, tanpa registrasi usaha)",
+            "Alamat pos: Sesuai Pasal 6-III-2 undang-undang Prancis No. 2004-575 (LCEN), penerbit, yang bertindak secara non-profesional, telah menyampaikan data identitasnya kepada penyedia hosting.",
+            "Email kontak: contact@cutova.app",
+            "Penanggung jawab publikasi: Amir Khelifi"
           ]
         },
         {
           "h2": "Hosting",
           "paragraphs": [
             "Situs ini di-hosting oleh Cloudflare, Inc., 101 Townsend St, San Francisco, CA 94107, Amerika Serikat (Cloudflare Pages dan Cloudflare R2).",
-            "Kontrak dan wilayah hosting: [À COMPLÉTER]"
+            "Kontrak dan wilayah hosting: Cloudflare Pages (situs), Cloudflare R2 (penyimpanan model AI), dan Cloudflare D1 (basis data statistik anonim, wilayah Eropa Barat)."
           ]
         },
         {
