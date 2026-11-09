@@ -208,6 +208,7 @@ IndexNow) et tests sur matériel réel. Champs légaux remplis (voir Décisions,
   réciproque sur 5 langues + x-default (`pt-BR`, `es`, `id`), un sitemap par langue (`sitemap-<locale>.xml`)
   + index `sitemap.xml`, sélecteur de langue sans JavaScript (`<details>`) dans l'en-tête des pages
   statiques et liste des 5 langues dans le pied de page.
+- **(2026-11-09) remove-bg-alternative** × 5 langues : bloc de réponse directe (fermeture remove.bg 2026-12-01 + Cutova comme alternative gratuite sans upload), FAQ étendue de 3 à 6 questions (alternative après fermeture, suppression gratuite, images jamais envoyées sur serveur), FAQPage JSON-LD mis à jour (6 questions). robots.txt : `Disallow: /models/` ajouté dans chaque groupe de robot nommé (IA crawlers). Déployé sur cutova.app (wrangler pages deploy dist --project-name cutova).
 - **N4 (faite)** : `/white-background/` et `/photo-background/` × 5 langues (`/fr/fond-blanc/`,
   `/fr/fond-photo/`, `/pt-br/fundo-branco/`, `/pt-br/fundo-com-foto/`, `/es/fondo-blanco/`,
   `/es/fondo-con-foto/`, `/id/background-putih/`, `/id/background-foto/`) : réponse directe sous le h1
@@ -503,6 +504,7 @@ IndexNow) et tests sur matériel réel. Champs légaux remplis (voir Décisions,
   explicite des robots d'IA (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User,
   Claude-SearchBot, anthropic-ai, PerplexityBot, Perplexity-User, Google-Extended, Applebot-Extended,
   CCBot, Meta-ExternalAgent, Amazonbot, DuckAssistBot, MistralAI-User).
+  **(2026-11-09)** `Disallow: /models/` ajouté dans chaque groupe de robot nommé (en plus de `User-agent: *`) — `PRIVATE` dans `seo/render.mjs`.
 - **(Phase 3) `SITE_URL`** : domaine pas encore choisi → les URL absolues (canonical, hreflang, sitemap)
   valent `http://localhost:4173` par défaut, avec un avertissement au build. **À définir au déploiement**
   (DEPLOY.md).
@@ -714,6 +716,8 @@ IndexNow) et tests sur matériel réel. Champs légaux remplis (voir Décisions,
 - **(UI) `?engine=wasm`** (`engine-client.ts` > `forceWasmFromUrl`) : force WASM dès le chargement, sans
   même sonder WebGPU (contrairement à `?webgpu=force`, qui tente WebGPU malgré des limites
   insuffisantes) — pour les tests manuels sur un appareil sans GPU.
+
+- **(2026-11-09) Méthode de déploiement confirmée** : `SITE_URL=https://cutova.app VITE_MODEL_BASE_URL=https://models.cutova.app npm run build` puis `npx wrangler pages deploy dist --project-name cutova`. Pas de déploiement automatique depuis Git (upload direct). Vérifié : https://cutova.app/robots.txt et https://cutova.app/remove-bg-alternative/ en ligne.
 
 - **(2026-11-06) Champs légaux remplis** (`content/legal-notice.json`, `privacy.json`, `terms.json`,
   5 langues, `grep "À COMPLÉTER"` → vide) :
