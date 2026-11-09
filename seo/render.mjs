@@ -356,7 +356,7 @@ export const AI_CRAWLERS = [
   "MistralAI-User",
 ];
 
-const PRIVATE = "Disallow: /stats/\nDisallow: /api/\n";
+const PRIVATE = "Disallow: /stats/\nDisallow: /api/\nDisallow: /models/\n";
 
 export function robotsTxt(siteUrl) {
   const ai = AI_CRAWLERS.map((bot) => `User-agent: ${bot}\nAllow: /\n${PRIVATE}`).join("\n");

@@ -8,6 +8,10 @@
       "title": "Free remove.bg Alternative — Full Resolution, No Upload | Cutova",
       "description": "Looking for a remove.bg alternative? Cutova removes backgrounds for free at full resolution, with no account and no upload: everything runs in your browser.",
       "h1": "A free remove.bg alternative that keeps your photos on your device",
+      "answer": {
+        "label": "Quick answer:",
+        "text": "remove.bg is closing its standalone site on December 1, 2026. Cutova is a free alternative: background removal runs entirely in your browser, no account required, no upload, and downloads at full resolution."
+      },
       "intro": [
         "remove.bg made automatic background removal popular. Cutova does the same job with a different approach: the AI runs inside your browser instead of on a server.",
         "That one change has practical consequences: you download at full resolution for free, you do not need an account, and your photos are never uploaded."
@@ -96,6 +100,18 @@
         {
           "q": "Is there an API like remove.bg?",
           "a": "Not yet. An API is planned. For now, Cutova is a web app: you can process several images and download them all as a ZIP."
+        },
+        {
+          "q": "What remove.bg alternative should I use after it closes?",
+          "a": "Cutova is a direct alternative. It removes backgrounds automatically with AI models (BiRefNet and ormbg), works in any modern browser, requires no account, and exports at the original file resolution for free."
+        },
+        {
+          "q": "How do I remove an image background for free?",
+          "a": "Open Cutova, drop your photo (up to 50 MB), and the AI detects the subject automatically. Download the result as PNG, WebP, or JPG at full resolution — no subscription, no watermark."
+        },
+        {
+          "q": "Are my images sent to a server?",
+          "a": "No. Cutova runs the AI model entirely inside your browser using WebAssembly and WebGPU. Your photos never leave your device and are never uploaded to any server."
         }
       ]
     },
@@ -104,6 +120,10 @@
       "title": "Alternative gratuite à remove.bg — pleine résolution, sans envoi | Cutova",
       "description": "Vous cherchez une alternative à remove.bg ? Cutova supprime l'arrière-plan gratuitement en pleine résolution, sans compte et sans envoi : tout se passe dans votre navigateur.",
       "h1": "Une alternative gratuite à remove.bg qui garde vos photos sur votre appareil",
+      "answer": {
+        "label": "En bref :",
+        "text": "remove.bg ferme son site le 1er décembre 2026. Cutova est une alternative gratuite : détourage dans le navigateur, sans compte, sans envoi de vos photos, téléchargement en pleine résolution."
+      },
       "intro": [
         "remove.bg a popularisé le détourage automatique. Cutova fait le même travail autrement : l'IA tourne dans votre navigateur au lieu d'un serveur.",
         "Ce seul changement a des conséquences concrètes : téléchargement en pleine résolution gratuit, pas de compte, et vos photos ne sont jamais envoyées."
@@ -192,6 +212,18 @@
         {
           "q": "Y a-t-il une API comme chez remove.bg ?",
           "a": "Pas encore. Une API est prévue. Pour l'instant, Cutova est une application web : vous pouvez traiter plusieurs images et toutes les télécharger dans un ZIP."
+        },
+        {
+          "q": "Quelle alternative à remove.bg après sa fermeture ?",
+          "a": "Cutova est une alternative directe. Il détourage automatiquement avec des modèles IA (BiRefNet et ormbg), fonctionne dans tout navigateur moderne, ne nécessite pas de compte et exporte en pleine résolution d'origine gratuitement."
+        },
+        {
+          "q": "Comment enlever le fond d'une image gratuitement ?",
+          "a": "Ouvrez Cutova, déposez votre photo (jusqu'à 50 Mo) et l'IA détecte le sujet automatiquement. Téléchargez le résultat en PNG, WebP ou JPG en pleine résolution — sans abonnement, sans filigrane."
+        },
+        {
+          "q": "Mes images sont-elles envoyées sur un serveur ?",
+          "a": "Non. Cutova fait tourner le modèle d'IA entièrement dans votre navigateur (WebAssembly et WebGPU). Vos photos ne quittent jamais votre appareil et ne sont jamais envoyées sur un serveur."
         }
       ]
     },
@@ -200,6 +232,10 @@
       "title": "Alternativa Grátis ao remove.bg — Alta Resolução, Sem Upload | Cutova",
       "description": "Procurando uma alternativa ao remove.bg? O Cutova remove o fundo grátis, na resolução original, sem cadastro e sem upload: tudo roda no seu navegador.",
       "h1": "Uma alternativa grátis ao remove.bg que mantém suas fotos no seu aparelho",
+      "answer": {
+        "label": "Resposta rápida:",
+        "text": "O remove.bg vai encerrar seu site em 1º de dezembro de 2026. O Cutova é uma alternativa gratuita: remoção de fundo no navegador, sem cadastro, sem upload, com download na resolução original."
+      },
       "intro": [
         "O remove.bg popularizou a remoção automática de fundo. O Cutova faz o mesmo trabalho de outro jeito: a IA roda dentro do seu navegador, e não em um servidor.",
         "Essa diferença muda muita coisa na prática: você baixa na resolução original de graça, não precisa de cadastro e suas fotos nunca são enviadas para a internet."
@@ -288,6 +324,18 @@
         {
           "q": "Existe uma API como a do remove.bg?",
           "a": "Ainda não. Uma API está nos planos. Por enquanto, o Cutova é um aplicativo web: você pode processar várias imagens e baixar todas em um ZIP."
+        },
+        {
+          "q": "Qual alternativa ao remove.bg usar depois que ele fechar?",
+          "a": "O Cutova é uma alternativa direta. Ele remove fundos automaticamente com modelos de IA (BiRefNet e ormbg), funciona em qualquer navegador moderno, não precisa de cadastro e exporta na resolução original de graça."
+        },
+        {
+          "q": "Como remover o fundo de uma imagem de graça?",
+          "a": "Abra o Cutova, arraste sua foto (até 50 MB) e a IA detecta o assunto automaticamente. Baixe o resultado em PNG, WebP ou JPG na resolução original — sem assinatura, sem marca d'água."
+        },
+        {
+          "q": "Minhas imagens são enviadas para um servidor?",
+          "a": "Não. O Cutova executa o modelo de IA inteiramente no seu navegador usando WebAssembly e WebGPU. Suas fotos nunca saem do seu aparelho e nunca são enviadas para nenhum servidor."
         }
       ]
     },
@@ -296,6 +344,10 @@
       "title": "Alternativa Gratis a remove.bg — Resolución Completa, Sin Subir Nada | Cutova",
       "description": "¿Buscas una alternativa a remove.bg? Cutova quita fondos gratis a resolución completa, sin cuenta y sin subir archivos: todo funciona en tu navegador.",
       "h1": "Una alternativa gratis a remove.bg que mantiene tus fotos en tu dispositivo",
+      "answer": {
+        "label": "Respuesta corta:",
+        "text": "remove.bg cerrará su web el 1 de diciembre de 2026. Cutova es una alternativa gratuita: elimina fondos en el navegador, sin cuenta, sin subir archivos y con descarga en resolución completa."
+      },
       "intro": [
         "remove.bg hizo popular la eliminación automática de fondos. Cutova hace el mismo trabajo con otro enfoque: la IA se ejecuta dentro de tu navegador en lugar de en un servidor.",
         "Ese cambio tiene consecuencias muy prácticas: descargas a resolución completa gratis, no necesitas cuenta y tus fotos nunca se suben a internet."
@@ -384,6 +436,18 @@
         {
           "q": "¿Hay una API como la de remove.bg?",
           "a": "Todavía no. Hay una API prevista. De momento, Cutova es una aplicación web: puedes procesar varias imágenes y descargarlas todas en un ZIP."
+        },
+        {
+          "q": "¿Qué alternativa a remove.bg usar tras su cierre?",
+          "a": "Cutova es una alternativa directa. Elimina fondos automáticamente con modelos de IA (BiRefNet y ormbg), funciona en cualquier navegador moderno, no requiere cuenta y exporta a la resolución original gratis."
+        },
+        {
+          "q": "¿Cómo eliminar el fondo de una imagen gratis?",
+          "a": "Abre Cutova, arrastra tu foto (hasta 50 MB) y la IA detecta el sujeto automáticamente. Descarga el resultado en PNG, WebP o JPG a resolución completa — sin suscripción, sin marca de agua."
+        },
+        {
+          "q": "¿Mis imágenes se envían a un servidor?",
+          "a": "No. Cutova ejecuta el modelo de IA completamente en tu navegador usando WebAssembly y WebGPU. Tus fotos nunca salen de tu dispositivo y nunca se suben a ningún servidor."
         }
       ]
     },
@@ -392,6 +456,10 @@
       "title": "Alternatif remove.bg Gratis — Resolusi Penuh, Tanpa Upload | Cutova",
       "description": "Cari alternatif remove.bg? Cutova menghapus background gratis dalam resolusi penuh, tanpa akun dan tanpa upload: semuanya berjalan di browser Anda.",
       "h1": "Alternatif remove.bg gratis yang menjaga foto Anda tetap di perangkat",
+      "answer": {
+        "label": "Jawaban singkat:",
+        "text": "remove.bg akan menutup situsnya pada 1 Desember 2026. Cutova adalah alternatif gratis: hapus background di browser, tanpa akun, tanpa upload, unduh dalam resolusi penuh."
+      },
       "intro": [
         "remove.bg membuat penghapusan background otomatis jadi populer. Cutova melakukan pekerjaan yang sama dengan cara berbeda: AI berjalan di dalam browser Anda, bukan di server.",
         "Perbedaan ini berdampak nyata: Anda bisa mengunduh resolusi penuh secara gratis, tidak perlu akun, dan foto Anda tidak pernah diunggah."
@@ -480,6 +548,18 @@
         {
           "q": "Apakah ada API seperti remove.bg?",
           "a": "Belum. API sedang direncanakan. Untuk saat ini, Cutova adalah aplikasi web: Anda bisa memproses beberapa gambar sekaligus dan mengunduh semuanya dalam satu ZIP."
+        },
+        {
+          "q": "Apa alternatif remove.bg setelah ditutup?",
+          "a": "Cutova adalah alternatif langsung. Ia menghapus background secara otomatis dengan model AI (BiRefNet dan ormbg), berjalan di browser modern mana pun, tidak butuh akun, dan mengekspor dalam resolusi asli secara gratis."
+        },
+        {
+          "q": "Bagaimana cara menghapus background gambar secara gratis?",
+          "a": "Buka Cutova, seret foto Anda (hingga 50 MB), dan AI mendeteksi subjek secara otomatis. Unduh hasilnya sebagai PNG, WebP, atau JPG dalam resolusi penuh — tanpa langganan, tanpa tanda air."
+        },
+        {
+          "q": "Apakah gambar saya dikirim ke server?",
+          "a": "Tidak. Cutova menjalankan model AI sepenuhnya di browser Anda menggunakan WebAssembly dan WebGPU. Foto Anda tidak pernah meninggalkan perangkat dan tidak pernah diunggah ke server mana pun."
         }
       ]
     }
